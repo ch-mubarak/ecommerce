@@ -4,7 +4,14 @@ const Admin=require("../models/admin")
 const User=require("../models/users")
 const Category = require("../models/category")
 const Product = require("../models/product")
-const category = require("../models/category")
+const {
+    addCategory,
+    addProduct,
+    deleteProduct,
+    deleteCategory
+
+} =require("../controllers/adminController")
+
 
 router.get("/",(req,res)=>{
     res.render("admin/dashboard")
@@ -54,37 +61,6 @@ router.get("/products/addProduct",async(req,res)=>{
     }
 })
 
-router.put("/addCategory",async(req,res)=>{
-    const category=new Category({
-        categoryName:req.body.categoryName
-    })
-    try{
-        await category.save()
-        res.redirect("/admin/categories")
-
-    }catch(err){
-        console.log(err)
-        res.render("admin/addCategory")
-
-    }
-})
-
-router.put("/addProduct",async(req,res)=>{
-    const product=new Product({
-        name:req.body.name,
-        brand:req.body.brand,
-        category:req.body.category,
-        quantity:req.body.quantity,
-        description:req.body.description
-    })
-    try{
-    await product.save()
-    res.redirect("/admin/products")
-
-    }catch(err){
-        console.log(err)
-        res.redirect("addProduct")    }
-})
 
 router.get("/products/editProduct/:id",async(req,res)=>{
     try{
@@ -96,32 +72,13 @@ router.get("/products/editProduct/:id",async(req,res)=>{
     }
 })
 
-router.delete("/deleteProduct/:id",async(req,res)=>{
-    try{
-        await Product.findByIdAndDelete(req.params.id)
-        res.redirect("/admin/products")
-    }catch(err){
-        console.log(err)
-    }
-})
+router.put("/addCategory",addCategory)
 
-router.delete("/deleteCategory/:id",async(req,res)=>{
-    let category
-    try{
-        category=await Category.findById(req.params.id)
-        await category.remove()
-        res.redirect("/admin/categories")
-    }catch(err){
-        console.log(err)
-        if(category==null){
-            res.redirect("/admin")
-        }else {
-            req.flash("message","this categories have still products")
-            res.redirect("/admin/categories")
-        }
+router.put("/addProduct",addProduct)
 
-    }
-})
+router.delete("/deleteProduct/:id",deleteProduct)
+
+router.delete("/deleteCategory/:id",deleteCategory)
 
 
 

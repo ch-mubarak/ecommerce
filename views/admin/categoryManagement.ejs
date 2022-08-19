@@ -1,9 +1,42 @@
 <%- include("../partials/adminNavbar") %> 
 <h1>this is category management</h1>
-<a href="categories/addCategory">add Category</a>
+<a href="categories/addCategory" class="btn btn-primary">add Category</a>
 
-<% allCategories.forEach((category)=>{ %> 
+<div class="container">
+    <div class="jumbotron shadow m-2 bg-white rounded">
+        <table id="admin" class="table table-striped table-bordered table-hover" style="width:100%">
+            <thead>
+                <tr>
+                    <th>#id</th>
+                    <th>Category</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% allCategories.forEach((category,index)=>{ %>
+                    <tr>
+                        <td><%= index+1 %></td>
+                        <td><%= category.categoryName %></td>
+                        <td>
+                            <form action="/admin/deleteCategory/<%= category.id%>?_method=DELETE" method="post">
+                                <a href="/admin/editCategory/<%= category.id%>" class="btn btn-dark m-2">Edit</a>
+                                <button type="submit" class="btn btn-danger m-2">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+        <hr>
+        <%- include("../partials/errorMessage") %> 
+    </div>
+</div>
 
-    <p><%= category.categoryName %> </p>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
-<% }) %> 
+<script>
+    $(document).ready(function () {
+        $('#admin').DataTable();
+    });
+</script>

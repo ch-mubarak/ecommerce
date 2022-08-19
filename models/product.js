@@ -14,16 +14,17 @@ const productSchema=mongoose.Schema({
         required:true,
         ref:"Category"
     },
-    size:{
-        type:Number,
-        required:true
-    },
     productImage:{
         type:String,
     },
     description:{
         type:String,
         required:true
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now,
+        required:true,
     },
     brand:String,
 })

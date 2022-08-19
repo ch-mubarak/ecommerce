@@ -1,5 +1,5 @@
 <%- include('../partials/adminNavbar') %>
-
+<a href="products/addProduct" class="btn btn-primary">add Product</a>
     <div class="container">
         <div class="jumbotron shadow m-2 bg-white rounded">
             <table id="admin" class="table table-striped table-bordered table-hover" style="width:100%">
@@ -14,17 +14,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% products.forEach((product,index)=>{ %>
+                    <% allProducts.forEach((product,index)=>{ %>
                         <tr>
                             <td><%= index+1 %></td>
                             <td><%= product.name %></td>
                             <td><%= product.brand %></td>
-                            <td><%= product.category %></td>
-                            <td><%= product.stock %></td>
+                            <td><%= product.category.categoryName %></td>
+                            <td><%= product.quantity %></td>
                             <td><%= product.description %></td>
                             <td>
-                                <form action="/admin/users?_method=PUT" method="post">
-                                    <a href="/admin/editProduct" class="btn btn-dark m-2">Edit</a>
+                                <form action="/admin/deleteProduct/<%=product.id%>?_method=DELETE" method="post">
+                                    <a href="products/editProduct/<%=product.id%>" class="btn btn-dark m-2">Edit</a>
                                     <button type="submit" class="btn btn-danger m-2">Delete</button>
                                 </form>
                             </td>

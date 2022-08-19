@@ -1,0 +1,26 @@
+<form action="/admin/addProduct?_method=PUT" method="post">
+    <div>
+        <label>name</label>
+        <input type="text" value="">
+    </div>
+    <div>
+        <label>Brand</label>
+        <input type="text" value="">
+    </div>
+    <div>
+        <label>Category</label>
+        <select name="category">
+            
+        </select>
+    </div>
+    <div>
+        <label>stock/label>
+        <input type="number" name="stock" min="1" value="">
+    </div>
+    <div>
+        <label>Description</label>
+        <textarea name="description" cols="30" rows="10"></textarea>
+    </div>
+    <a href="/admin/products" class="btn btn-dark">Cancel</a>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

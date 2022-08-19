@@ -1,0 +1,9 @@
+<%- include("../partials/adminNavbar") %> 
+<h1>this is category management</h1>
+<a href="categories/addCategory">add Category</a>
+
+<% allCategories.forEach((category)=>{ %> 
+
+    <p><%= category.categoryName %> </p>
+
+<% }) %> 

@@ -14,7 +14,7 @@ categorySchema.pre("remove",function(next){
             next(err)
         }
         else if(products.length>0){
-            next(new Error("This category has books still products"))
+            next(new Error("This category has still products"))
         }
         else{
             next()

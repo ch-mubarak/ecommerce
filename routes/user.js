@@ -2,7 +2,7 @@ const express = require("express")
 
 const {
     checkLoggedIn,
-    changePassword
+    changePassword,
 } = require("../controllers/userController")
 
 const router = express.Router()
@@ -17,6 +17,7 @@ router.get("/changePassword", checkLoggedIn, (req, res) => {
 })
 
 router.put("/changePassword", changePassword)
+
 
 
 module.exports = router

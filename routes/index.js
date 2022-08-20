@@ -29,6 +29,9 @@ router.get("/register",checkLoggedOut, (req, res) => {
     res.render("user/register",{errorMessage:errorMessage})
 })
 
+router.get("/error",(req,res)=>{
+    res.render("errorPage/error")
+})
 
 router.post("/login",userLogin)
 

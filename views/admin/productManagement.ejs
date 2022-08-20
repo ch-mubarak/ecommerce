@@ -12,8 +12,8 @@
                         <th>Name</th>
                         <th>Brand</th>
                         <th>Category</th>
-                        <th>Stock</th>
                         <th>Image</th>
+                        <th>Stock</th>
                         <th>Description</th>
                         <th>Action</th>
                     </tr>
@@ -30,9 +30,9 @@
                             <td><%= product.quantity %></td>
                             <td><%= product.description %></td>
                             <td>
-                                <button class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#edit-<%= product.id %>">Edit</button>
                                 <form action="/admin/deleteProduct/<%= product.id%>?_method=DELETE" method="post">
+                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#edit-<%= product.id %>" type="button">Edit</button>
                                     <button type="submit" class="btn btn-danger m-2">Delete</button>
                                 </form>
                             </td>
@@ -48,7 +48,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="/admin/addProduct" method="post"
+                                        <form action="/admin/editProduct/<%= product.id %>?_method=PUT" method="post"
                                             enctype="multipart/form-data">
                                             <div>
                                                 <label class="form-label">name*</label>
@@ -63,9 +63,14 @@
                                                 <label class="form-label">Category*</label>
                                                 <select name="category" class="form-select mt-2">
                                                     <% allCategories.forEach(category=>{ %>
+                                                        <% if(product.category.id==category.id) { %>                             
                                                         <option selected value="<%=category.id %>"
                                                             label="<%=category.categoryName %>"></option>
-                                                        <% }) %>
+                                                        <% } else { %>
+                                                        <option value="<%=category.id %>"
+                                                            label="<%=category.categoryName %>"></option> 
+                                                        <% } %> 
+                                                    <% }) %>
                                                 </select>
                                             </div>
                                             <div>

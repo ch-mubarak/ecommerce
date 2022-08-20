@@ -69,6 +69,7 @@ const changePassword=(req,res)=>{
     }
 }
 
+
 function checkLoggedOut(req,res,next){
     if(req.isAuthenticated()){
         res.redirect("user/home")
@@ -88,6 +89,15 @@ function checkLoggedIn(req,res,next){
     }
 }
 
+function isBlocked(req,res,next){
+    if(req.user.isActive){
+        next()
+    }
+    else{
+        res.send("your account is blocked, pls contact admin")
+    }
+}
+
 
 module.exports = {
     userRegister,
@@ -95,5 +105,6 @@ module.exports = {
     userLogout,
     checkLoggedOut,
     checkLoggedIn,
-    changePassword
+    changePassword,
+    isBlocked
 }

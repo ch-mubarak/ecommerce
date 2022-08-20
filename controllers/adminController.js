@@ -1,7 +1,8 @@
-const User = require("../models/users")
 const Category = require("../models/category")
+const User = require("../models/users")
 const Product = require("../models/product")
 const multer=require("multer")
+const { findById, findByIdAndUpdate } = require("../models/users")
 const fs=require("fs").promises
 const path="./public"
 
@@ -94,13 +95,75 @@ const deleteCategory = async (req, res) => {
     }
 }
 
+const editCategory=async (req, res) => {
+    try {
+        await Category.findByIdAndUpdate(
+            req.params.id,
+            { categoryName: req.body.categoryName })
+        res.redirect("/admin/categories")
+    }
+    catch (err) {
+        console.log(err)
+        req.flash("message","error editing in category")
+        res.redirect("/admin/categories")
+    }
+}
+
+const blockUser=async(req,res)=>{
+    try {
+        await User.findByIdAndUpdate(
+            req.params.id,
+            {isActive:false})
+        res.redirect("/admin/users")    
+    } catch (err) {
+        console.log(err)
+        req.flash("message","Error blocking User")
+        res.redirect("/admin/users")
+    }
+}
+
+const unblockUser=async(req,res)=>{
+    try {
+        await User.findByIdAndUpdate(req.params.id,{isActive:true})
+        res.redirect("/admin/users")    
+    } catch (error) {
+        console.log(err)
+        req.flash("message","Error un blocking User")
+        res.redirect("/admin/users")
+    }
+}
+
+const editProduct=async(req,res)=>{ 
+    let product
+    try {
+        product=await Product.findById(req.params.id)
+        const oldProductImagePath=product.productImagePath
+        await Product.findByIdAndUpdate(req.params.id,{
+            name:req.body.name,
+            brand:req.body.brand,
+            category:req.body.category,
+            quantity:req.body.quantity,
+            description:req.body.description,
+            productImagePath:req.file.filename
+        }) 
+        await fs.unlink(path+"/"+oldProductImagePath)
+        res.redirect("/admin/products")
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 module.exports = {
     addCategory,
     addProduct,
     deleteProduct,
     deleteCategory,
-    upload
+    upload,
+    unblockUser,
+    blockUser,
+    editCategory,
+    editProduct
 }
 
 

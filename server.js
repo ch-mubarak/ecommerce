@@ -3,8 +3,10 @@ const express= require("express")
 const expressLayout=require("express-ejs-layouts")
 const mongoose=require("mongoose")
 const passport=require("passport")
+const path=require("path")
 const session=require("express-session")
 const flash=require("connect-flash")
+const multer=require("multer")
 const methodOverride=require("method-override")
 const User=require("./models/users")
 const app=express();
@@ -12,6 +14,8 @@ const app=express();
 const indexRouter=require("./routes/index")
 const userRouter=require("./routes/user")
 const adminRouter=require("./routes/admin")
+
+const upload=multer({dest:"public/files"})
 
 mongoose.connect(process.env.DATABASE_URL,{useNewUrlParser:true})
 const db=mongoose.connection

@@ -14,7 +14,7 @@ const productSchema=mongoose.Schema({
         required:true,
         ref:"Category"
     },
-    productImage:{
+    productImagePath:{
         type:String,
     },
     description:{

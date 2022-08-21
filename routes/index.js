@@ -13,8 +13,9 @@ const {
 
 
 router.get("/",checkLoggedOut,(req,res)=>{
-    const logoutMessage=req.flash("message")
-    res.render("index",{logoutMessage:logoutMessage})
+    const errorMessage=req.flash("message")
+    const logoutMessage=req.flash("logoutMessage")
+    res.render("index",{errorMessage:errorMessage,logoutMessage:logoutMessage})
 
 })
 

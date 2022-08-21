@@ -14,8 +14,6 @@ const indexRouter=require("./routes/index")
 const userRouter=require("./routes/user")
 const adminRouter=require("./routes/admin")
 
-const upload=multer({dest:"public/files"})
-
 mongoose.connect(process.env.DATABASE_URL,{useNewUrlParser:true})
 const db=mongoose.connection
 db.on("error",error=>console.log(error))

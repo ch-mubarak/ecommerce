@@ -1,6 +1,12 @@
 <% if(errorMessage.length>0) { %>
     <div class="alert alert-danger text-center" role="alert"><%= errorMessage %></div>
-    <% } %>
+<% } %>
+
+<% if(locals.logoutMessage){ %>
+
+    <% if(logoutMessage.length>0) { %>
+        <div class="alert alert-success text-center" role="alert"><%= logoutMessage %></div>
+    <% } } %>
 
 
 

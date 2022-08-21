@@ -40,7 +40,7 @@ const userLogout = (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            req.flash("message", "you have successfully logout")
+            req.flash("logoutMessage", "you have successfully logout")
             res.redirect('/')
         }
     })

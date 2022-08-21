@@ -2,10 +2,10 @@ const Category = require("../models/category")
 const User = require("../models/users")
 const Product = require("../models/product")
 const multer = require("multer")
-const passport=require("passport")
-const Admin = require("../models/admin")
+const passport = require("passport")
 const fs = require("fs").promises
 const path = "./public"
+const {checkLoggedIn}=require("../controllers/userController")
 
 
 const multerStorage = multer.diskStorage({
@@ -31,30 +31,15 @@ const upload = multer({
 });
 
 
-const adminRegister = (req, res) => {
-
-    if (req.body.adminPassword === req.body.adminConfirmedPassword) {
-        Admin.register({
-            name:req.body.adminName,
-            username: req.body.adminUsername
-        }, req.body.adminPassword, function (err, user) {
-            if (err) {
-                console.log(err)
-                req.flash("message", "Admin Already registered")
-                res.redirect("/admin/register")
-            }
-            else {
-                passport.authenticate("local")(req, res, function () {
-                    res.redirect("admin/register")
-                })
-            }
-        })
+function checkAdminPrivilege(req,res,next){
+    if(req.user.isAdmin){
+        next()
     }
-    else {
-        req.flash("message", "password doesn't match")
-        res.redirect("/admin/register")
+    else{
+        res.redirect("/error")
     }
 }
+
 
 const addCategory = async (req, res) => {
     const category = new Category({
@@ -164,15 +149,26 @@ const editProduct = async (req, res) => {
     try {
         product = await Product.findById(req.params.id)
         const oldProductImagePath = product.productImagePath
-        await Product.findByIdAndUpdate(req.params.id, {
-            name: req.body.name,
-            brand: req.body.brand,
-            category: req.body.category,
-            quantity: req.body.quantity,
-            description: req.body.description,
-            productImagePath: req.file.filename
-        })
-        await fs.unlink(path + "/" + oldProductImagePath)
+        if(req.file){
+            await Product.findByIdAndUpdate(req.params.id, {
+                name: req.body.name,
+                brand: req.body.brand,
+                category: req.body.category,
+                quantity: req.body.quantity,
+                description: req.body.description,
+                productImagePath: req.file.filename      
+            })
+            await fs.unlink(path + "/" + oldProductImagePath)
+        }
+        else{
+            await Product.findByIdAndUpdate(req.params.id, {
+                name: req.body.name,
+                brand: req.body.brand,
+                category: req.body.category,
+                quantity: req.body.quantity,
+                description: req.body.description,     
+            })
+        }
         res.redirect("/admin/products")
     } catch (err) {
         console.log(err)
@@ -190,7 +186,7 @@ module.exports = {
     blockUser,
     editCategory,
     editProduct,
-    adminRegister
+    checkAdminPrivilege
 }
 
 

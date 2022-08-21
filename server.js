@@ -3,7 +3,6 @@ const express= require("express")
 const expressLayout=require("express-ejs-layouts")
 const mongoose=require("mongoose")
 const passport=require("passport")
-const path=require("path")
 const session=require("express-session")
 const flash=require("connect-flash")
 const multer=require("multer")
@@ -33,15 +32,14 @@ app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie:{
-        maxAge:60000
-    }
 }));
+
 app.use(flash())
 
 app.use(express.static("public"))
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 passport.use(User.createStrategy());
  
@@ -53,14 +51,14 @@ app.use("/",indexRouter)
 app.use("/user",userRouter)
 app.use("/admin",adminRouter)
 
-app.use(function(req, res, next){
-    res.status(404);
-    if (req.accepts('html')) {
-      res.render('errorPage/error', { url: req.url });
-      return;
-    }
+// app.use(function(req, res, next){
+//     res.status(404);
+//     if (req.accepts('html')) {
+//       res.render('errorPage/error', { url: req.url,layout:false });
+//       return;
+//     }
 
-  });
+//   });
 
 const PORT=process.env.PORT||3000
 app.listen(PORT,()=>console.log("server is up and running on port"+PORT))

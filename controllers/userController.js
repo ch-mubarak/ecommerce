@@ -89,14 +89,6 @@ function checkLoggedIn(req,res,next){
     }
 }
 
-function isBlocked(req,res,next){
-    if(req.user.isActive){
-        next()
-    }
-    else{
-        res.send("your account is blocked, pls contact admin")
-    }
-}
 
 
 module.exports = {
@@ -105,6 +97,5 @@ module.exports = {
     userLogout,
     checkLoggedOut,
     checkLoggedIn,
-    changePassword,
-    isBlocked
+    changePassword
 }

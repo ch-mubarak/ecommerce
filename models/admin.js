@@ -1,4 +1,5 @@
 const mongoose=require("mongoose")
+const passportLocalMongooseForAdmin=require("passport-local-mongoose")
 
 const adminSchema=mongoose.Schema({
     name:{
@@ -11,5 +12,7 @@ const adminSchema=mongoose.Schema({
     },
     
 })
+
+adminSchema.plugin(passportLocalMongooseForAdmin)
 
 module.exports=mongoose.model("Admin",adminSchema)

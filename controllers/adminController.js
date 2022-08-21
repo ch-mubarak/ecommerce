@@ -1,11 +1,11 @@
 const Category = require("../models/category")
 const User = require("../models/users")
 const Product = require("../models/product")
-const multer=require("multer")
-const { findById, findByIdAndUpdate } = require("../models/users")
-const fs=require("fs").promises
-const path="./public"
-
+const multer = require("multer")
+const passport=require("passport")
+const Admin = require("../models/admin")
+const fs = require("fs").promises
+const path = "./public"
 
 
 const multerStorage = multer.diskStorage({
@@ -18,7 +18,7 @@ const multerStorage = multer.diskStorage({
     },
 });
 const multerFilter = (req, file, cb) => {
-    if (file.mimetype.split("/")[1] === "jpg"||"png"||"jpeg") {
+    if (file.mimetype.split("/")[1] === "jpg" || "png" || "jpeg") {
         cb(null, true);
     } else {
         cb(new Error("File not supported"), false);
@@ -28,8 +28,33 @@ const multerFilter = (req, file, cb) => {
 const upload = multer({
     storage: multerStorage,
     fileFilter: multerFilter,
-  });
+});
 
+
+const adminRegister = (req, res) => {
+
+    if (req.body.adminPassword === req.body.adminConfirmedPassword) {
+        Admin.register({
+            name:req.body.adminName,
+            username: req.body.adminUsername
+        }, req.body.adminPassword, function (err, user) {
+            if (err) {
+                console.log(err)
+                req.flash("message", "Admin Already registered")
+                res.redirect("/admin/register")
+            }
+            else {
+                passport.authenticate("local")(req, res, function () {
+                    res.redirect("admin/register")
+                })
+            }
+        })
+    }
+    else {
+        req.flash("message", "password doesn't match")
+        res.redirect("/admin/register")
+    }
+}
 
 const addCategory = async (req, res) => {
     const category = new Category({
@@ -53,7 +78,7 @@ const addProduct = async (req, res) => {
         category: req.body.category,
         quantity: req.body.quantity,
         description: req.body.description,
-        productImagePath:req.file.filename
+        productImagePath: req.file.filename
     })
     try {
         await product.save()
@@ -65,12 +90,13 @@ const addProduct = async (req, res) => {
     }
 }
 
+
 const deleteProduct = async (req, res) => {
     try {
-        const product= await Product.findById(req.params.id)
-        const productImagePath=product.productImagePath
+        const product = await Product.findById(req.params.id)
+        const productImagePath = product.productImagePath
         await product.remove()
-        await fs.unlink(path+"/"+productImagePath)
+        await fs.unlink(path + "/" + productImagePath)
         res.redirect("/admin/products")
     } catch (err) {
         console.log(err)
@@ -95,7 +121,7 @@ const deleteCategory = async (req, res) => {
     }
 }
 
-const editCategory=async (req, res) => {
+const editCategory = async (req, res) => {
     try {
         await Category.findByIdAndUpdate(
             req.params.id,
@@ -104,49 +130,49 @@ const editCategory=async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        req.flash("message","error editing in category")
+        req.flash("message", "error editing in category")
         res.redirect("/admin/categories")
     }
 }
 
-const blockUser=async(req,res)=>{
+const blockUser = async (req, res) => {
     try {
         await User.findByIdAndUpdate(
             req.params.id,
-            {isActive:false})
-        res.redirect("/admin/users")    
+            { isActive: false })
+        res.redirect("/admin/users")
     } catch (err) {
         console.log(err)
-        req.flash("message","Error blocking User")
+        req.flash("message", "Error blocking User")
         res.redirect("/admin/users")
     }
 }
 
-const unblockUser=async(req,res)=>{
+const unblockUser = async (req, res) => {
     try {
-        await User.findByIdAndUpdate(req.params.id,{isActive:true})
-        res.redirect("/admin/users")    
+        await User.findByIdAndUpdate(req.params.id, { isActive: true })
+        res.redirect("/admin/users")
     } catch (error) {
         console.log(err)
-        req.flash("message","Error un blocking User")
+        req.flash("message", "Error un blocking User")
         res.redirect("/admin/users")
     }
 }
 
-const editProduct=async(req,res)=>{ 
+const editProduct = async (req, res) => {
     let product
     try {
-        product=await Product.findById(req.params.id)
-        const oldProductImagePath=product.productImagePath
-        await Product.findByIdAndUpdate(req.params.id,{
-            name:req.body.name,
-            brand:req.body.brand,
-            category:req.body.category,
-            quantity:req.body.quantity,
-            description:req.body.description,
-            productImagePath:req.file.filename
-        }) 
-        await fs.unlink(path+"/"+oldProductImagePath)
+        product = await Product.findById(req.params.id)
+        const oldProductImagePath = product.productImagePath
+        await Product.findByIdAndUpdate(req.params.id, {
+            name: req.body.name,
+            brand: req.body.brand,
+            category: req.body.category,
+            quantity: req.body.quantity,
+            description: req.body.description,
+            productImagePath: req.file.filename
+        })
+        await fs.unlink(path + "/" + oldProductImagePath)
         res.redirect("/admin/products")
     } catch (err) {
         console.log(err)
@@ -163,7 +189,8 @@ module.exports = {
     unblockUser,
     blockUser,
     editCategory,
-    editProduct
+    editProduct,
+    adminRegister
 }
 
 

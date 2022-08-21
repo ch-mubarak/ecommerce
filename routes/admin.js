@@ -14,13 +14,23 @@ const {
     blockUser,
     unblockUser,
     editCategory,
-    editProduct
+    editProduct,
+    adminRegister
 
 } = require("../controllers/adminController")
 
 
 router.get("/", (req, res) => {
     res.render("admin/dashboard")
+})
+
+router.get("/register",(req,res)=>{
+    const errorMessage=req.flash("message")
+    res.render("admin/adminRegister",{errorMessage:errorMessage})
+})
+
+router.get("/login",(req,res)=>{
+    res.render("admin/adminLogin")
 })
 
 
@@ -52,6 +62,8 @@ router.get("/products", async (req, res) => {
         console.log(err)
     }
 })
+
+router.post("/register",adminRegister)
 
 
 router.put("/addCategory",addCategory)

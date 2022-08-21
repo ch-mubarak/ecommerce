@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center"">
+        <div class="col-md-4 col-md-offset-5 align-center">
+            <form action="/admin/register" method="post">
+                <h1>Admin Register</h1>
+                <div class="form-floating mb-2">
+                    <input type="text" name="adminName" placeholder="Name" class="form-control" id="floatingName">
+                    <label for="floatingName">Name</label>
+                </div>
+                <div class="form-floating mb-2">
+                    <input type="text" name="adminUsername" placeholder="Username" class="form-control" id="floatingUsername">
+                    <label for="floatingUsername">Username</label>
+                </div>
+                <div class="form-floating mb-2">
+                    <input type="password" name="adminPassword" placeholder="Password" class="form-control" id="floatingPassword">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" name="adminConfirmedPassword" placeholder="Confirm Password" class="form-control" id="floatingPassword2">
+                    <label for="floatingPassword2">Confirm Password</label>
+                </div>
+                    <button type="submit" class="btn btn-primary mt-2 mb-2">Register</button>
+            </form>
+            <%- include("../partials/errorMessage") %> 
+        </div>
+    </div>
+</div>

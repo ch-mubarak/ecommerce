@@ -9,7 +9,6 @@ const {
 
 } = require("../controllers/userController")
 
-router.use(checkLoggedOut)
 
 router.get("/", (req, res) => {
     const errorMessage = req.flash("message")
@@ -18,13 +17,13 @@ router.get("/", (req, res) => {
 
 })
 
-router.get("/login", (req, res) => {
+router.get("/login",checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")
     res.render("user/login", { errorMessage: errorMessage })
 })
 
 
-router.get("/register", (req, res) => {
+router.get("/register",checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("message")
     res.render("user/register", { errorMessage: errorMessage })
 })

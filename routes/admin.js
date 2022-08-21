@@ -5,7 +5,7 @@ const User = require("../models/users")
 const Category = require("../models/category")
 const Product = require("../models/product")
 
-const { checkLoggedIn } = require("../controllers/userController")
+const { checkLoggedIn, userLogout } = require("../controllers/userController")
 
 const {
     addCategory,
@@ -74,6 +74,7 @@ router.delete("/deleteProduct/:id", deleteProduct)
 
 router.delete("/deleteCategory/:id", deleteCategory)
 
+router.delete("/logout",userLogout)
 
 
 module.exports = router

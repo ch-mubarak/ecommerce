@@ -7,13 +7,15 @@ const {
 
 const router = express.Router()
 
-router.get("/home", checkLoggedIn, (req, res) => {
+router.use(checkLoggedIn)
+
+router.get("/home", (req, res) => {
     res.render("user/home")
 })
 
-router.get("/changePassword",checkLoggedIn, (req, res) => {
-    const errorMessage=req.flash("message")
-    res.render("user/changePassword",{errorMessage:errorMessage})
+router.get("/changePassword", (req, res) => {
+    const errorMessage = req.flash("message")
+    res.render("user/changePassword", { errorMessage: errorMessage })
 })
 
 router.put("/changePassword", changePassword)

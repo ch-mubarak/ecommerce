@@ -4,15 +4,14 @@ const passport = require("passport")
 
 const userRegister = (req, res) => {
 
-    if(req.body.password===req.body.confirmedPassword)
-    {
+    if (req.body.password === req.body.confirmedPassword) {
         User.register({
             name: req.body.name,
             email: req.body.email
         }, req.body.password, function (err, user) {
             if (err) {
                 console.log(err)
-                req.flash("message","User Already registered")
+                req.flash("message", "User Already registered")
                 res.redirect("register")
             }
             else {
@@ -22,8 +21,8 @@ const userRegister = (req, res) => {
             }
         })
     }
-    else{
-        req.flash("message","password doesn't match")
+    else {
+        req.flash("message", "password doesn't match")
         res.redirect("register")
     }
 }
@@ -46,45 +45,45 @@ const userLogout = (req, res) => {
     })
 }
 
-const changePassword=(req,res)=>{
-    const oldPassword=req.body.oldPassword
-    const newPassword=req.body.password
-    const confirmedPassword=req.body.confirmedPassword
-    const user=req.user
-    if(newPassword===confirmedPassword){
-        user.changePassword(oldPassword,newPassword,function(err){
-            if(err){
+const changePassword = (req, res) => {
+    const oldPassword = req.body.oldPassword
+    const newPassword = req.body.password
+    const confirmedPassword = req.body.confirmedPassword
+    const user = req.user
+    if (newPassword === confirmedPassword) {
+        user.changePassword(oldPassword, newPassword, function (err) {
+            if (err) {
                 console.log(err)
-                req.flash("message","wrong credentials")
+                req.flash("message", "wrong credentials")
                 res.redirect("changePassword")
             }
-            else{
+            else {
                 res.redirect("home")
             }
         })
     }
-    else{
-        req.flash("message","password doesn't match")
+    else {
+        req.flash("message", "password doesn't match")
         res.redirect("changePassword")
     }
 }
 
 
-function checkLoggedOut(req,res,next){
-    if(req.isAuthenticated()){
+function checkLoggedOut(req, res, next) {
+    if (req.isAuthenticated()) {
         res.redirect("user/home")
     }
-    else{
+    else {
         next()
     }
 }
 
-function checkLoggedIn(req,res,next){
-    if(req.isAuthenticated()){
+function checkLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
         next()
     }
-    else{
-        req.flash("message","Pls login to access home")
+    else {
+        req.flash("message", "Pls login to access home")
         res.redirect("/")
     }
 }

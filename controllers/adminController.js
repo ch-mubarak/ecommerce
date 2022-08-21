@@ -2,11 +2,8 @@ const Category = require("../models/category")
 const User = require("../models/users")
 const Product = require("../models/product")
 const multer = require("multer")
-const passport = require("passport")
 const fs = require("fs").promises
 const path = "./public"
-const {checkLoggedIn}=require("../controllers/userController")
-
 
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -31,11 +28,11 @@ const upload = multer({
 });
 
 
-function checkAdminPrivilege(req,res,next){
-    if(req.user.isAdmin){
+function checkAdminPrivilege(req, res, next) {
+    if (req.user.isAdmin) {
         next()
     }
-    else{
+    else {
         res.redirect("/error")
     }
 }
@@ -149,24 +146,24 @@ const editProduct = async (req, res) => {
     try {
         product = await Product.findById(req.params.id)
         const oldProductImagePath = product.productImagePath
-        if(req.file){
+        if (req.file) {
             await Product.findByIdAndUpdate(req.params.id, {
                 name: req.body.name,
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
                 description: req.body.description,
-                productImagePath: req.file.filename      
+                productImagePath: req.file.filename
             })
             await fs.unlink(path + "/" + oldProductImagePath)
         }
-        else{
+        else {
             await Product.findByIdAndUpdate(req.params.id, {
                 name: req.body.name,
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
-                description: req.body.description,     
+                description: req.body.description,
             })
         }
         res.redirect("/admin/products")

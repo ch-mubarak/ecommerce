@@ -5,7 +5,7 @@ const User = require("../models/users")
 const Category = require("../models/category")
 const Product = require("../models/product")
 
-const {checkLoggedIn}=require("../controllers/userController")
+const { checkLoggedIn } = require("../controllers/userController")
 
 const {
     addCategory,
@@ -21,17 +21,18 @@ const {
 
 } = require("../controllers/adminController")
 
+router.use(checkLoggedIn, checkAdminPrivilege)
 
-router.get("/",checkLoggedIn,checkAdminPrivilege, (req, res) => {
+router.get("/", (req, res) => {
     res.render("admin/dashboard")
 })
 
 
-router.get("/users",checkLoggedIn,checkAdminPrivilege, async (req, res) => {
+router.get("/users", async (req, res) => {
     try {
-        const errorMessage=req.flash("message")
+        const errorMessage = req.flash("message")
         const users = await User.find({})
-        res.render("admin/userManagement", { users: users,errorMessage:errorMessage })
+        res.render("admin/userManagement", { users: users, errorMessage: errorMessage })
     } catch (err) {
         console.log(err)
         res.redirect("/")
@@ -39,13 +40,13 @@ router.get("/users",checkLoggedIn,checkAdminPrivilege, async (req, res) => {
     }
 })
 
-router.get("/categories",checkLoggedIn,checkAdminPrivilege, async (req, res) => {
+router.get("/categories", async (req, res) => {
     const errorMessage = req.flash("message")
     const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
     res.render("admin/categoryManagement", { allCategories: allCategories, errorMessage: errorMessage })
 })
 
-router.get("/products",checkLoggedIn,checkAdminPrivilege, async (req, res) => {
+router.get("/products", async (req, res) => {
     try {
         const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
         const allProducts = await Product.find().populate("category").exec()
@@ -57,21 +58,21 @@ router.get("/products",checkLoggedIn,checkAdminPrivilege, async (req, res) => {
 })
 
 
-router.put("/addCategory",checkLoggedIn,checkAdminPrivilege,addCategory)
+router.put("/addCategory", addCategory)
 
-router.post("/addProduct",checkLoggedIn,checkAdminPrivilege, upload.single("productImage"), addProduct)
+router.post("/addProduct", upload.single("productImage"), addProduct)
 
-router.put("/editProduct/:id",checkLoggedIn,checkAdminPrivilege,upload.single("productImage"),editProduct)
+router.put("/editProduct/:id", upload.single("productImage"), editProduct)
 
-router.put("/editCategory/:id",checkLoggedIn,checkAdminPrivilege,editCategory)
+router.put("/editCategory/:id", editCategory)
 
-router.put("/blockUser/:id",checkLoggedIn,checkAdminPrivilege,blockUser)
+router.put("/blockUser/:id", blockUser)
 
-router.put("/unblockUser/:id",checkLoggedIn,checkAdminPrivilege,unblockUser)
+router.put("/unblockUser/:id", unblockUser)
 
-router.delete("/deleteProduct/:id",checkLoggedIn,checkAdminPrivilege, deleteProduct)
+router.delete("/deleteProduct/:id", deleteProduct)
 
-router.delete("/deleteCategory/:id",checkLoggedIn,checkAdminPrivilege, deleteCategory)
+router.delete("/deleteCategory/:id", deleteCategory)
 
 
 

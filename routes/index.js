@@ -1,11 +1,12 @@
-const express = require("express")
+const express = require("express");
 const router = express.Router();
-
 const {
     userRegister,
     userLogin,
     userLogout,
-    checkLoggedOut
+    checkLoggedOut,
+    otpVerification,
+    resendOtp
 
 } = require("../controllers/userController")
 
@@ -28,9 +29,14 @@ router.get("/register",checkLoggedOut, (req, res) => {
     res.render("user/register", { errorMessage: errorMessage })
 })
 
+
 router.get("/error", (req, res) => {
     res.render("errorPage/error")
 })
+
+router.post("/validateOtp",otpVerification)
+
+router.post("/resendOtp",resendOtp)
 
 router.post("/login", userLogin)
 

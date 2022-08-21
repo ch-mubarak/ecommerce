@@ -19,7 +19,17 @@ const userSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         required: true,
-        default: true
+        default: true,
+    },
+    isVerified:{
+        type:Boolean,
+        required:true,
+        default:false
+    },
+    createdAt:{
+        type:Date,
+        required:true,
+        default:Date.now
     }
 
 })

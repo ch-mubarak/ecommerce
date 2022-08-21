@@ -1,14 +1,31 @@
 const User = require("../models/users")
+const nodemailer = require("nodemailer")
 const passport = require("passport")
 
+var emailId
+let otp = Math.random() * 1000000
+otp = parseInt(otp)
+console.log(otp)
+
+let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 456,
+    secure: true,
+    service: "Gmail",
+
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+    }
+})
 
 const userRegister = (req, res) => {
-
+    emailId = req.body.email
     if (req.body.password === req.body.confirmedPassword) {
         User.register({
             name: req.body.name,
             email: req.body.email
-        }, req.body.password, function (err, user) {
+        }, req.body.password, async function (err, user) {
             if (err) {
                 console.log(err)
                 req.flash("message", "User Already registered")
@@ -16,8 +33,20 @@ const userRegister = (req, res) => {
             }
             else {
                 passport.authenticate("local")(req, res, function () {
-                    res.redirect("user/home")
                 })
+                try {
+                    let info = await transporter.sendMail({
+                        to: emailId,
+                        subject: "Otp for registration is:", // Subject line
+                        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
+                    });
+                    res.render("optValidationForm")
+                    console.log("Message sent: %s", info.messageId);
+                } catch (err) {
+                    console.log(err)
+                    req.flash("message", "error registering account")
+                    res.redirect("/register")
+                }
             }
         })
     }
@@ -27,8 +56,43 @@ const userRegister = (req, res) => {
     }
 }
 
+
+const otpVerification = async (req, res) => {
+    let enteredOtp = req.body.a + req.body.b + req.body.c + req.body.d + req.body.e + req.body.f
+    enteredOtp = Number(enteredOtp)
+    try {
+        if (otp == enteredOtp) {
+            await User.findByIdAndUpdate(req.user.id, { isVerified: true })
+            res.redirect("/user/home")
+        } else {
+            res.render("optValidationForm", { errorMessage: "invalid otp" })
+        }
+    } catch (err) {
+        console.log(err)
+        req.flash("message", "error verifying account")
+        res.redirect("/register")
+    }
+
+}
+const resendOtp = async (req, res) => {
+    try {
+        let info = await transporter.sendMail({
+            to: emailId || req.user.email,
+            subject: "Otp for registration is:", // Subject line
+            html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
+        });
+        res.render("optValidationForm")
+        console.log("Message sent: %s", info.messageId);
+    } catch (err) {
+        console.log(err)
+        req.flash("message", "error registering account")
+        res.redirect("/register")
+    }
+
+}
+
 const userLogin = passport.authenticate('local', {
-    successRedirect: 'user/home',
+    successRedirect: '/user/home',
     failureFlash: true,
     failureRedirect: '/login'
 });
@@ -58,7 +122,7 @@ const changePassword = (req, res) => {
                 res.redirect("changePassword")
             }
             else {
-                res.redirect("home")
+                res.redirect("/user/home")
             }
         })
     }
@@ -71,7 +135,7 @@ const changePassword = (req, res) => {
 
 function checkLoggedOut(req, res, next) {
     if (req.isAuthenticated()) {
-        res.redirect("user/home")
+        res.redirect("/user/home")
     }
     else {
         next()
@@ -89,6 +153,26 @@ function checkLoggedIn(req, res, next) {
 }
 
 
+async function checkAccountVerified(req, res, next) {
+    if (req.user.isVerified) {
+        next()
+    }
+    else {
+        try {
+            let info = await transporter.sendMail({
+                to: emailId||req.user.email,
+                subject: "Otp for registration is:", // Subject line
+                html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
+            });
+            res.render("optValidationForm")
+            console.log("Message sent: %s", info.messageId);
+        } catch (err) {
+            console.log(err)
+            req.flash("message", "error registering account")
+            res.redirect("/register")
+        }
+    }
+}
 
 module.exports = {
     userRegister,
@@ -96,5 +180,8 @@ module.exports = {
     userLogout,
     checkLoggedOut,
     checkLoggedIn,
-    changePassword
+    changePassword,
+    checkAccountVerified,
+    resendOtp,
+    otpVerification
 }

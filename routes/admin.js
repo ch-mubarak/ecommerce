@@ -41,9 +41,13 @@ router.get("/users", async (req, res) => {
 })
 
 router.get("/categories", async (req, res) => {
-    const errorMessage = req.flash("message")
-    const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
-    res.render("admin/categoryManagement", { allCategories: allCategories, errorMessage: errorMessage })
+    try{
+        const errorMessage = req.flash("message")
+        const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
+        res.render("admin/categoryManagement", { allCategories: allCategories, errorMessage: errorMessage })
+    }catch(err){
+        console.log(err)
+    }
 })
 
 router.get("/products", async (req, res) => {

@@ -69,7 +69,7 @@
     <div class="position-relative">
         <div class="card p-2 text-center mb-3">
             <h6>Please enter the one time password <br> to verify your account</h6>
-            <div> <span>A code has been sent to</span> <small>ch****931@gmail.com</small> </div>
+            <div> <span>A code has been sent to</span> <small><%= email %></small> </div>
             <form action="/validateOtp" method="post">
             <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2"> <input
                     class="m-2 text-center form-control rounded" type="number" name="a" id="first" maxlength="1" /> <input

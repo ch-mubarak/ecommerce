@@ -40,7 +40,8 @@ const userRegister = (req, res) => {
                         subject: "Otp for registration is:", // Subject line
                         html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
                     });
-                    res.render("optValidationForm")
+                    const hiddenEmail=hideEmail(emailId)
+                    res.render("optValidationForm",{email:hiddenEmail})
                     console.log("Message sent: %s", info.messageId);
                 } catch (err) {
                     console.log(err)
@@ -152,19 +153,32 @@ function checkLoggedIn(req, res, next) {
     }
 }
 
+function hideEmail(target) {
+    let email = target 
+    let hiddenEmail = "";
+    for (i = 0; i < email.length; i++) {
+      if (i > 2 && i< email.indexOf("@") ) {
+        hiddenEmail += "*";
+      } else {
+        hiddenEmail += email[i];
+      }
+    }
+    return hiddenEmail
+  }
 
 async function checkAccountVerified(req, res, next) {
     if (req.user.isVerified) {
         next()
     }
-    else {
+    else {   
         try {
             let info = await transporter.sendMail({
                 to: emailId||req.user.email,
-                subject: "Otp for registration is:", // Subject line
+                subject: "Otp for registration is:",
                 html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
             });
-            res.render("optValidationForm")
+            const hiddenEmail=hideEmail(req.use.email)
+            res.render("optValidationForm",{email:hiddenEmail})
             console.log("Message sent: %s", info.messageId);
         } catch (err) {
             console.log(err)

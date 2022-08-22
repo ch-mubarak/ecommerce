@@ -9,13 +9,12 @@ const {
 const router = express.Router()
 
 router.use(checkLoggedIn)
-router.use(checkAccountVerified)
 
-router.get("/home", (req, res) => {
+router.get("/home",checkAccountVerified, (req, res) => {
     res.render("user/home",{layout:"layouts/layouts"})
 })
 
-router.get("/changePassword", (req, res) => {
+router.get("/changePassword",checkAccountVerified,(req, res) => {
     const errorMessage = req.flash("message")
     res.render("user/changePassword", { errorMessage: errorMessage,layout:"layouts/layouts" })
 })

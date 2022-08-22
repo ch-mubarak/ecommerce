@@ -24,7 +24,6 @@ let transporter = nodemailer.createTransport({
 
 const userRegister = (req, res) => {
     let otp=generateOtp()
-    let emailId=req.body.email
     if (req.body.password === req.body.confirmedPassword) {
         User.register({
             name: req.body.name,
@@ -34,31 +33,19 @@ const userRegister = (req, res) => {
             if (err) {
                 console.log(err)
                 req.flash("message", "User Already registered")
-                res.redirect("register")
+                res.redirect("/register")
             }
             else {
                 passport.authenticate("local")(req, res, function () {
+                    res.redirect("/user/home")
                 })
-                try {    
-                    let info = await transporter.sendMail({
-                        to: emailId,
-                        subject: "Otp for registration is:", // Subject line
-                        html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
-                    });
-                    const hiddenEmail=hideEmail(emailId)
-                    res.render("optValidationForm",{email:hiddenEmail,layout:"layouts/layouts"})
-                    console.log("Message sent: %s", info.messageId);
-                } catch (err) {
-                    console.log(err)
-                    req.flash("message", "error registering account")
-                    res.redirect("/register")
-                }
+            
             }
         })
     }
     else {
         req.flash("message", "password doesn't match")
-        res.redirect("register")
+        res.redirect("/register")
     }
 }
 
@@ -83,6 +70,7 @@ const otpVerification = async (req, res) => {
     }
 
 }
+
 const resendOtp = async (req, res) => {
     try {
         let otp=generateOtp()
@@ -96,13 +84,37 @@ const resendOtp = async (req, res) => {
         });
         const hiddenEmail=hideEmail(req.user.email)
         res.render("optValidationForm",{layout:"layouts/layouts",email:hiddenEmail})
-        console.log("Message sent: %s", info.messageId);
+        console.log("Resend Message sent: %s", info.messageId);
     } catch (err) {
         console.log(err)
         req.flash("message", "error registering account")
         res.redirect("/register")
     }
 
+}
+
+async function checkAccountVerified(req, res, next) {
+    if (req.user.isVerified) {
+        next()
+    }
+    else {   
+        let otp=generateOtp()
+        try {
+            await User.findByIdAndUpdate(req.user.id,{otp:otp})
+            let info = await transporter.sendMail({
+                to: req.user.email,
+                subject: "Otp for registration is:",
+                html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
+            });
+            const hiddenEmail=hideEmail(req.user.email)
+            res.render("optValidationForm",{email:hiddenEmail,layout:"layouts/layouts"})
+            console.log("Message sent: %s", info.messageId);
+        } catch (err) {
+            console.log(err)
+            req.flash("message", "error registering account")
+            res.redirect("/register")
+        }
+    }
 }
 
 const userLogin = passport.authenticate('local', {
@@ -179,29 +191,6 @@ function hideEmail(target) {
     return hiddenEmail
   }
 
-async function checkAccountVerified(req, res, next) {
-    if (req.user.isVerified) {
-        next()
-    }
-    else {   
-        try {
-            let otp=generateOtp()
-            await User.findByIdAndUpdate(req.user.id,{otp:otp})
-            let info = await transporter.sendMail({
-                to: req.user.email,
-                subject: "Otp for registration is:",
-                html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
-            });
-            const hiddenEmail=hideEmail(req.user.email)
-            res.render("optValidationForm",{email:hiddenEmail,layout:"layouts/layouts"})
-            console.log("Message sent: %s", info.messageId);
-        } catch (err) {
-            console.log(err)
-            req.flash("message", "error registering account")
-            res.redirect("/register")
-        }
-    }
-}
 
 module.exports = {
     userRegister,

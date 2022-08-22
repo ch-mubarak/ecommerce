@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer")
 const passport = require("passport")
 
 var emailId
+
 let otp = Math.random() * 1000000
 otp = parseInt(otp)
 console.log(otp)
@@ -41,7 +42,7 @@ const userRegister = (req, res) => {
                         html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
                     });
                     const hiddenEmail=hideEmail(emailId)
-                    res.render("optValidationForm",{email:hiddenEmail})
+                    res.render("optValidationForm",{email:hiddenEmail,layout:"layouts/layouts"})
                     console.log("Message sent: %s", info.messageId);
                 } catch (err) {
                     console.log(err)
@@ -66,7 +67,7 @@ const otpVerification = async (req, res) => {
             await User.findByIdAndUpdate(req.user.id, { isVerified: true })
             res.redirect("/user/home")
         } else {
-            res.render("optValidationForm", { errorMessage: "invalid otp" })
+            res.render("optValidationForm", { errorMessage: "invalid otp",layout:"layouts/layouts"})
         }
     } catch (err) {
         console.log(err)
@@ -82,7 +83,7 @@ const resendOtp = async (req, res) => {
             subject: "Otp for registration is:", // Subject line
             html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
         });
-        res.render("optValidationForm")
+        res.render("optValidationForm",{layout:"layouts/layouts"})
         console.log("Message sent: %s", info.messageId);
     } catch (err) {
         console.log(err)
@@ -177,8 +178,8 @@ async function checkAccountVerified(req, res, next) {
                 subject: "Otp for registration is:",
                 html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
             });
-            const hiddenEmail=hideEmail(req.use.email)
-            res.render("optValidationForm",{email:hiddenEmail})
+            const hiddenEmail=hideEmail(req.user.email)
+            res.render("optValidationForm",{email:hiddenEmail,layout:"layouts/layouts"})
             console.log("Message sent: %s", info.messageId);
         } catch (err) {
             console.log(err)

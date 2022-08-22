@@ -8,8 +8,8 @@ const {
 
 const router = express.Router()
 
-// router.use(checkLoggedIn)
-// router.use(checkAccountVerified)
+router.use(checkLoggedIn)
+router.use(checkAccountVerified)
 
 router.get("/home", (req, res) => {
     res.render("user/home",{layout:"layouts/layouts"})

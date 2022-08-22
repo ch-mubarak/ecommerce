@@ -5,7 +5,6 @@ const mongoose = require("mongoose")
 const passport = require("passport")
 const session = require("express-session")
 const flash = require("connect-flash")
-const multer = require("multer")
 const methodOverride = require("method-override")
 const User = require("./models/users")
 const app = express();

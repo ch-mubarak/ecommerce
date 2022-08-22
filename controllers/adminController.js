@@ -48,7 +48,7 @@ const addCategory = async (req, res) => {
 
     } catch (err) {
         console.log(err)
-        res.render("admin/addCategory")
+        res.redirect("/admin/addCategory")
 
     }
 }

@@ -21,7 +21,8 @@ db.on("error", error => console.log(error))
 db.once("open", () => console.log("mongoose is connected"))
 
 app.set("view engine", "ejs")
-app.set("layout", "layouts/layouts")
+app.set("layout", "layouts/masterLayout")
+
 app.use(express.static("public"))
 app.use(expressLayout)
 app.use(express.urlencoded({ extended: false }))

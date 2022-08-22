@@ -24,7 +24,7 @@ const {
 router.use(checkLoggedIn, checkAdminPrivilege)
 
 router.get("/", (req, res) => {
-    res.render("admin/dashboard")
+    res.render("admin/dashboard",{layout:"layouts/layouts"})
 })
 
 
@@ -32,7 +32,7 @@ router.get("/users", async (req, res) => {
     try {
         const errorMessage = req.flash("message")
         const users = await User.find({})
-        res.render("admin/userManagement", { users: users, errorMessage: errorMessage })
+        res.render("admin/userManagement", { users: users, errorMessage: errorMessage,layout:"layouts/layouts" })
     } catch (err) {
         console.log(err)
         res.redirect("/")
@@ -44,7 +44,7 @@ router.get("/categories", async (req, res) => {
     try{
         const errorMessage = req.flash("message")
         const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
-        res.render("admin/categoryManagement", { allCategories: allCategories, errorMessage: errorMessage })
+        res.render("admin/categoryManagement", { allCategories: allCategories, errorMessage: errorMessage,layout:"layouts/layouts" })
     }catch(err){
         console.log(err)
     }
@@ -54,7 +54,7 @@ router.get("/products", async (req, res) => {
     try {
         const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
         const allProducts = await Product.find().populate("category").exec()
-        res.render("admin/productManagement", { allProducts: allProducts, allCategories: allCategories })
+        res.render("admin/productManagement", { allProducts: allProducts, allCategories: allCategories,layout:"layouts/layouts" })
 
     } catch (err) {
         console.log(err)

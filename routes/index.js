@@ -12,26 +12,45 @@ const {
 
 
 router.get("/", (req, res) => {
-    const errorMessage = req.flash("message")
-    const logoutMessage = req.flash("logoutMessage")
-    res.render("index", { errorMessage: errorMessage, logoutMessage: logoutMessage })
+    res.render("master/index")
+})
 
+
+
+router.get("/cart",(req,res)=>{
+    res.render("master/cart")
+})
+
+router.get("/shop",(req,res)=>{
+    res.render("master/shop")
+})
+
+router.get("/product",(req,res)=>{
+    res.render("master/productDetails")
+})
+
+router.get("/checkout",(req,res)=>{
+    res.render("master/checkout")
+})
+
+router.get("/contact",(req,res)=>{
+    res.render("master/contact")
 })
 
 router.get("/login",checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")
-    res.render("user/login", { errorMessage: errorMessage })
+    res.render("user/login", { errorMessage: errorMessage ,layout:"layouts/layouts"})
 })
 
 
 router.get("/register",checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("message")
-    res.render("user/register", { errorMessage: errorMessage })
+    res.render("user/register", { errorMessage: errorMessage,layout:"layouts/layouts" })
 })
 
 
 router.get("/error", (req, res) => {
-    res.render("errorPage/error")
+    res.render("errorPage/error",{layout:false})
 })
 
 router.post("/validateOtp",otpVerification)

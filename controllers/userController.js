@@ -2,11 +2,13 @@ const User = require("../models/users")
 const nodemailer = require("nodemailer")
 const passport = require("passport")
 
-var emailId
+function generateOtp(){
+    let otp = Math.random() * 1000000
+    otp = parseInt(otp)
+    console.log("Generated otp:"+ otp)
+    return otp
+}
 
-let otp = Math.random() * 1000000
-otp = parseInt(otp)
-console.log(otp)
 
 let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -21,11 +23,13 @@ let transporter = nodemailer.createTransport({
 })
 
 const userRegister = (req, res) => {
-    emailId = req.body.email
+    let otp=generateOtp()
+    let emailId=req.body.email
     if (req.body.password === req.body.confirmedPassword) {
         User.register({
             name: req.body.name,
-            email: req.body.email
+            email: req.body.email,
+            otp:otp
         }, req.body.password, async function (err, user) {
             if (err) {
                 console.log(err)
@@ -35,7 +39,7 @@ const userRegister = (req, res) => {
             else {
                 passport.authenticate("local")(req, res, function () {
                 })
-                try {
+                try {    
                     let info = await transporter.sendMail({
                         to: emailId,
                         subject: "Otp for registration is:", // Subject line
@@ -63,11 +67,14 @@ const otpVerification = async (req, res) => {
     let enteredOtp = req.body.a + req.body.b + req.body.c + req.body.d + req.body.e + req.body.f
     enteredOtp = Number(enteredOtp)
     try {
-        if (otp == enteredOtp) {
-            await User.findByIdAndUpdate(req.user.id, { isVerified: true })
+        const user= await User.findById(req.user.id)
+        if (user.otp == enteredOtp) {
+            user.isVerified=true
+           await user.save()
             res.redirect("/user/home")
         } else {
-            res.render("optValidationForm", { errorMessage: "invalid otp",layout:"layouts/layouts"})
+            const hiddenEmail=hideEmail(req.user.email)
+            res.render("optValidationForm", {email:hiddenEmail,errorMessage: "invalid otp",layout:"layouts/layouts"})
         }
     } catch (err) {
         console.log(err)
@@ -78,12 +85,17 @@ const otpVerification = async (req, res) => {
 }
 const resendOtp = async (req, res) => {
     try {
+        let otp=generateOtp()
+        const user=await User.findById(req.user.id)
+        user.otp=otp
+        await user.save()
         let info = await transporter.sendMail({
-            to: emailId || req.user.email,
+            to: req.user.email,
             subject: "Otp for registration is:", // Subject line
             html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
         });
-        res.render("optValidationForm",{layout:"layouts/layouts"})
+        const hiddenEmail=hideEmail(req.user.email)
+        res.render("optValidationForm",{layout:"layouts/layouts",email:hiddenEmail})
         console.log("Message sent: %s", info.messageId);
     } catch (err) {
         console.log(err)
@@ -173,8 +185,10 @@ async function checkAccountVerified(req, res, next) {
     }
     else {   
         try {
+            let otp=generateOtp()
+            await User.findByIdAndUpdate(req.user.id,{otp:otp})
             let info = await transporter.sendMail({
-                to: emailId||req.user.email,
+                to: req.user.email,
                 subject: "Otp for registration is:",
                 html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
             });

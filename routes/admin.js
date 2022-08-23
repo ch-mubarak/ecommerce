@@ -54,7 +54,8 @@ router.get("/products", async (req, res) => {
     try {
         const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
         const allProducts = await Product.find().populate("category").exec()
-        res.render("admin/productManagement", { allProducts: allProducts, allCategories: allCategories,layout:"layouts/layouts" })
+        const errorMessage=req.flash("message")
+        res.render("admin/productManagement", { allProducts: allProducts, allCategories: allCategories,layout:"layouts/layouts",errorMessage:errorMessage })
 
     } catch (err) {
         console.log(err)

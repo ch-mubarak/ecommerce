@@ -30,7 +30,7 @@ const upload = multer({
 
 
 function checkAdminPrivilege(req, res, next) {
-    if (req.user.isAdmin) {    
+    if (req.user.isAdmin) {
         next()
     }
     else {
@@ -74,16 +74,17 @@ const deleteProduct = async (req, res) => {
 
 
 const addCategory = async (req, res) => {
-    const category = new Category({
-        categoryName: req.body.categoryName
-    })
     try {
+        const category = new Category({
+            categoryName: req.body.categoryName
+        })
         await category.save()
         res.redirect("/admin/categories")
 
     } catch (err) {
         console.log(err)
-        res.redirect("/admin/addCategory")
+        req.flash("message","category already exists")
+        res.redirect("/admin/categories")
 
     }
 }

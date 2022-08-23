@@ -25,28 +25,55 @@
                                 <%= user.email %>
                             </td>
                             <% if(user.isActive){ %>
-                            <td class="table-success">Active</td>
-                            <% } else { %>
-                            <td class="table-danger">Blocked</td>
-                            <%  } %> 
-                            <td>
-                                <% if(user.isActive){ %>
-                                <form action="/admin/blockUser/<%= user.id %>?_method=PUT" method="post">
-                                        <button type="submit" class="btn btn-danger m-2">Block</button>
-                                </form>
-                                    <% } else { %>
-                                <form action="/admin/unblockUser/<%= user.id %>?_method=PUT" method="post">
-                                    <button type="submit" class="btn btn-success m-2">Unblock</button>
-                                </form>
-                                <%  } %> 
+                                <td class="table-success">Active</td>
+                                <% } else { %>
+                                    <td class="table-danger">Blocked</td>
+                                    <% } %>
+                                        <td class>
+                                            <% if(user.isActive){ %>
+                                                <form action="/admin/blockUser/<%= user.id %>?_method=PUT"
+                                                    method="post">
+                                                    <button type="button" data-bs-target="#modalBlock<%= user.id %>"
+                                                        data-bs-toggle="modal" class="btn btn-success"><i
+                                                            class="fa-solid fa-lock-open"></i></button>
 
-                            </td>
+                                                    <!-- block modal start -->
+
+                                                    <div class="modal modal-alert" tabindex="-1" role="dialog"
+                                                        id="modalBlock<%= user.id %>">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content rounded-3 shadow">
+                                                                <div class="modal-body p-4 text-center">
+                                                                    <h5 class="mb-2">Waring! Are you sure</h5>
+                                                                    <p class="mb-0">This user cant login if blocked.</p>
+                                                                </div>
+                                                                <div class="modal-footer flex-nowrap p-0">
+                                                                    <button type="submit"
+                                                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"><strong>Yes</strong></button>
+                                                                    <button type="button"
+                                                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                                                        data-bs-dismiss="modal">No</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- block modal end -->
+                                                </form>
+                                                <% } else { %>
+                                                    <form action="/admin/unblockUser/<%= user.id %>?_method=PUT"
+                                                        method="post">
+                                                        <button type="submit" class="btn btn-danger"><i class="fa-solid fa-lock"></i></button>
+                                                    </form>
+                                                    <% } %>
+
+                                        </td>
                         </tr>
                         <% }) %>
                 </tbody>
             </table>
             <hr>
-            <%- include("../partials/errorMessage") %> 
+            <%- include("../partials/errorMessage") %>
         </div>
     </div>
 

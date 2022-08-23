@@ -137,7 +137,10 @@ const changePassword = (req, res) => {
 
 
 function checkLoggedOut(req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated()&&req.user.isAdmin) {
+        res.redirect("/admin")
+    }
+    else if(req.isAuthenticated()){
         res.redirect("/user/home")
     }
     else {

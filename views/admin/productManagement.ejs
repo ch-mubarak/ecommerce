@@ -33,7 +33,29 @@
                                 <form action="/admin/deleteProduct/<%= product.id%>?_method=DELETE" method="post">
                                     <button class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#edit-<%= product.id %>" type="button">Edit</button>
-                                    <button type="submit" class="btn btn-danger m-2">Delete</button>
+                                    <a class="btn btn-danger m-2" href="#deleteModal<%= product.id %>" data-bs-toggle="modal" >Delete</a>
+
+                                    <!-- delete modal start -->
+
+                                    <div class="modal modal-alert" tabindex="-1" role="dialog" id="deleteModal<%= product.id %>">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content rounded-3 shadow">
+                                                <div class="modal-body p-4 text-center">
+                                                    <h5 class="mb-2">Waring! Are you sure</h5>
+                                                    <p class="mb-0">This change cant be undone.</p>
+                                                </div>
+                                                <div class="modal-footer flex-nowrap p-0">
+                                                    <button type="submit"
+                                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"><strong>Yes</strong></button>
+                                                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                                        data-bs-dismiss="modal">No</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- delete modal end -->
+
                                 </form>
                             </td>
                         </tr>
@@ -81,7 +103,7 @@
                                             <div><label class="form-label">Description*</label></div>
                                             <div><textarea name="description"
                                                     rows="5" class="form-control" placeholder="Add description" required><%=product.description %></textarea></div>
-                                            <div><input type="file" name="productImage" class="form-control"></div>  
+                                            <div><input type="file" name="productImage" class="form-control mt-3"></div>  
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary">Save changes</button>
@@ -91,12 +113,11 @@
                                 </div>
                             </div>
                         </div>
-                    <% }) %>        
-                </tbody>
-            </table><hr>
-            <%- include("../partials/errorMessage") %> 
-        </div>     
-    </div>
+                        <% }) %>        
+                    </tbody>
+                </table><hr>
+            </div>     
+        </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>

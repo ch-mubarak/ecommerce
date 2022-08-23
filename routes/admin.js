@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
 router.get("/users", async (req, res) => {
     try {
         const errorMessage = req.flash("message")
-        const users = await User.find({})
+        const users = await User.find({}).sort({createdAt:-1}).exec()
         res.render("admin/userManagement", { users: users, errorMessage: errorMessage,layout:"layouts/layouts" })
     } catch (err) {
         console.log(err)
@@ -65,7 +65,7 @@ router.get("/products", async (req, res) => {
 
 router.put("/addCategory", addCategory)
 
-router.post("/addProduct", upload.single("productImage"), addProduct)
+router.post("/addProduct",upload.single("productImage"), addProduct)
 
 router.put("/editProduct/:id", upload.single("productImage"), editProduct)
 

@@ -2,10 +2,9 @@ const User = require("../models/users")
 const nodemailer = require("nodemailer")
 const passport = require("passport")
 
-function generateOtp(){
-    let otp = Math.random() * 1000000
-    otp = parseInt(otp)
-    console.log("Generated otp:"+ otp)
+function generateOtp() {
+    let otp = Math.floor(100000 + Math.random() * 900000)
+    console.log("Generated otp:" + otp)
     return otp
 }
 
@@ -23,12 +22,10 @@ let transporter = nodemailer.createTransport({
 })
 
 const userRegister = (req, res) => {
-    let otp=generateOtp()
     if (req.body.password === req.body.confirmedPassword) {
         User.register({
             name: req.body.name,
             email: req.body.email,
-            otp:otp
         }, req.body.password, async function (err, user) {
             if (err) {
                 console.log(err)
@@ -39,7 +36,7 @@ const userRegister = (req, res) => {
                 passport.authenticate("local")(req, res, function () {
                     res.redirect("/user/home")
                 })
-            
+
             }
         })
     }
@@ -51,17 +48,14 @@ const userRegister = (req, res) => {
 
 
 const otpVerification = async (req, res) => {
-    let enteredOtp = req.body.a + req.body.b + req.body.c + req.body.d + req.body.e + req.body.f
-    enteredOtp = Number(enteredOtp)
+    let enteredOtp = Number(req.body.a + req.body.b + req.body.c + req.body.d + req.body.e + req.body.f)
     try {
-        const user= await User.findById(req.user.id)
-        if (user.otp == enteredOtp) {
-            user.isVerified=true
-           await user.save()
+        if (req.user.otp === enteredOtp) {
+            await User.findByIdAndUpdate(req.user.id, { isVerified: true })
             res.redirect("/user/home")
         } else {
-            const hiddenEmail=hideEmail(req.user.email)
-            res.render("optValidationForm", {email:hiddenEmail,errorMessage: "invalid otp",layout:"layouts/layouts"})
+            const hiddenEmail = hideEmail(req.user.email)
+            res.render("optValidationForm", { email: hiddenEmail, errorMessage: "invalid otp", layout: "layouts/layouts" })
         }
     } catch (err) {
         console.log(err)
@@ -72,18 +66,16 @@ const otpVerification = async (req, res) => {
 }
 
 const resendOtp = async (req, res) => {
+    let otp = generateOtp()
     try {
-        let otp=generateOtp()
-        const user=await User.findById(req.user.id)
-        user.otp=otp
-        await user.save()
+        await User.findByIdAndUpdate(req.user.id,{otp:otp})
         let info = await transporter.sendMail({
             to: req.user.email,
             subject: "Otp for registration is:", // Subject line
             html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
         });
-        const hiddenEmail=hideEmail(req.user.email)
-        res.render("optValidationForm",{layout:"layouts/layouts",email:hiddenEmail})
+        const hiddenEmail = hideEmail(req.user.email)
+        res.render("optValidationForm", { layout: "layouts/layouts", email: hiddenEmail })
         console.log("Resend Message sent: %s", info.messageId);
     } catch (err) {
         console.log(err)
@@ -97,23 +89,8 @@ async function checkAccountVerified(req, res, next) {
     if (req.user.isVerified) {
         next()
     }
-    else {   
-        let otp=generateOtp()
-        try {
-            await User.findByIdAndUpdate(req.user.id,{otp:otp})
-            let info = await transporter.sendMail({
-                to: req.user.email,
-                subject: "Otp for registration is:",
-                html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
-            });
-            const hiddenEmail=hideEmail(req.user.email)
-            res.render("optValidationForm",{email:hiddenEmail,layout:"layouts/layouts"})
-            console.log("Message sent: %s", info.messageId);
-        } catch (err) {
-            console.log(err)
-            req.flash("message", "error registering account")
-            res.redirect("/register")
-        }
+    else {
+        resendOtp(req,res)     
     }
 }
 
@@ -179,17 +156,17 @@ function checkLoggedIn(req, res, next) {
 }
 
 function hideEmail(target) {
-    let email = target 
+    let email = target
     let hiddenEmail = "";
     for (i = 0; i < email.length; i++) {
-      if (i > 2 && i< email.indexOf("@") ) {
-        hiddenEmail += "*";
-      } else {
-        hiddenEmail += email[i];
-      }
+        if (i > 2 && i < email.indexOf("@")) {
+            hiddenEmail += "*";
+        } else {
+            hiddenEmail += email[i];
+        }
     }
     return hiddenEmail
-  }
+}
 
 
 module.exports = {

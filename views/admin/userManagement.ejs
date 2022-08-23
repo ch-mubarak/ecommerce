@@ -25,20 +25,18 @@
                                 <%= user.email %>
                             </td>
                             <% if(user.isActive){ %>
-                            <td>Active</td>
+                            <td class="table-success">Active</td>
                             <% } else { %>
-                            <td>Blocked</td>
+                            <td class="table-danger">Blocked</td>
                             <%  } %> 
                             <td>
                                 <% if(user.isActive){ %>
                                 <form action="/admin/blockUser/<%= user.id %>?_method=PUT" method="post">
-                                        <button class="btn btn-success m-2" disabled>Unblock</button>
                                         <button type="submit" class="btn btn-danger m-2">Block</button>
                                 </form>
                                     <% } else { %>
                                 <form action="/admin/unblockUser/<%= user.id %>?_method=PUT" method="post">
                                     <button type="submit" class="btn btn-success m-2">Unblock</button>
-                                    <button class="btn btn-danger m-2" disabled>Block</button>
                                 </form>
                                 <%  } %> 
 

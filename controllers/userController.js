@@ -68,7 +68,7 @@ const otpVerification = async (req, res) => {
 const resendOtp = async (req, res) => {
     let otp = generateOtp()
     try {
-        await User.findByIdAndUpdate(req.user.id,{otp:otp})
+        await User.findByIdAndUpdate(req.user.id, { otp: otp })
         let info = await transporter.sendMail({
             to: req.user.email,
             subject: "Otp for registration is:", // Subject line
@@ -76,7 +76,7 @@ const resendOtp = async (req, res) => {
         });
         const hiddenEmail = hideEmail(req.user.email)
         res.render("optValidationForm", { layout: "layouts/layouts", email: hiddenEmail })
-        console.log("Resend Message sent: %s", info.messageId);
+        console.log("Message sent: %s", info.messageId);
     } catch (err) {
         console.log(err)
         req.flash("message", "error registering account")
@@ -90,15 +90,15 @@ async function checkAccountVerified(req, res, next) {
         next()
     }
     else {
-        resendOtp(req,res)     
+        resendOtp(req, res)
     }
 }
 
 const userLogin = passport.authenticate('local', {
-    successRedirect: '/user/home',
     failureFlash: true,
-    failureRedirect: '/login'
+    failureRedirect: '/login',
 });
+
 
 
 const userLogout = (req, res) => {
@@ -155,6 +155,7 @@ function checkLoggedIn(req, res, next) {
     }
 }
 
+
 function hideEmail(target) {
     let email = target
     let hiddenEmail = "";
@@ -167,7 +168,6 @@ function hideEmail(target) {
     }
     return hiddenEmail
 }
-
 
 module.exports = {
     userRegister,

@@ -30,7 +30,7 @@ const upload = multer({
 
 
 function checkAdminPrivilege(req, res, next) {
-    if (req.user.isAdmin) {     
+    if (req.user.isAdmin) {    
         next()
     }
     else {

@@ -2,7 +2,6 @@ const User = require("../models/users")
 const passport = require("passport")
 const { resendOtp } = require("./otpController")
 
-
 const userRegister = (req, res) => {
     if (req.body.password === req.body.confirmedPassword) {
         User.register({

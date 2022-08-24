@@ -5,10 +5,16 @@ const {
     userLogin,
     userLogout,
     checkLoggedOut,
+    // otpVerification,
+    // resendOtp
+
+} = require("../controllers/userController")
+
+const {
     otpVerification,
     resendOtp
 
-} = require("../controllers/userController")
+}=require("../controllers/otpController")
 
 
 router.get("/", (req, res) => {

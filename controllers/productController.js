@@ -1,4 +1,5 @@
 const Product = require("../models/product")
+const { upload } = require("./multerController")
 const fs = require("fs").promises
 
 const addProduct = async (req, res) => {
@@ -20,6 +21,7 @@ const addProduct = async (req, res) => {
         res.redirect("/admin/products")
         console.log(err)
     }
+
 }
 
 const editProduct = async (req, res) => {
@@ -37,7 +39,7 @@ const editProduct = async (req, res) => {
             productImagePath: fileName
         })
         if (req.file) {
-            await fs.unlink("./public/" + oldProductImagePath)
+            await fs.unlink("./public/files/" + oldProductImagePath)
         }
         res.redirect("/admin/products")
     } catch (err) {
@@ -50,7 +52,7 @@ const deleteProduct = async (req, res) => {
         const product = await Product.findById(req.params.id)
         const productImagePath = product.productImagePath
         await product.remove()
-        await fs.unlink("./public/" + productImagePath)
+        await fs.unlink("./public/files/" + productImagePath)
         res.redirect("/admin/products")
     } catch (err) {
         console.log(err)

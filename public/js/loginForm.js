@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     $("#myForm").validate({
         errorClass: "my-error-class"

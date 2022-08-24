@@ -6,11 +6,11 @@ const Product = require("../models/product")
 
 const { checkLoggedIn, userLogout } = require("../controllers/userController")
 const { upload } = require("../controllers/multerController")
-const { 
+const {
     addProduct,
     deleteProduct,
     editProduct
-} =require("../controllers/productController")
+} = require("../controllers/productController")
 
 const {
     addCategory,
@@ -25,15 +25,15 @@ const {
 router.use(checkLoggedIn, checkAdminPrivilege)
 
 router.get("/", (req, res) => {
-    res.render("admin/dashboard",{layout:"layouts/layouts"})
+    res.render("admin/dashboard", { layout: "layouts/layouts" })
 })
 
 
 router.get("/users", async (req, res) => {
     try {
         const errorMessage = req.flash("message")
-        const users = await User.find({}).sort({createdAt:-1}).exec()
-        res.render("admin/userManagement", { users: users, errorMessage: errorMessage,layout:"layouts/layouts" })
+        const users = await User.find({}).sort({ createdAt: -1 }).exec()
+        res.render("admin/userManagement", { users: users, errorMessage: errorMessage, layout: "layouts/layouts" })
     } catch (err) {
         console.log(err)
         res.redirect("/")
@@ -42,11 +42,11 @@ router.get("/users", async (req, res) => {
 })
 
 router.get("/categories", async (req, res) => {
-    try{
+    try {
         const errorMessage = req.flash("message")
         const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
-        res.render("admin/categoryManagement", { allCategories: allCategories, errorMessage: errorMessage,layout:"layouts/layouts" })
-    }catch(err){
+        res.render("admin/categoryManagement", { allCategories: allCategories, errorMessage: errorMessage, layout: "layouts/layouts" })
+    } catch (err) {
         console.log(err)
     }
 })
@@ -55,8 +55,8 @@ router.get("/products", async (req, res) => {
     try {
         const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
         const allProducts = await Product.find().populate("category").exec()
-        const errorMessage=req.flash("message")
-        res.render("admin/productManagement", { allProducts: allProducts, allCategories: allCategories,layout:"layouts/layouts",errorMessage:errorMessage })
+        const errorMessage = req.flash("message")
+        res.render("admin/productManagement", { allProducts: allProducts, allCategories: allCategories, layout: "layouts/layouts", errorMessage: errorMessage })
 
     } catch (err) {
         console.log(err)
@@ -66,9 +66,29 @@ router.get("/products", async (req, res) => {
 
 router.put("/addCategory", addCategory)
 
-router.post("/addProduct",upload.single("productImage"), addProduct)
+router.post("/addProduct", (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            req.flash("message", "File Not supported")
+            res.redirect("/admin/products")
+        }
+        else {
+            addProduct(req, res)
+        }
+    })
+})
 
-router.put("/editProduct/:id", upload.single("productImage"), editProduct)
+router.put("/editProduct/:id", (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            req.flash("message", "File Not supported")
+            res.redirect("/admin/products")
+        }
+        else {
+            editProduct(req, res)
+        }
+    })
+})
 
 router.put("/editCategory/:id", editCategory)
 
@@ -80,7 +100,7 @@ router.delete("/deleteProduct/:id", deleteProduct)
 
 router.delete("/deleteCategory/:id", deleteCategory)
 
-router.delete("/logout",userLogout)
+router.delete("/logout", userLogout)
 
 
 module.exports = router

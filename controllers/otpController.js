@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer")
-const User =require("../models/users")
+const User = require("../models/users")
 
 function generateOtp() {
     let otp = Math.floor(100000 + Math.random() * 900000)

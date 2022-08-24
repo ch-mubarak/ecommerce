@@ -5,14 +5,12 @@ const {
     userLogin,
     userLogout,
     checkLoggedOut,
-    // otpVerification,
-    // resendOtp
 
 } = require("../controllers/userController")
 
 const {
     otpVerification,
-    resendOtp
+    sendOtp
 
 }=require("../controllers/otpController")
 
@@ -61,7 +59,7 @@ router.get("/error", (req, res) => {
 
 router.post("/validateOtp", otpVerification)
 
-router.post("/resendOtp", resendOtp)
+router.post("/resendOtp", sendOtp)
 
 router.post("/login", userLogin, (req, res) => {
     if (req.user.isAdmin === true) {

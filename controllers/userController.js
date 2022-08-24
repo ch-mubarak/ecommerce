@@ -1,6 +1,6 @@
 const User = require("../models/users")
 const passport = require("passport")
-const { resendOtp } = require("./otpController")
+const { sendOtp } = require("./otpController")
 
 const userRegister = (req, res) => {
     if (req.body.password === req.body.confirmedPassword) {
@@ -32,7 +32,7 @@ async function checkAccountVerified(req, res, next) {
         next()
     }
     else {
-        resendOtp(req, res)
+        sendOtp(req, res)
     }
 }
 
@@ -48,7 +48,7 @@ const userLogout = (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            req.flash("logoutMessage", "you have successfully logout")
+            // req.flash("logoutMessage", "you have successfully logout")
             res.redirect('/')
         }
     })

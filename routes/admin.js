@@ -1,22 +1,23 @@
 const express = require("express")
 const router = express.Router()
-const Admin = require("../models/admin")
 const User = require("../models/users")
 const Category = require("../models/category")
 const Product = require("../models/product")
 
 const { checkLoggedIn, userLogout } = require("../controllers/userController")
+const { upload } = require("../controllers/multerController")
+const { 
+    addProduct,
+    deleteProduct,
+    editProduct
+} =require("../controllers/productController")
 
 const {
     addCategory,
-    addProduct,
-    deleteProduct,
     deleteCategory,
-    upload,
     blockUser,
     unblockUser,
     editCategory,
-    editProduct,
     checkAdminPrivilege,
 
 } = require("../controllers/adminController")

@@ -50,7 +50,7 @@ const otpVerification = async (req, res) => {
 
 }
 
-const resendOtp = async (req, res) => {
+const sendOtp = async (req, res) => {
     let otp = generateOtp()
     const hiddenEmail = hideEmail(req.user.email)
     res.render("optValidationForm", { layout: "layouts/layouts", email: hiddenEmail })
@@ -72,9 +72,6 @@ const resendOtp = async (req, res) => {
 }
 
 module.exports = {
-    generateOtp,
-    transporter,
-    resendOtp,
+    sendOtp,
     otpVerification,
-    hideEmail
 }

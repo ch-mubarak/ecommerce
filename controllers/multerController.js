@@ -1,4 +1,4 @@
-const multer=require("multer")
+const multer = require("multer")
 
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -6,7 +6,7 @@ const multerStorage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const ext = file.mimetype.split("/")[1];
-        cb(null, `files/${file.fieldname}-${file.filename}-${Date.now()}.${ext}`);
+        cb(null, `files/${file.fieldname}-${Date.now()}.${ext}`);
     },
 });
 
@@ -23,4 +23,4 @@ const upload = multer({
     fileFilter: multerFilter,
 })
 
-module.exports={upload}
+module.exports = { upload }

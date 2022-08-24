@@ -1,4 +1,4 @@
-const Product =require("../models/product")
+const Product = require("../models/product")
 const fs = require("fs").promises
 
 const addProduct = async (req, res) => {
@@ -50,14 +50,14 @@ const deleteProduct = async (req, res) => {
         const product = await Product.findById(req.params.id)
         const productImagePath = product.productImagePath
         await product.remove()
-        await fs.unlink(path + "/" + productImagePath)
+        await fs.unlink("./public/" + productImagePath)
         res.redirect("/admin/products")
     } catch (err) {
         console.log(err)
     }
 }
 
-module.exports={
+module.exports = {
     addProduct,
     deleteProduct,
     editProduct

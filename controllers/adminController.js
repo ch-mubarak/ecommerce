@@ -21,7 +21,7 @@ const addCategory = async (req, res) => {
 
     } catch (err) {
         console.log(err)
-        req.flash("message","category already exists")
+        req.flash("message", "category already exists")
         res.redirect("/admin/categories")
 
     }

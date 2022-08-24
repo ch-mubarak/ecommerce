@@ -68,6 +68,8 @@ const otpVerification = async (req, res) => {
 
 const resendOtp = async (req, res) => {
     let otp = generateOtp()
+    const hiddenEmail = hideEmail(req.user.email)
+    res.render("optValidationForm", { layout: "layouts/layouts", email: hiddenEmail })
     try {
         await User.findByIdAndUpdate(req.user.id, { otp: otp })
         let info = await transporter.sendMail({
@@ -75,8 +77,7 @@ const resendOtp = async (req, res) => {
             subject: "Otp for registration is:", // Subject line
             html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
         });
-        const hiddenEmail = hideEmail(req.user.email)
-        res.render("optValidationForm", { layout: "layouts/layouts", email: hiddenEmail })
+
         console.log("Message sent: %s", info.messageId);
     } catch (err) {
         console.log(err)

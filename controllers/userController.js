@@ -47,6 +47,7 @@ const userRegister = (req, res) => {
 }
 
 
+
 const otpVerification = async (req, res) => {
     let enteredOtp = Number(req.body.a + req.body.b + req.body.c + req.body.d + req.body.e + req.body.f)
     try {
@@ -137,10 +138,10 @@ const changePassword = (req, res) => {
 
 
 function checkLoggedOut(req, res, next) {
-    if (req.isAuthenticated()&&req.user.isAdmin) {
+    if (req.isAuthenticated() && req.user.isAdmin) {
         res.redirect("/admin")
     }
-    else if(req.isAuthenticated()){
+    else if (req.isAuthenticated()) {
         res.redirect("/user/home")
     }
     else {

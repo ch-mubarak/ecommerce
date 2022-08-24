@@ -1,3 +1,4 @@
+
 <section class="vh-150" style="background-color: #9A616D;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -17,27 +18,30 @@
                   <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create New account</h5>
 
                   <div class="form-outline mb-4">
-                    <input type="text" class="form-control form-control-lg" name="name" />
-                    <label class="form-label" for="form2Example17">Name</label>
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control form-control-lg" name="name" minlength="3" required />
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="email" class="form-control form-control-lg" name="email" />
                     <label class="form-label">Email address</label>
+                    <input type="email" class="form-control form-control-lg" name="email" id="email" required />
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="password" class="form-control form-control-lg" name="password" />
                     <label class="form-label">Password</label>
+                    <input type="password" class="form-control form-control-lg" minlength="3" name="password" id="password"
+                      required />
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="password" class="form-control form-control-lg" name="confirmedPassword" />
                     <label class="form-label">Repeat Password</label>
+                    <input type="password" class="form-control form-control-lg" name="confirmedPassword"
+                      id="confirmedPassword" minlength="3" required />
                   </div>
 
                   <div class="pt-1 mb-4">
-                    <button id="registerButton" class="btn btn-dark btn-lg btn-block" type="submit">Register</button>
+                    <button id="registerButton" class="btn btn-dark btn-lg btn-block" type="submit"
+                      disabled>Register</button>
                   </div>
                   <%- include("../partials/errorMessage") %>
                     <p class="mb-5 pb-lg-2" style="color: #393f81;">I already have an account <a href="/login"
@@ -60,11 +64,4 @@
 
 
 
-<script>
-  $('#registerButton').click(function () {
-    $('#registerButton').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    Loading...`).attr("disabled", 'disabled')
-    $("#myForm").submit()
-
-  });
-</script>
+<script src="js/registerForm.js"></script>

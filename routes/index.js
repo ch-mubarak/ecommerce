@@ -1,25 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const {
-    userRegister,
-    userLogin,
-    userLogout,
-    checkLoggedOut,
-
-} = require("../controllers/userController")
-
+const userControl = require("../controllers/userController")
 const {
     otpVerification,
     sendOtp
-
-}=require("../controllers/otpController")
+} = require("../controllers/otpController")
 
 
 router.get("/", (req, res) => {
     res.render("master/index")
 })
-
-
 
 router.get("/cart", (req, res) => {
     res.render("master/cart")
@@ -41,13 +31,13 @@ router.get("/contact", (req, res) => {
     res.render("master/contact")
 })
 
-router.get("/login", checkLoggedOut, (req, res) => {
+router.get("/login", userControl.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")
     res.render("user/login", { errorMessage: errorMessage, layout: "layouts/layouts" })
 })
 
 
-router.get("/register", checkLoggedOut, (req, res) => {
+router.get("/register", userControl.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("message")
     res.render("user/register", { errorMessage: errorMessage, layout: "layouts/layouts" })
 })
@@ -61,7 +51,7 @@ router.post("/validateOtp", otpVerification)
 
 router.post("/resendOtp", sendOtp)
 
-router.post("/login", userLogin, (req, res) => {
+router.post("/login", userControl.userLogin, (req, res) => {
     if (req.user.isAdmin === true) {
         res.redirect("/admin")
     }
@@ -70,9 +60,9 @@ router.post("/login", userLogin, (req, res) => {
     }
 })
 
-router.post("/register", userRegister)
+router.post("/register", userControl.userRegister)
 
-router.delete('/logout', userLogout)
+router.delete('/logout', userControl.userLogout)
 
 
 module.exports = router

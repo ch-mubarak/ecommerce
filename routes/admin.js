@@ -3,31 +3,16 @@ const router = express.Router()
 const User = require("../models/users")
 const Category = require("../models/category")
 const Product = require("../models/product")
-
-const { checkLoggedIn, userLogout } = require("../controllers/userController")
+const userControl = require("../controllers/userController")
 const { upload } = require("../controllers/multerController")
-const {
-    addProduct,
-    deleteProduct,
-    editProduct
-} = require("../controllers/productController")
+const productControl = require("../controllers/productController")
+const adminControl = require("../controllers/adminController")
 
-const {
-    addCategory,
-    deleteCategory,
-    blockUser,
-    unblockUser,
-    editCategory,
-    checkAdminPrivilege,
-
-} = require("../controllers/adminController")
-
-router.use(checkLoggedIn, checkAdminPrivilege)
+router.use(userControl.checkLoggedIn, adminControl.checkAdminPrivilege)
 
 router.get("/", (req, res) => {
     res.render("admin/dashboard", { layout: "layouts/layouts" })
 })
-
 
 router.get("/users", async (req, res) => {
     try {
@@ -63,8 +48,7 @@ router.get("/products", async (req, res) => {
     }
 })
 
-
-router.put("/addCategory", addCategory)
+router.put("/addCategory", adminControl.addCategory)
 
 router.post("/addProduct", (req, res) => {
     upload(req, res, (err) => {
@@ -73,7 +57,7 @@ router.post("/addProduct", (req, res) => {
             res.redirect("/admin/products")
         }
         else {
-            addProduct(req, res)
+            productControl.addProduct(req, res)
         }
     })
 })
@@ -85,22 +69,22 @@ router.put("/editProduct/:id", (req, res) => {
             res.redirect("/admin/products")
         }
         else {
-            editProduct(req, res)
+            productControl.editProduct(req, res)
         }
     })
 })
 
-router.put("/editCategory/:id", editCategory)
+router.put("/editCategory/:id", adminControl.editCategory)
 
-router.put("/blockUser/:id", blockUser)
+router.put("/blockUser/:id", adminControl.blockUser)
 
-router.put("/unblockUser/:id", unblockUser)
+router.put("/unblockUser/:id", adminControl.unblockUser)
 
-router.delete("/deleteProduct/:id", deleteProduct)
+router.delete("/deleteProduct/:id", productControl.deleteProduct)
 
-router.delete("/deleteCategory/:id", deleteCategory)
+router.delete("/deleteCategory/:id", adminControl.deleteCategory)
 
-router.delete("/logout", userLogout)
+router.delete("/logout", userControl.userLogout)
 
 
 module.exports = router

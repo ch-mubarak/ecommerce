@@ -1,25 +1,19 @@
 const express = require("express")
-
-const {
-    checkLoggedIn,
-    changePassword,
-    checkAccountVerified
-} = require("../controllers/userController")
-
+const userControl = require("../controllers/userController")
 const router = express.Router()
 
-router.use(checkLoggedIn)
+router.use(userControl.checkLoggedIn)
 
-router.get("/home",checkAccountVerified, (req, res) => {
-    res.render("user/home",{layout:"layouts/layouts"})
+router.get("/home", userControl.checkAccountVerified, (req, res) => {
+    res.render("user/home", { layout: "layouts/layouts" })
 })
 
-router.get("/changePassword",checkAccountVerified,(req, res) => {
+router.get("/changePassword", userControl.checkAccountVerified, (req, res) => {
     const errorMessage = req.flash("message")
-    res.render("user/changePassword", { errorMessage: errorMessage,layout:"layouts/layouts" })
+    res.render("user/changePassword", { errorMessage: errorMessage, layout: "layouts/layouts" })
 })
 
-router.put("/changePassword", changePassword)
+router.put("/changePassword", userControl.changePassword)
 
 
 module.exports = router

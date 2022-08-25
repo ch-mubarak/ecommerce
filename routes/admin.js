@@ -6,7 +6,9 @@ const { upload } = require("../middleware/multer")
 const productControl = require("../controllers/productController")
 const adminControl = require("../controllers/adminController")
 
-router.use(userControl.checkLoggedIn, adminControl.checkAdminPrivilege)
+const productUpload = upload.fields([{ name: "productImage", maxCount: 1 }, { name: "subImages", maxCount: 4 }])
+
+// router.use(userControl.checkLoggedIn, adminControl.checkAdminPrivilege)
 
 router.get("/", adminControl.home)
 
@@ -19,9 +21,10 @@ router.get("/products", adminControl.products)
 router.put("/addCategory", adminControl.addCategory)
 
 router.post("/addProduct", (req, res) => {
-    upload(req, res, (err) => {
+    productUpload(req, res, (err) => {
         if (err) {
-            req.flash("message", "File Not supported")
+            console.log(err)
+            req.flash("message", "File Not supported or too many files")
             res.redirect("/admin/products")
         }
         else {
@@ -31,7 +34,7 @@ router.post("/addProduct", (req, res) => {
 })
 
 router.put("/editProduct/:id", (req, res) => {
-    upload(req, res, (err) => {
+    productUpload(req, res, (err) => {
         if (err) {
             req.flash("message", "File Not supported")
             res.redirect("/admin/products")

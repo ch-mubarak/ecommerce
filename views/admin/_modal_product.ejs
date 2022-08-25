@@ -1,48 +1,50 @@
-<div class="modal fade" id="addProduct" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/admin/addProduct" method="post"
-                    enctype="multipart/form-data">
-                    <div>
-                        <label class="form-label">name*</label>
-                        <input type="text" value="" name="name" required class="form-control">
-                    </div>
-                    <div>
-                        <label class="form-label">Brand*</label>
-                        <input type="text" value="" name="brand"
-                            required class="form-control">
-                    </div>
-                    <div>
-                        <label class="form-label">Category*</label>
-                        <select name="category"  class="form-select">
-                            <% allCategories.forEach(category=>{ %>
-                                <option selected value="<%=category.id %>"
-                                    label="<%=category.categoryName %>"></option>
-                                <% }) %>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="form-label">stock*</label>
-                        <input type="number" name="quantity" min="1"
-                            value="" required class="form-control">
-                    </div>
-                    <div><label class="form-label">Description*</label></div>
-                    <div><textarea name="description"
-                            rows="5" placeholder="Add description" class="form-control" required></textarea></div>
-                    <div><input type="file" name="productImage" required class="form-control mt-3"></div>  
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Product</button>
-                    </div>
-                </form>   
-            </div>
-        </div>
+<div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form action="/admin/addProduct" method="post" enctype="multipart/form-data">
+          <div>
+            <label class="form-label">Name</label>
+            <input type="text" value="" name="name" required class="form-control">
+          </div>
+          <div>
+            <label class="form-label">Brand</label>
+            <input type="text" value="" name="brand" required class="form-control">
+          </div>
+          <div>
+            <label class="form-label">Category</label>
+            <select name="category" class="form-select">
+              <% allCategories.forEach(category=>{ %>
+              <option selected value="<%=category.id %>" label="<%=category.categoryName %>">
+              </option>
+              <% }) %>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Stock</label>
+            <input type="number" name="quantity" min="1" value="" required class="form-control">
+          </div>
+          <div><label class="form-label">Description</label></div>
+          <div><textarea name="description" rows="5" placeholder="Add description" class="form-control" required></textarea></div>
+          <div>
+            <input type="file" name="productImage" required class="form-control">
+            <label class="form-label">Upload Product Image</label>
+          </div>
+          <div>
+            <input type="file" multiple name="subImages" required class="form-control">
+            <label class="form-label">Upload sub Image</label>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

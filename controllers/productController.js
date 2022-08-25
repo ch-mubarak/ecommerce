@@ -1,25 +1,32 @@
+const product = require("../models/product");
 const Product = require("../models/product")
 const fs = require("fs").promises
 
 module.exports = {
     addProduct: async (req, res) => {
         try {
-            const fileName = req.file != null ? req.file.filename : null
+
+            const mainImage = req.files["productImage"][0].filename
+            const subImages = req.files["subImages"].map((img) => img.filename)
+
             const product = new Product({
                 name: req.body.name,
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
                 description: req.body.description,
-                productImagePath: fileName
+                productImagePath: {
+                    mainImage: mainImage,
+                    subImages: subImages
+                }
             })
             await product.save()
             res.redirect("/admin/products")
 
         } catch (err) {
-            req.flash("message", "File not supported")
-            res.redirect("/admin/products")
             console.log(err)
+            req.flash("message", "File not supported or too many files")
+            res.redirect("/admin/products")
         }
 
     },
@@ -28,18 +35,28 @@ module.exports = {
         let product
         try {
             product = await Product.findById(req.params.id)
-            const oldProductImagePath = product.productImagePath
-            const fileName = req.file != null ? req.file.filename : oldProductImagePath
+            const oldMainImage = product.productImagePath.mainImage
+            const oldSubImages = product.productImagePath.subImages
+            const mainImage = req.files["productImage"] != null ? req.files["productImage"][0].filename : oldMainImage
+            const subImages = req.files["subImages"] != null ? req.files["subImages"].map((img) => img.filename) : oldSubImages
             await Product.findByIdAndUpdate(req.params.id, {
                 name: req.body.name,
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
                 description: req.body.description,
-                productImagePath: fileName
+                productImagePath: {
+                    mainImage: mainImage,
+                    subImages: subImages
+                }
             })
-            if (req.file) {
-                await fs.unlink("./public/files/" + oldProductImagePath)
+            if (req.files["productImage"]) {
+                await fs.unlink("./public/files/" + oldMainImage)
+            }
+            if (req.files["subImages"]) {
+                oldSubImages.forEach(async (image) => {
+                    await fs.unlink("./public/files/" + image)
+                })
             }
             res.redirect("/admin/products")
         } catch (err) {
@@ -50,9 +67,13 @@ module.exports = {
     deleteProduct: async (req, res) => {
         try {
             const product = await Product.findById(req.params.id)
-            const productImagePath = product.productImagePath
+            const mainImage = product.productImagePath.mainImage
+            const subImages = product.productImagePath.subImages
             await product.remove()
-            await fs.unlink("./public/files/" + productImagePath)
+            await fs.unlink("./public/files/" + mainImage)
+            subImages.forEach(async (image) => {
+                await fs.unlink("./public/files/" + image)
+            })
             res.redirect("/admin/products")
         } catch (err) {
             console.log(err)

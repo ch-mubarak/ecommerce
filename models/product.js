@@ -1,5 +1,16 @@
 const mongoose=require("mongoose")
 
+const imageSchema=mongoose.Schema({
+    mainImage:{
+        type:String,
+        required:true
+    },
+    subImages:{
+        type:[String],
+        required:true
+    }
+})
+
 const productSchema=mongoose.Schema({
     name:{
         type:String,
@@ -15,7 +26,7 @@ const productSchema=mongoose.Schema({
         ref:"Category"
     },
     productImagePath:{
-        type:String,
+        type:imageSchema,
     },
     description:{
         type:String,

@@ -28,15 +28,6 @@ module.exports = {
         }
     },
 
-    checkAccountVerified: async function (req, res, next) {
-        if (req.user.isVerified) {
-            next()
-        }
-        else {
-            sendOtp(req, res)
-        }
-    },
-
     userLogin: passport.authenticate('local', {
         failureFlash: true,
         failureRedirect: '/login',
@@ -96,6 +87,15 @@ module.exports = {
             req.flash("message", "Pls login to access home")
             res.redirect("/")
         }
-    }
+    },
+
+    checkAccountVerified: async function (req, res, next) {
+        if (req.user.isVerified) {
+            next()
+        }
+        else {
+            sendOtp(req, res)
+        }
+    },
 
 }

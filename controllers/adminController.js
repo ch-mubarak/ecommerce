@@ -1,7 +1,65 @@
-const Category = require("../models/category")
 const User = require("../models/users")
+const Category = require("../models/category")
+const Product = require("../models/product")
 
 module.exports = {
+
+    home: (req, res) => {
+        res.render("admin/dashboard", {
+            layout: "layouts/layouts",
+            extractScripts: true
+        })
+    },
+
+    user: async (req, res) => {
+        try {
+            const errorMessage = req.flash("message")
+            const users = await User.find({}).sort({ createdAt: -1 }).exec()
+            res.render("admin/userManagement", {
+                users: users,
+                errorMessage: errorMessage,
+                layout: "layouts/layouts",
+                extractScripts: true
+            })
+        } catch (err) {
+            console.log(err)
+            res.redirect("/")
+
+        }
+    },
+
+    categories: async (req, res) => {
+        try {
+            const errorMessage = req.flash("message")
+            const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
+            res.render("admin/categoryManagement", {
+                allCategories: allCategories,
+                errorMessage: errorMessage,
+                layout: "layouts/layouts",
+                extractScripts: true
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    products: async (req, res) => {
+        try {
+            const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
+            const allProducts = await Product.find().populate("category").exec()
+            const errorMessage = req.flash("message")
+            res.render("admin/productManagement", {
+                allProducts: allProducts,
+                allCategories: allCategories,
+                layout: "layouts/layouts",
+                errorMessage: errorMessage,
+                extractScripts: true
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
+    },
 
     checkAdminPrivilege: function (req, res, next) {
         if (req.user.isAdmin) {

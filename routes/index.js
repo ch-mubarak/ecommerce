@@ -36,12 +36,10 @@ router.get("/login", userControl.checkLoggedOut, (req, res) => {
     res.render("user/login", { errorMessage: errorMessage, layout: "layouts/layouts" })
 })
 
-
 router.get("/register", userControl.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("message")
     res.render("user/register", { errorMessage: errorMessage, layout: "layouts/layouts" })
 })
-
 
 router.get("/error", (req, res) => {
     res.render("errorPage/error", { layout: false })

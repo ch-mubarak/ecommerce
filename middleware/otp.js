@@ -40,7 +40,12 @@ const otpVerification = async (req, res) => {
             res.redirect("/user/home")
         } else {
             const hiddenEmail = hideEmail(req.user.email)
-            res.render("optValidationForm", { email: hiddenEmail, errorMessage: "invalid otp", layout: "layouts/layouts" })
+            res.render("optValidationForm", {
+                email: hiddenEmail,
+                errorMessage: "invalid otp",
+                layout: "layouts/layouts",
+                extractScripts: true
+            })
         }
     } catch (err) {
         console.log(err)
@@ -52,9 +57,15 @@ const otpVerification = async (req, res) => {
 
 const sendOtp = async (req, res) => {
     let otp = generateOtp()
-    const hiddenEmail = hideEmail(req.user.email)
-    res.render("optValidationForm", { layout: "layouts/layouts", email: hiddenEmail })
+    const successMessage = req.flash("message")
     try {
+        const hiddenEmail = hideEmail(req.user.email)
+        res.render("optValidationForm", {
+            layout: "layouts/layouts",
+            successMessage: successMessage,
+            email: hiddenEmail,
+            extractScripts: true
+        })
         await User.findByIdAndUpdate(req.user.id, { otp: otp })
         let info = await transporter.sendMail({
             to: req.user.email,

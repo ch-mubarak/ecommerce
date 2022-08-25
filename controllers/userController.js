@@ -1,6 +1,6 @@
 const User = require("../models/users")
 const passport = require("passport")
-const { sendOtp } = require("./otpController")
+const { sendOtp } = require("../middleware/otp")
 
 module.exports = {
     userRegister: (req, res) => {

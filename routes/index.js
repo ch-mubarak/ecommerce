@@ -4,7 +4,7 @@ const userControl = require("../controllers/userController")
 const {
     otpVerification,
     sendOtp
-} = require("../controllers/otpController")
+} = require("../middleware/otp")
 
 
 router.get("/", (req, res) => {
@@ -55,7 +55,10 @@ router.get("/error", (req, res) => {
 
 router.post("/validateOtp", otpVerification)
 
-router.post("/resendOtp", sendOtp)
+router.post("/resendOtp",(req,res)=>{
+    req.flash("message","Otp resend successful")
+    sendOtp(req,res)
+})
 
 router.post("/login", userControl.userLogin, (req, res) => {
     if (req.user.isAdmin === true) {

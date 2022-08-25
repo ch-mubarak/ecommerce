@@ -15,7 +15,9 @@ router.get("/changePassword", userControl.checkAccountVerified, (req, res) => {
     const errorMessage = req.flash("message")
     res.render("user/changePassword", {
         errorMessage: errorMessage,
-        layout: "layouts/layouts"
+        layout: "layouts/layouts",
+        extractScripts: true
+
     })
 })
 

@@ -33,12 +33,20 @@ router.get("/contact", (req, res) => {
 
 router.get("/login", userControl.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")
-    res.render("user/login", { errorMessage: errorMessage, layout: "layouts/layouts" })
+    res.render("user/login", {
+        errorMessage: errorMessage,
+        layout: "layouts/layouts",
+        extractScripts: true
+    })
 })
 
 router.get("/register", userControl.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("message")
-    res.render("user/register", { errorMessage: errorMessage, layout: "layouts/layouts" })
+    res.render("user/register", {
+        errorMessage: errorMessage,
+        layout: "layouts/layouts",
+        extractScripts: true
+    })
 })
 
 router.get("/error", (req, res) => {

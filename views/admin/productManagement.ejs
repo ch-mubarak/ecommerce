@@ -1,8 +1,6 @@
 <%- include('../partials/adminNavbar') %>
-
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">Add Product</button>
     <%- include("_modal_product") %>
-
         <div class="container">
             <div class="jumbotron shadow m-2 bg-white rounded">
                 <table id="admin" class="table table-striped table-bordered table-hover" style="width:100%">
@@ -140,9 +138,6 @@
                 <%- include("../partials/errorMessage") %>
             </div>
         </div>
-
-
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
         <script>
             $(document).ready(function () {

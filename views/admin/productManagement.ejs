@@ -32,7 +32,8 @@
           <td>
             <%= product.category.categoryName %>
           </td>
-          <td><img src="/files/<%=product.productImagePath.mainImage %>" alt="" width="100" height="150">
+          <td>
+            <img src="/files/<%=product.productImagePath[0]%>" alt="" width="110" height="150">
           </td>
           <td>
             <%= product.quantity %>
@@ -44,9 +45,7 @@
             <form action="/admin/deleteProduct/<%= product.id%>?_method=DELETE" method="post">
               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-<%= product.id %>" type="button">Edit</button>
               <a class="btn btn-danger m-2" href="#deleteModal<%= product.id %>" data-bs-toggle="modal">Delete</a>
-
               <!-- delete modal start -->
-
               <div class="modal modal-alert" tabindex="-1" role="dialog" id="deleteModal<%= product.id %>">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content rounded-3 shadow">
@@ -106,11 +105,7 @@
                   <div><textarea name="description" rows="5" class="form-control" placeholder="Add description" required><%=product.description %></textarea></div>
                   <div">
                     <label class="form-label">Upload Product Image</label>
-                    <input type="file" name="productImage" class="form-control">
-              </div>
-              <div>
-                <label class="form-label">Upload sub images</label>
-                <input type="file" multiple name="subImages" class="form-control">
+                    <input type="file" multiple name="productImages" class="form-control">
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -12,6 +12,7 @@
           <th>Category</th>
           <th>Image</th>
           <th>Stock</th>
+          <th>Price</th>
           <th>Description</th>
           <th>Action</th>
         </tr>
@@ -37,6 +38,9 @@
           </td>
           <td>
             <%= product.quantity %>
+          </td>
+          <td>
+            <%= product.price %>
           </td>
           <td>
             <%= product.description %>
@@ -100,6 +104,10 @@
                   <div>
                     <label class="form-label">Stock</label>
                     <input type="number" name="quantity" min="1" value="<%=product.quantity %>" required class="form-control">
+                  </div>
+                  <div>
+                    <label class="form-label">Price</label>
+                    <input type="number" name="price" min="1" value="<%=product.price %>" required class="form-control">
                   </div>
                   <div><label class="form-label">Description</label></div>
                   <div><textarea name="description" rows="5" class="form-control" placeholder="Add description" required><%=product.description %></textarea></div>

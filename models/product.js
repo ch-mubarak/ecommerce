@@ -14,6 +14,10 @@ const productSchema = mongoose.Schema({
         ref: "Category"
     },
     productImagePath: [String],
+    price:{
+        type:Number,
+        required:true
+    },
     description: {
         type: String,
         required: true

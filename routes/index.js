@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const Product =require("../models/product")
+const Category =require("../models/category")
 const userControl = require("../controllers/userController")
 const {
     otpVerification,
@@ -7,8 +9,18 @@ const {
 } = require("../middleware/otp")
 
 
-router.get("/", (req, res) => {
-    res.render("master/index")
+router.get("/", async(req, res) => {
+    try{
+        const allCategories=await Category.find()
+        const allProducts= await Product.find().populate("category").sort({createdAt:-1}).exec()
+        res.render("master/index",{
+            allCategories:allCategories,
+            allProducts:allProducts
+        })
+    }catch(err){
+        console.log(err)
+        res.render("errorPage/error",{layout:false})
+    }
 })
 
 router.get("/cart", (req, res) => {

@@ -12,6 +12,7 @@ module.exports = {
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
+                price:req.body.price,
                 description: req.body.description,
                 productImagePath: productImages
             })
@@ -37,6 +38,7 @@ module.exports = {
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
+                price:req.body.price,
                 description: req.body.description,
                 productImagePath: productImages
             })

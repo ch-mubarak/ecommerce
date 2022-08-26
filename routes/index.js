@@ -6,8 +6,7 @@ const userControl = require("../controllers/userController")
 const {
     otpVerification,
     sendOtp
-} = require("../middleware/otp")
-
+} = require("../middleware/otp");
 
 router.get("/", async (req, res) => {
     try {
@@ -42,8 +41,18 @@ router.get("/shop", async (req, res) => {
     
 })
 
-router.get("/product", (req, res) => {
-    res.render("master/productDetails")
+router.get("/product/:id", async(req, res) => {
+    try{
+        const relatedProducts = await Product.find().limit(4).exec()
+        const findProduct=await Product.findById(req.params.id).populate("category").exec()
+        res.render("master/productDetails",{
+            findProduct:findProduct,
+            relatedProducts:relatedProducts
+        })
+    }catch(err){
+        console.log(err)
+        res.render("errorPage/error", { layout: false })
+    }
 })
 
 router.get("/checkout", (req, res) => {

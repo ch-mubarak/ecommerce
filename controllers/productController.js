@@ -32,7 +32,7 @@ module.exports = {
         try {
             product = await Product.findById(req.params.id)
             const oldProductImages = product.productImagePath
-            const productImages = req.files != null ? req.files.map((img) => img.filename) : oldProductImages
+            const productImages = req.files.length>0 ? req.files.map((img) => img.filename) : oldProductImages
             await Product.findByIdAndUpdate(req.params.id, {
                 name: req.body.name,
                 brand: req.body.brand,

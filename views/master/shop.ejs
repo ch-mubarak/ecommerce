@@ -179,7 +179,7 @@
               <div class="latest-product__slider owl-carousel">
                 <div class="latest-prdouct__slider__item">
                   <% allProducts.slice(0,3).forEach((product)=> { %>
-                  <a href="#" class="latest-product__item">
+                  <a href="/product/<%= product.id %>" class="latest-product__item">
                     <div class="latest-product__item__pic">
                       <img src="/files/<%=product.productImagePath[0]%>" alt="">
                     </div>
@@ -192,7 +192,7 @@
                 </div>
                 <div class="latest-prdouct__slider__item">
                   <% allProducts.slice(3,6).forEach((product)=> { %>
-                  <a href="#" class="latest-product__item">
+                  <a href="/product/<%= product.id %>" class="latest-product__item">
                     <div class="latest-product__item__pic">
                       <img src="/files/<%=product.productImagePath[0]%>" alt="">
                     </div>
@@ -356,7 +356,7 @@
                 </ul>
               </div>
               <div class="product__item__text">
-                <h6><a href="#"><%= product.name %></a></h6>
+                <h6><a href="/product/<%= product.id %>"><%= product.name %></a></h6>
                 <h5><%= product.price %></h5>
               </div>
             </div>

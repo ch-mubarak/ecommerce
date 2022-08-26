@@ -125,7 +125,7 @@
             </ul>
           </div>
           <div class="featured__item__text">
-            <h6><a href="#"><%=product.name %></a></h6>
+            <h6><a href="/product/<%= product.id %>"><%=product.name %></a></h6>
             <h5><%= product.price %></h5>
           </div>
         </div>
@@ -143,12 +143,12 @@
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6">
         <div class="banner__pic">
-          <img src="img/banner/banner-1.jpg" alt="">
+          <img src="/img/banner/banner-1.jpg" alt="">
         </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6">
         <div class="banner__pic">
-          <img src="img/banner/banner-2.jpg" alt="">
+          <img src="/img/banner/banner-2.jpg" alt="">
         </div>
       </div>
     </div>
@@ -166,7 +166,7 @@
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
               <% allProducts.slice(0,3).forEach((product)=> { %>
-              <a href="#" class="latest-product__item">
+              <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="/files/<%=product.productImagePath[0]%>" alt="">
                 </div>
@@ -179,7 +179,7 @@
             </div>
             <div class="latest-prdouct__slider__item">
               <% allProducts.slice(3,6).forEach((product)=> { %>
-              <a href="#" class="latest-product__item">
+              <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="/files/<%=product.productImagePath[0]%>" alt="">
                 </div>
@@ -201,9 +201,9 @@
 
             <div class="latest-prdouct__slider__item">
               <% allProducts.slice(8,11).forEach((product)=>{ %>
-              <a href="#" class="latest-product__item">
+              <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
-                  <img src="files/<%= product.productImagePath[0]%>" alt="">
+                  <img src="/files/<%= product.productImagePath[0]%>" alt="">
                 </div>
                 <div class="latest-product__item__text">
                   <h6><%=product.name%></h6>
@@ -215,9 +215,9 @@
 
             <div class="latest-prdouct__slider__item">
               <% allProducts.slice(-3).forEach((product)=>{ %>
-              <a href="#" class="latest-product__item">
+              <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
-                  <img src="files/<%= product.productImagePath[0]%>" alt="">
+                  <img src="/files/<%= product.productImagePath[0]%>" alt="">
                 </div>
                 <div class="latest-product__item__text">
                   <h6><%=product.name%></h6>
@@ -237,9 +237,9 @@
             <div class="latest-prdouct__slider__item">
 
               <% allProducts.slice(5,8).forEach((product)=>{ %>
-                <a href="#" class="latest-product__item">
+                <a href="/product/<%= product.id %>" class="latest-product__item">
                   <div class="latest-product__item__pic">
-                    <img src="files/<%= product.productImagePath[0]%>" alt="">
+                    <img src="/files/<%= product.productImagePath[0]%>" alt="">
                   </div>
                   <div class="latest-product__item__text">
                     <h6><%=product.name%></h6>
@@ -252,9 +252,9 @@
             <div class="latest-prdouct__slider__item">
 
               <% allProducts.slice(2,5).forEach((product)=>{ %>
-                <a href="#" class="latest-product__item">
+                <a href="/product/<%= product.id %>" class="latest-product__item">
                   <div class="latest-product__item__pic">
-                    <img src="files/<%= product.productImagePath[0]%>" alt="">
+                    <img src="/files/<%= product.productImagePath[0]%>" alt="">
                   </div>
                   <div class="latest-product__item__text">
                     <h6><%=product.name%></h6>

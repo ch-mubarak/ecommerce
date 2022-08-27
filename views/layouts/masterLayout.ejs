@@ -3,11 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Ogani Template">
-  <meta name="keywords" content="Ogani, unica, creative, html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ogani | Template</title>
+  <title>Ogani | Shopping</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -53,7 +51,13 @@
         </ul>
       </div>
       <div class="header__top__right__auth">
+        <% if(locals.user){ %>
+        <form action="/logout?_method=DELETE" method="post" id="logoutForm1">
+          <a href="#" onclick="document.getElementById('logoutForm1').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+        </form>
+        <% } else {%>
         <a href="/login"><i class="fa fa-user"></i> Login</a>
+        <% } %>
       </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
@@ -65,7 +69,7 @@
             <li><a href="#">Address</a></li>
             <li><a href="/cart">Shopping Cart</a></li>
             <li><a href="/checkout">Check Out</a></li>
-            <li><a href="#">Account</a></li>
+            <li><a href="/user/home">Account</a></li>
           </ul>
         </li>
         <li><a href="/contact">Contact</a></li>
@@ -119,7 +123,14 @@
                 </ul>
               </div>
               <div class="header__top__right__auth">
+                <% if(locals.user){ %>
+                <form action="/logout?_method=DELETE" method="post" id="logoutForm2">
+                  <a href="#" onclick="document.getElementById('logoutForm2').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </form>
+
+                <% } else {%>
                 <a href="/login"><i class="fa fa-user"></i> Login</a>
+                <% } %>
               </div>
             </div>
           </div>
@@ -150,6 +161,9 @@
             <ul>
               <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
               <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+              <% if(locals.user){%>
+              <li><a href="/user/home"><i class="fa fa-user"></i></a></li>
+              <% } %>
             </ul>
           </div>
         </div>
@@ -260,6 +274,7 @@
       }
     }
   </script>
-  
+
 </body>
+
 </html>

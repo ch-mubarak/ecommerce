@@ -50,6 +50,12 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function (req, res, next) {
+  if (req.isAuthenticated()) {
+    res.locals.user = true
+  }
+  next();
+});
 
 app.use("/", indexRouter)
 app.use("/user", userRouter)

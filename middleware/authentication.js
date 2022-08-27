@@ -1,4 +1,4 @@
-const { otp } = require("./otp")
+const { sendOtp } = require("./otp")
 
 module.exports = {
     checkLoggedOut: (req, res, next) => {

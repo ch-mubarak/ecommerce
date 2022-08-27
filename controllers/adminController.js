@@ -22,7 +22,7 @@ module.exports = {
                 extractScripts: true
             })
         } catch (err) {
-            console.log(err)
+            console.log(err.message)
             res.redirect("/")
 
         }
@@ -39,7 +39,7 @@ module.exports = {
                 extractScripts: true
             })
         } catch (err) {
-            console.log(err)
+            console.log(err.message)
         }
     },
 
@@ -57,7 +57,7 @@ module.exports = {
             })
 
         } catch (err) {
-            console.log(err)
+            console.log(err.message)
         }
     },
 
@@ -70,7 +70,7 @@ module.exports = {
             res.redirect("/admin/categories")
 
         } catch (err) {
-            console.log(err)
+            console.log(err.message)
             req.flash("message", "category already exists")
             res.redirect("/admin/categories")
 
@@ -85,8 +85,8 @@ module.exports = {
             res.redirect("/admin/categories")
         }
         catch (err) {
-            console.log(err)
-            req.flash("message", "error editing in category")
+            console.log(err.message)
+            req.flash("message", "Error editing in category")
             res.redirect("/admin/categories")
         }
     },
@@ -98,11 +98,11 @@ module.exports = {
             await category.remove()
             res.redirect("/admin/categories")
         } catch (err) {
-            console.log(err)
+            console.log(err.message)
             if (category == null) {
                 res.redirect("/admin")
             } else {
-                req.flash("message", "this categories have still products")
+                req.flash("message", err.message)
                 res.redirect("/admin/categories")
             }
 
@@ -116,7 +116,7 @@ module.exports = {
                 { isActive: false })
             res.redirect("/admin/users")
         } catch (err) {
-            console.log(err)
+            console.log(err.message)
             req.flash("message", "Error blocking User")
             res.redirect("/admin/users")
         }
@@ -127,7 +127,7 @@ module.exports = {
             await User.findByIdAndUpdate(req.params.id, { isActive: true })
             res.redirect("/admin/users")
         } catch (error) {
-            console.log(err)
+            console.log(err.message)
             req.flash("message", "Error un blocking User")
             res.redirect("/admin/users")
         }

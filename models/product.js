@@ -27,12 +27,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        required: true,
-    },
     brand: String,
-})
+},{timestamps:true})
 
 module.exports = mongoose.model("Product", productSchema)

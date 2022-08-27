@@ -23,4 +23,21 @@ const upload = multer({
     fileFilter: multerFilter,
 })
 
-module.exports = { upload }
+const uploadImages = upload.array("productImages", 4)
+
+module.exports.send = (req, res, next) => {
+    return uploadImages(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            // A Multer error occurred when uploading.
+            req.flash("message", "Error uploading files, max 4 images")
+            res.redirect("/admin/products")
+        } else if (err) {
+            // An unknown error occurred when uploading.
+            req.flash("message", "Only support image files")
+            res.redirect("/admin/products")
+        } else {
+            next()
+        }
+    })
+}
+

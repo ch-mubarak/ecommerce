@@ -1,17 +1,18 @@
 const express = require("express")
-const userControl = require("../controllers/userController")
+const userControl =require("../controllers/userController")
+const authentication =require("../middleware/authentication")
 const router = express.Router()
 
-router.use(userControl.checkLoggedIn)
+router.use(authentication.checkLoggedIn)
 
-router.get("/home", userControl.checkAccountVerified, (req, res) => {
+router.get("/home", authentication.checkAccountVerified, (req, res) => {
     res.render("user/home", {
         layout: "layouts/layouts",
         extractScripts: true
     })
 })
 
-router.get("/changePassword", userControl.checkAccountVerified, (req, res) => {
+router.get("/changePassword", authentication.checkAccountVerified, (req, res) => {
     const errorMessage = req.flash("message")
     res.render("user/changePassword", {
         errorMessage: errorMessage,

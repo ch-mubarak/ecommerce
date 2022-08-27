@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userControl = require("../controllers/userController")
 const shopControl = require("../controllers/shopController")
+const authentication = require("../middleware/authentication")
 const {
     otpVerification,
     sendOtp
@@ -27,7 +28,7 @@ router.get("/contact", (req, res) => {
     res.render("master/contact")
 })
 
-router.get("/login", userControl.checkLoggedOut, (req, res) => {
+router.get("/login", authentication.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")
     res.render("user/login", {
         errorMessage: errorMessage,
@@ -36,7 +37,7 @@ router.get("/login", userControl.checkLoggedOut, (req, res) => {
     })
 })
 
-router.get("/register", userControl.checkLoggedOut, (req, res) => {
+router.get("/register", authentication.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("message")
     res.render("user/register", {
         errorMessage: errorMessage,
@@ -68,6 +69,5 @@ router.post("/login", userControl.userLogin, (req, res) => {
 router.post("/register", userControl.userRegister)
 
 router.delete('/logout', userControl.userLogout)
-
 
 module.exports = router

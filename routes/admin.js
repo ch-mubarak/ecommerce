@@ -3,12 +3,13 @@ const router = express.Router()
 
 const userControl = require("../controllers/userController")
 const { upload } = require("../middleware/multer")
+const authentication =require("../middleware/authentication")
 const productControl = require("../controllers/productController")
 const adminControl = require("../controllers/adminController")
 
 const uploadImages = upload.array("productImages",5)
 
-// router.use(userControl.checkLoggedIn, adminControl.checkAdminPrivilege)
+// router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
 router.get("/", adminControl.home)
 

@@ -1,6 +1,5 @@
 const User = require("../models/users")
 const passport = require("passport")
-const { sendOtp } = require("../middleware/otp")
 
 module.exports = {
     userRegister: (req, res) => {
@@ -66,36 +65,4 @@ module.exports = {
             res.redirect("changePassword")
         }
     },
-
-    checkLoggedOut: (req, res, next) => {
-        if (req.isAuthenticated() && req.user.isAdmin) {
-            res.redirect("/admin")
-        }
-        else if (req.isAuthenticated()) {
-            res.redirect("/user/home")
-        }
-        else {
-            next()
-        }
-    },
-
-    checkLoggedIn: (req, res, next) => {
-        if (req.isAuthenticated()) {
-            next()
-        }
-        else {
-            req.flash("message", "Pls login to access home")
-            res.redirect("/")
-        }
-    },
-
-    checkAccountVerified: async function (req, res, next) {
-        if (req.user.isVerified) {
-            next()
-        }
-        else {
-            sendOtp(req, res)
-        }
-    },
-
 }

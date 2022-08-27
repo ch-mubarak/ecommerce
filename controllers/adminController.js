@@ -61,15 +61,6 @@ module.exports = {
         }
     },
 
-    checkAdminPrivilege: function (req, res, next) {
-        if (req.user.isAdmin) {
-            next()
-        }
-        else {
-            res.redirect("/error")
-        }
-    },
-
     addCategory: async (req, res) => {
         try {
             const category = new Category({

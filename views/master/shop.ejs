@@ -81,14 +81,8 @@
             <h4>Department</h4>
             <ul>
               <% allCategories.forEach((category)=>{ %>
-              <li><a href="#"><%= category.categoryName %></a></li>
+              <li><a href="/shop/<%= category.categoryName %>"><%= category.categoryName %></a></li>
               <% }) %>
-              <!-- <li><a href="#">Women</a></li>
-              <li><a href="#">Kids</a></li>
-              <li><a href="#">Footwear</a></li>
-              <li><a href="#">Beauty</a></li>
-              <li><a href="#">Winter Wear</a></li>
-              <li><a href="#">On Sale</a></li> -->
             </ul>
           </div>
           <div class="sidebar__item">
@@ -185,7 +179,7 @@
                     </div>
                     <div class="latest-product__item__text">
                       <h6><%= product.name %></h6>
-                      <span><%= product.price %></span>
+                      <span>₹<%= product.price %></span>
                     </div>
                   </a>
                   <% }) %>
@@ -198,7 +192,7 @@
                     </div>
                     <div class="latest-product__item__text">
                       <h6><%= product.name %></h6>
-                      <span><%= product.price %></span>
+                      <span>₹<%= product.price %></span>
                     </div>
                   </a>
                   <% }) %>
@@ -349,7 +343,7 @@
           <% allProducts.forEach((product)=>{%>
           <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="product__item">
-              <div class="product__item__pic set-bg" data-setbg="files/<%= product.productImagePath[0] %>">
+              <div class="product__item__pic set-bg" data-setbg="/files/<%= product.productImagePath[0] %>">
                 <ul class="product__item__pic__hover">
                   <li><a href="#"><i class="fa fa-heart"></i></a></li>
                   <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
@@ -357,7 +351,7 @@
               </div>
               <div class="product__item__text">
                 <h6><a href="/product/<%= product.id %>"><%= product.name %></a></h6>
-                <h5><%= product.price %></h5>
+                <h5>₹<%= product.price %></h5>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const productSchema = mongoose.Schema({
+const productSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -13,10 +13,15 @@ const productSchema = mongoose.Schema({
         required: true,
         ref: "Category"
     },
+    subCategory: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: "subCategory"
+    },
     productImagePath: [String],
-    price:{
-        type:Number,
-        required:true
+    price: {
+        type: Number,
+        required: true
     },
     description: {
         type: String,

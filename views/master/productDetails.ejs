@@ -60,7 +60,8 @@
           <h2><%= findProduct.name %></h2>
           <div class="breadcrumb__option">
             <a href="/">Home</a>
-            <a href="#"><%= findProduct.category.categoryName %></a>
+            <a href="/shop">shop</a>
+            <a href="/shop/<%= findProduct.category.categoryName %>"><%= findProduct.category.categoryName %></a>
             <span><%= findProduct.name %></span>
           </div>
         </div>
@@ -210,7 +211,7 @@
           </div>
           <div class="product__item__text">
             <h6><a href="/product/<%= product.id %>"><%= product.name %></a></h6>
-            <h5><%= product.price %> </h5>
+            <h5>₹<%= product.price %> </h5>
           </div>
         </div>
       </div>

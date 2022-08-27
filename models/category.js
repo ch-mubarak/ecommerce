@@ -1,10 +1,10 @@
 const mongoose=require("mongoose")
 const Product=require("./product")
-const categorySchema=mongoose.Schema({
+const categorySchema= new mongoose.Schema({
     categoryName:{
         type:String,
         required:true,
-        unique:true
+        unique:true,
     }
 })
 

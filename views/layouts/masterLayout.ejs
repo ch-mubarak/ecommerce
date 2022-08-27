@@ -138,9 +138,9 @@
             <ul class="nav">
               <li><a class="nav-item" href="/">Home</a></li>
               <li><a class="nav-item" href="/shop">Shop</a></li>
-              <li><a class="nav-item" href="#">Men</a></li>
-              <li><a class="nav-item" href="#">Women</a></li>
-              <li><a class="nav-item" href="#">kids</a></li>
+              <li><a class="nav-item" href="/shop/men">Men</a></li>
+              <li><a class="nav-item" href="/shop/women">Women</a></li>
+              <li><a class="nav-item" href="/shop/kids">kids</a></li>
               <li><a class="nav-item" href="/contact">Contact</a></li>
             </ul>
           </nav>
@@ -251,7 +251,7 @@
   <script src="https://kit.fontawesome.com/e915e405f3.js" crossorigin="anonymous"></script>
 
   <script>
-    const currentLocation = location.href
+    const currentLocation = (location.href).toLowerCase()
     const navItem = document.querySelectorAll(".nav-item")
     const length = navItem.length
     for (let i = 0; i < length; i++) {

@@ -1,77 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const _ = require("lodash")
-const Product = require("../models/product")
-const Category = require("../models/category")
 const userControl = require("../controllers/userController")
+const shopControl = require("../controllers/shopController")
 const {
     otpVerification,
     sendOtp
 } = require("../middleware/otp");
 
-router.get("/", async (req, res) => {
-    try {
-        const allCategories = await Category.find()
-        const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).exec()
-        res.render("master/index", {
-            allCategories: allCategories,
-            allProducts: allProducts
-        })
-    } catch (err) {
-        console.log(err)
-        res.render("errorPage/error", { layout: false })
-    }
-})
+router.get("/", shopControl.getHome)
+
+router.get("/shop", shopControl.getAllProducts)
+
+router.get("/shop/:category", shopControl.getShopByCategory)
+
+router.get("/product/:id", shopControl.getProductById)
 
 router.get("/cart", (req, res) => {
     res.render("master/cart")
-})
-
-router.get("/shop", async (req, res) => {
-    try {
-        const allCategories = await Category.find()
-        const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).exec()
-        res.render("master/shop", {
-            allCategories: allCategories,
-            allProducts: allProducts
-        })
-    } catch (err) {
-        console.log(err)
-        res.render("errorPage/error", { layout: false })
-    }
-
-})
-
-router.get("/shop/:category", async (req, res) => {
-    try {
-        const allCategories = await Category.find()
-        const paramsId = _.upperFirst(req.params.category)
-        const findCategory = await Category.find({ categoryName: paramsId })
-        const findProducts = await Product.find({ category: findCategory[0].id }).sort({createdAt:-1})
-        res.render("master/category", {
-            allCategories: allCategories,
-            findProducts: findProducts,
-            findCategory:findCategory,
-        })
-    } catch (err) {
-        console.log(err)
-        res.render("errorPage/error", { layout: false })
-    }
-
-})
-
-router.get("/product/:id", async (req, res) => {
-    try {
-        const relatedProducts = await Product.find().limit(4).exec()
-        const findProduct = await Product.findById(req.params.id).populate("category").exec()
-        res.render("master/productDetails", {
-            findProduct: findProduct,
-            relatedProducts: relatedProducts
-        })
-    } catch (err) {
-        console.log(err)
-        res.render("errorPage/error", { layout: false })
-    }
 })
 
 router.get("/checkout", (req, res) => {

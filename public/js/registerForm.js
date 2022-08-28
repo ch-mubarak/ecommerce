@@ -6,10 +6,10 @@ $(document).ready(function () {
         equalTo: "#password"
       },
       email:{
-        mail:true
+        myMail:true
       },
       name:{
-        name:true
+        myName:true
       }
     },
     messages: {
@@ -17,22 +17,22 @@ $(document).ready(function () {
         equalTo: "Password Not matching.",
       },
       email:{
-        mail:"Please enter a valid email address."
+        myMail:"Please enter a valid email address."
       },
       name:{
-        name:"Numbers and Special character not allowed."
+        myName:"Numbers and Special character not allow."
       }
     }
   })
 
 })
 
-jQuery.validator.addMethod("mail", function (value, element) {
+jQuery.validator.addMethod("myMail", function (value, element) {
   let mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return element.value.match(mailFormat)
+  return value.match(mailFormat)
 })
 
-jQuery.validator.addMethod("name", function (value, element) {
+jQuery.validator.addMethod("myName", function (value, element) {
   return /^[A-Za-z ]+$/.test(value)
 })
 

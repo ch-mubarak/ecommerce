@@ -1,15 +1,14 @@
-const mongoose =require("mongoose")
-const subCategorySchema= new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
+const mongoose = require("mongoose")
+const subCategorySchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
     },
-    category:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"category",
-        required:true
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "category",
+        required: true
     }
 })
 
-
-module.exports=mongoose.model("SubCategory",subCategorySchema)
+module.exports = mongoose.model("SubCategory", subCategorySchema)

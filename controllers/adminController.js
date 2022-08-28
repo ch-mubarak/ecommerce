@@ -46,7 +46,7 @@ module.exports = {
     products: async (req, res) => {
         try {
             const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
-            const allProducts = await Product.find().populate("category").exec()
+            const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).exec()
             const errorMessage = req.flash("message")
             res.render("admin/productManagement", {
                 allProducts: allProducts,

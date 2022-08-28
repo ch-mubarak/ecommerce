@@ -8,30 +8,30 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique:true,
-        lowercase:true,
+        unique: true,
+        lowercase: true,
         required: true
     },
-    isAdmin:{
-        type:Boolean,
-        required:true,
-        default:false
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
     },
     isActive: {
         type: Boolean,
         required: true,
         default: true,
     },
-    isVerified:{
-        type:Boolean,
-        required:true,
-        default:false
+    isVerified: {
+        type: Boolean,
+        required: true,
+        default: false
     },
-    otp:{
-        type:Number
+    otp: {
+        type: Number
     }
 
-},{timestamps:true})
+}, { timestamps: true })
 
 userSchema.plugin(passportLocalMongoose, {
     usernameField: "email",

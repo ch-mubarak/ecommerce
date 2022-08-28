@@ -858,7 +858,8 @@ ol {
 }
 
 .featured__item__pic {
-	height: 270px;
+	height: 320px;
+	object-fit: fill;
 	position: relative;
 	overflow: hidden;
 	background-position: center center;

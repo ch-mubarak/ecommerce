@@ -1,10 +1,11 @@
 const Product = require("../models/product")
+const Wishlist = require("../models/wishlist")
 const fs = require("fs").promises
 
 module.exports = {
-    addProduct: async (req, res) => { 
+    addProduct: async (req, res) => {
         try {
-            req.files.forEach(img=>{console.log(img.filename)})
+            req.files.forEach(img => { console.log(img.filename) })
             const productImages = req.files != null ? req.files.map((img) => img.filename) : null
             console.log(productImages)
             const product = new Product({
@@ -12,7 +13,7 @@ module.exports = {
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
-                price:req.body.price,
+                price: req.body.price,
                 description: req.body.description,
                 productImagePath: productImages
             })
@@ -32,13 +33,13 @@ module.exports = {
         try {
             product = await Product.findById(req.params.id)
             const oldProductImages = product.productImagePath
-            const productImages = req.files.length>0 ? req.files.map((img) => img.filename) : oldProductImages
+            const productImages = req.files.length > 0 ? req.files.map((img) => img.filename) : oldProductImages
             await Product.findByIdAndUpdate(req.params.id, {
                 name: req.body.name,
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
-                price:req.body.price,
+                price: req.body.price,
                 description: req.body.description,
                 productImagePath: productImages
             })
@@ -69,6 +70,6 @@ module.exports = {
             req.flash("message", "Error deleting product")
             res.redirect("/admin/products")
         }
-    }
+    },
 
 }

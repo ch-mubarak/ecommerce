@@ -6,7 +6,7 @@ module.exports = {
     getHome: async (req, res) => {
         try {
             const allCategories = await Category.find()
-            const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).exec()
+            const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).limit(12).exec()
             res.render("master/index", {
                 allCategories: allCategories,
                 allProducts: allProducts

@@ -18,9 +18,9 @@ router.get("/products", adminControl.products)
 
 router.put("/addCategory", adminControl.addCategory)
 
-router.post("/addProduct",multer.send,productControl.addProduct )
+router.post("/addProduct", multer.send, productControl.addProduct)
 
-router.put("/editProduct/:id",multer.send,productControl.editProduct )
+router.put("/editProduct/:id", multer.send, productControl.editProduct)
 
 router.put("/editCategory/:id", adminControl.editCategory)
 

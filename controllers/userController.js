@@ -1,5 +1,6 @@
 const User = require("../models/users")
 const passport = require("passport")
+const Wishlist = require("../models/wishlist")
 
 module.exports = {
     userRegister: (req, res) => {
@@ -65,4 +66,20 @@ module.exports = {
             res.redirect("changePassword")
         }
     },
+
+    getChangePassword: (req, res) => {
+        const errorMessage = req.flash("message")
+        res.render("user/changePassword", {
+            errorMessage: errorMessage,
+            layout: "layouts/layouts",
+            extractScripts: true
+        })
+    },
+
+    getHome: (req, res) => {
+        res.render("user/home", {
+            layout: "layouts/layouts",
+            extractScripts: true
+        })
+    }
 }

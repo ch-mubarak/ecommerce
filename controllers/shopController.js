@@ -1,15 +1,19 @@
 const _ = require("lodash")
 const Product = require("../models/product")
 const Category = require("../models/category")
+const Cart =require("../models/cart")
 
 module.exports = {
     getHome: async (req, res) => {
         try {
-            const allCategories = await Category.find()
-            const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).limit(12).exec()
+            const allCategories = await Category.find();
+            const allProducts = await Product.find()
+                .populate("category")
+                .sort({ createdAt: -1 })
+                .limit(12).exec();
             res.render("master/index", {
                 allCategories: allCategories,
-                allProducts: allProducts
+                allProducts: allProducts,
             })
         } catch (err) {
             console.log(err)
@@ -62,6 +66,6 @@ module.exports = {
             console.log(err)
             res.render("errorPage/error", { layout: false })
         }
-    }
+    },
 
 }

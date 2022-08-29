@@ -52,12 +52,12 @@
 <!-- Hero Section End -->
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-center">
         <div class="breadcrumb__text">
-          <h2>Wishlist</h2>
+          <h2>My Wishlist</h2>
           <div class="breadcrumb__option">
             <a href="/">Home</a>
             <span>My wishlist</span>
@@ -68,7 +68,7 @@
   </div>
 </section>
 <!-- Breadcrumb Section End -->
-
+<% if(locals.findWishlist?.myList?.length>0) {%>
 <!-- wishlist  Section Begin -->
 <section class="shoping-cart spad">
   <div class="container">
@@ -98,7 +98,7 @@
                     <a href="" class="btn"><i class="fa fa-shopping-cart fa-lg"></i></a>
                   </div>
                   <div>
-                    <a href="" class="btn"><i class="fa-solid fa-trash-can fa-lg"></i></a>
+                    <a href="#" onclick="wishlist('<%=list.name%>','<%=list.productId.id%>')" class="btn"><i class="fa-solid fa-trash-can fa-lg"></i></a>
                   </div>
                 </td>
               </tr>
@@ -109,7 +109,23 @@
         </div>
       </div>
     </div>
-
   </div>
 </section>
 <!-- wishlist Section End -->
+<%} else{%>
+  <section class="container">
+    <div class="text-center py-5">
+      <img src="/img/emptycart.png" alt="">
+      <div>
+        <p class="h4">There is nothing in your bag. Let's add some items.</p>
+      </div>
+      <a href="/" class="primary-btn">Shop</a>
+    </div>
+  </section>
+<%} %>
+
+<form action="/user/wishlist?_method=put" method="post" id="wishlistForm">
+  <input type="hidden" name="name" value="" id="productName">
+  <input type="hidden" name="productId" value="" id="productId">
+</form>
+<!-- Latest Product Section End -->

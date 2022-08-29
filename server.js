@@ -8,6 +8,8 @@ const flash = require("connect-flash")
 const methodOverride = require("method-override")
 const User = require("./models/users")
 const app = express();
+const cartControl = require("./controllers/cartController")
+const wishlistControl = require("./controllers/wishlistController")
 
 const indexRouter = require("./routes/index")
 const userRouter = require("./routes/user")
@@ -35,7 +37,7 @@ app.use(session({
 
 app.use(flash())
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   next();
 });
@@ -53,6 +55,8 @@ passport.deserializeUser(User.deserializeUser());
 app.use(function (req, res, next) {
   if (req.isAuthenticated()) {
     res.locals.user = true
+    cartControl.cartItemCount(req,res)
+    wishlistControl.wishlistItemCount(req,res)
   }
   next();
 });

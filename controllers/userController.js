@@ -30,6 +30,7 @@ module.exports = {
 
     userLogin: passport.authenticate('local', {
         failureFlash: true,
+        keepSessionInfo: true,
         failureRedirect: '/login',
     }),
 

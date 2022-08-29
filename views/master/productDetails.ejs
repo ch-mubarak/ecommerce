@@ -110,7 +110,7 @@
               </div>
             </div>
             <button class="btn primary-btn" type="submit" form="cartForm">ADD TO CARD</button>
-            <button class="btn heart-icon" form="wishlistForm" type="submit"><span class="icon_heart_alt"></span></button>
+            <a class="heart-icon" href="#" onclick="wishlist('<%=findProduct.name%>','<%=findProduct.id%>')"><span class="icon_heart_alt"></span></a>
             <ul>
               <li><b>Availability</b> <span>In Stock</span></li>
               <li><b>Shipping</b> <span>01 day shipping.</span></li>
@@ -126,10 +126,6 @@
             <input type="hidden" form="cartForm" name="productId" value="<%= findProduct.id %>">
             <input type="hidden" form="cartForm" name="name" value="<%= findProduct.name%>">
             <input type="hidden" form="cartForm" name="price" value="<%= findProduct.price %>">
-          </form>
-          <form action="/wishlist?_method=PUT" method="post" id="wishlistForm">
-            <input type="hidden" name="productId" value="<%= findProduct.id%>" form="wishlistForm">
-            <input type="hidden" name="name" value="<%= findProduct.name%>" form="wishlistForm">
           </form>
         </div>
       </div>
@@ -228,4 +224,9 @@
     </div>
   </div>
 </section>
+
+<form action="/user/wishlist?_method=put" method="post" id="wishlistForm">
+  <input type="hidden" name="name" value="" id="productName">
+  <input type="hidden" name="productId" value="" id="productId">
+</form>
 <!-- Related Product Section End -->

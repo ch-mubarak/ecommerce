@@ -1,6 +1,4 @@
 const Cart = require("../models/cart");
-const product = require("../models/product");
-const Product = require("../models/product")
 
 module.exports = {
 
@@ -49,18 +47,25 @@ module.exports = {
     },
 
     getCart: async (req, res) => {
-        const userId = "6302008a05aea90acac206c3"
+        const userId = req.user.id
         try {
             const findCart = await Cart.findOne({ userId: userId }).populate({
                 path: "products.productId",
                 model: "Product"
             })
-            if (findCart) {
-                // res.json(findCart)
-                res.render("master/cart", {
-                    findCart: findCart
-                })
-            }
+            res.render("master/cart", {
+                findCart: findCart
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    cartItemCount: async (req, res, next) => {
+        const userId = req.user.id
+        try {
+            const cart = await Cart.findOne({ userId })
+            res.locals.cartItemCount = (cart?.products) ? (cart.products.length)  : 0
+
         } catch (err) {
             console.log(err)
         }

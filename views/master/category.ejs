@@ -346,7 +346,7 @@
               <div class="product__item">
                 <div class="product__item__pic set-bg" data-setbg="/files/<%= product.productImagePath[0] %>">
                   <ul class="product__item__pic__hover">
-                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                    <li><a href="#" onclick="wishlist('<%=product.name%>','<%=product.id%>')"><i class="fa fa-heart"></i></a></li>
                     <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                   </ul>
                 </div>
@@ -369,4 +369,8 @@
       </div>
     </div>
   </section>
+  <form action="/user/wishlist?_method=put" method="post" id="wishlistForm">
+    <input type="hidden" name="name" value="" id="productName">
+    <input type="hidden" name="productId" value="" id="productId">
+  </form>
   <!-- Product Section End -->

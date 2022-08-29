@@ -69,6 +69,7 @@
 </section>
 <!-- Breadcrumb Section End -->
 
+<% if(locals.findCart?.products?.length>0){ %>
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
   <div class="container">
@@ -151,3 +152,14 @@
   </div>
 </section>
 <!-- Shoping Cart Section End -->
+<%} else {%>
+<section class="container">
+  <div class="text-center py-5">
+    <img src="/img/emptycart.png" alt="">
+    <div>
+      <p class="h4">There is nothing in your bag. Let's add some items.</p>
+    </div>
+    <a href="/" class="primary-btn">Shop</a>
+  </div>
+</section>
+<%}%>

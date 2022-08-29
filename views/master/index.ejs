@@ -120,7 +120,7 @@
         <div class="featured__item">
           <div class="featured__item__pic set-bg" data-setbg="/files/<%=product.productImagePath[0]%>">
             <ul class="featured__item__pic__hover">
-              <li><a href="#"><i class="fa fa-heart"></i></a></li>
+              <li><a href="#" onclick="wishlist('<%=product.name%>','<%=product.id%>')"><i class="fa fa-heart"></i></a></li>
               <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
             </ul>
           </div>
@@ -237,38 +237,42 @@
             <div class="latest-prdouct__slider__item">
 
               <% allProducts.slice(5,8).forEach((product)=>{ %>
-                <a href="/product/<%= product.id %>" class="latest-product__item">
-                  <div class="latest-product__item__pic">
-                    <img src="/files/<%= product.productImagePath[0]%>" alt="">
-                  </div>
-                  <div class="latest-product__item__text">
-                    <h6><%=product.name%></h6>
-                    <span>₹<%= product.price %></span>
-                  </div>
-                </a>
-                <% }) %>
+              <a href="/product/<%= product.id %>" class="latest-product__item">
+                <div class="latest-product__item__pic">
+                  <img src="/files/<%= product.productImagePath[0]%>" alt="">
+                </div>
+                <div class="latest-product__item__text">
+                  <h6><%=product.name%></h6>
+                  <span>₹<%= product.price %></span>
+                </div>
+              </a>
+              <% }) %>
             </div>
 
             <div class="latest-prdouct__slider__item">
 
               <% allProducts.slice(2,5).forEach((product)=>{ %>
-                <a href="/product/<%= product.id %>" class="latest-product__item">
-                  <div class="latest-product__item__pic">
-                    <img src="/files/<%= product.productImagePath[0]%>" alt="">
-                  </div>
-                  <div class="latest-product__item__text">
-                    <h6><%=product.name%></h6>
-                    <span>₹<%= product.price %></span>
-                  </div>
-                </a>
-                <% }) %>    
-
+              <a href="/product/<%= product.id %>" class="latest-product__item">
+                <div class="latest-product__item__pic">
+                  <img src="/files/<%= product.productImagePath[0]%>" alt="">
+                </div>
+                <div class="latest-product__item__text">
+                  <h6><%=product.name%></h6>
+                  <span>₹<%= product.price %></span>
+                </div>
+              </a>
+              <% }) %>
             </div>
-
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<form action="/user/wishlist?_method=put" method="post" id="wishlistForm">
+  <input type="hidden" name="name" value="" id="productName">
+  <input type="hidden" name="productId" value="" id="productId">
+</form>
 <!-- Latest Product Section End -->
+<script src="/js/wishlist.js"></script>

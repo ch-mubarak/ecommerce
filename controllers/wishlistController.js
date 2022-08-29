@@ -2,7 +2,7 @@ const Wishlist = require("../models/wishlist")
 
 module.exports = {
     wishlist: async (req, res) => {
-        const userId = "6302008a05aea90acac206c3"
+        const userId = req.user.id
         const findWishlist = await Wishlist.findOne({ userId: userId }).populate({
             path: "myList.productId",
             model: "Product"
@@ -11,7 +11,7 @@ module.exports = {
             findWishlist: findWishlist
         })
     },
-    addToWishlist: async (req, res) => {
+    addToWishlist: async (req, res, next) => {
         try {
             const userId = req.user.id
             const { productId, name } = req.body
@@ -28,13 +28,23 @@ module.exports = {
             } else {
                 await Wishlist.create({
                     userId: userId,
-                    myList: [{ productId }]
+                    myList: [{ productId, name }]
                 })
             }
-            res.redirect("/wishlist")
+            res.redirect(req.get('referer'));
         } catch (err) {
             console.log(err)
             res.redirect("/")
+        }
+    },
+    wishlistItemCount: async (req, res, next) => {
+        const userId = req.user.id
+        try {
+            const wishlist = await Wishlist.findOne({ userId })
+            res.locals.wishlistItemCount = (wishlist?.myList) ? (wishlist.myList.length) : 0
+
+        } catch (err) {
+            console.log(err)
         }
     }
 }

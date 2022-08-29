@@ -35,8 +35,13 @@
     </div>
     <div class="humberger__menu__cart">
       <ul>
-        <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-        <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+        <% if(locals.user){%>
+        <li><a href="/user/wishlist"><i class="fa fa-heart"></i> <span><%= locals.wishlistItemCount %></span></a></li>
+        <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span><%= locals.cartItemCount %></span></a></li>
+        <% } else{%>
+        <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
+        <li><a href="/cart"><i class="fa fa-shopping-bag"></i></a></li>
+        <% } %>
       </ul>
     </div>
     <div class="humberger__menu__widget">
@@ -159,10 +164,13 @@
         <div class="col-lg-2">
           <div class="header__cart">
             <ul>
-              <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-              <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
               <% if(locals.user){%>
+              <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span><%= locals.wishlistItemCount %></span></a></li>
+              <li><a href="/cart"><i class="fa fa-shopping-bag"></i><span><%= locals.cartItemCount %></span></a></li>
               <li><a href="/user/home"><i class="fa fa-user"></i></a></li>
+              <% } else{%>
+              <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
+              <li><a href="/cart"><i class="fa fa-shopping-bag"></i></a></li>
               <% } %>
             </ul>
           </div>
@@ -184,7 +192,7 @@
         <div class="col-lg-3 col-md-6 col-sm-6">
           <div class="footer__about">
             <div class="footer__about__logo">
-              <a href="/"><img src="img/logo.png" alt=""></a>
+              <a href="/"><img src="/img/logo.png" alt=""></a>
             </div>
             <ul>
               <li>Address: 60-49 Road 11378 New York</li>
@@ -245,7 +253,7 @@
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
               </p>
             </div>
-            <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+            <div class="footer__copyright__payment"><img src="/img/payment-item.png" alt=""></div>
           </div>
         </div>
       </div>
@@ -263,6 +271,7 @@
   <script src="/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/e915e405f3.js" crossorigin="anonymous"></script>
+  <script src="/js/wishlist.js"></script>
 
   <script>
     const currentLocation = (location.href).toLowerCase()

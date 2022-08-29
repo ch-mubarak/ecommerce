@@ -17,7 +17,7 @@ router.get("/shop/:category", shopControl.getShopByCategory)
 
 router.get("/product/:id", shopControl.getProductById)
 
-router.get("/cart", cartControl.getCart)
+router.get("/cart",authentication.checkLoggedIn, cartControl.getCart)
 
 router.get("/checkout", (req, res) => {
     res.render("master/checkout")
@@ -61,11 +61,13 @@ router.post("/login", userControl.userLogin, (req, res) => {
         res.redirect("/admin")
     }
     else {
-        res.redirect("/user/home")
+        const redirectTo=req.session.returnTo
+        res.redirect(redirectTo||"/user/home")
+        delete req.session.returnTo;
     }
 })
 
-router.put("/addToCart", cartControl.addToCart)
+router.put("/addToCart",authentication.checkLoggedIn, cartControl.addToCart)
 
 router.post("/register", userControl.userRegister)
 

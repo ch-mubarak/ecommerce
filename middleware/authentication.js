@@ -18,8 +18,8 @@ module.exports = {
             next()
         }
         else {
-            req.flash("message", "Pls login to access home")
-            res.redirect("/")
+            req.session.returnTo = req.originalUrl;
+            res.redirect("/login")
         }
     },
 

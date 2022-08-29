@@ -37,10 +37,10 @@
       <ul>
         <% if(locals.user){%>
         <li><a href="/user/wishlist"><i class="fa fa-heart"></i> <span><%= locals.wishlistItemCount %></span></a></li>
-        <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span><%= locals.cartItemCount %></span></a></li>
+        <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i> <span><%= locals.cartItemCount %></span></a></li>
         <% } else{%>
         <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
-        <li><a href="/cart"><i class="fa fa-shopping-bag"></i></a></li>
+        <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i></a></li>
         <% } %>
       </ul>
     </div>
@@ -72,7 +72,7 @@
         <li><a href="#">More</a>
           <ul class="header__menu__dropdown">
             <li><a href="#">Address</a></li>
-            <li><a href="/cart">Shopping Cart</a></li>
+            <li><a href="/user/cart">Shopping Cart</a></li>
             <li><a href="/checkout">Check Out</a></li>
             <li><a href="/user/home">Account</a></li>
           </ul>
@@ -166,11 +166,11 @@
             <ul>
               <% if(locals.user){%>
               <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span><%= locals.wishlistItemCount %></span></a></li>
-              <li><a href="/cart"><i class="fa fa-shopping-bag"></i><span><%= locals.cartItemCount %></span></a></li>
+              <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i><span><%= locals.cartItemCount %></span></a></li>
               <li><a href="/user/home"><i class="fa fa-user"></i></a></li>
               <% } else{%>
               <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
-              <li><a href="/cart"><i class="fa fa-shopping-bag"></i></a></li>
+              <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i></a></li>
               <% } %>
             </ul>
           </div>

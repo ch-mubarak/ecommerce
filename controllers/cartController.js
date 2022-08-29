@@ -37,7 +37,7 @@ module.exports = {
                     total: total
                 });
             }
-            res.redirect("/cart")
+            res.redirect("/user/cart")
         } catch (err) {
             console.log(err);
             req.flash("message", "Error adding item to cart")
@@ -64,10 +64,26 @@ module.exports = {
         const userId = req.user.id
         try {
             const cart = await Cart.findOne({ userId })
-            res.locals.cartItemCount = (cart?.products) ? (cart.products.length)  : 0
+            res.locals.cartItemCount = (cart?.products) ? (cart.products.length) : 0
 
         } catch (err) {
             console.log(err)
+        }
+    },
+    deleteItem: async (req, res, next) => {
+        const userId = req.user.id
+        const productId=req.body.productId
+        try {
+            const cart = await Cart.findOne({userId})
+            const itemIndex = cart.products.findIndex(p => p.productId == productId);
+            cart.products.splice(itemIndex,1)
+            cart.total = cart.products.reduce((acc, curr) => {
+                return acc + curr.quantity * curr.price;
+            }, 0)
+            await cart.save()
+            res.redirect("/user/cart")
+        } catch (err) {
+            console.log(err)   
         }
     }
 }

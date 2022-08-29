@@ -5,8 +5,8 @@
 </button>
 
 <%-include("_modal_category") %>
-
 <div class="container">
+  <%- include("../partials/errorMessage") %>
   <div class="jumbotron shadow m-2 bg-white rounded">
     <table id="admin" class="table table-striped table-bordered table-hover" style="width:100%">
       <thead>
@@ -31,7 +31,6 @@
                 Edit
               </button>
               <a class="btn btn-danger m-2" data-bs-target="#deleteModal<%= category.id %>" data-bs-toggle="modal">Delete</a>
-
 
               <!-- delete modal start -->
 
@@ -80,7 +79,6 @@
       </tbody>
     </table>
     <hr>
-    <%- include("../partials/errorMessage") %>
   </div>
 </div>
 

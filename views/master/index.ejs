@@ -121,7 +121,7 @@
           <div class="featured__item__pic set-bg" data-setbg="/files/<%=product.productImagePath[0]%>">
             <ul class="featured__item__pic__hover">
               <li><a href="#" onclick="wishlist('<%=product.name%>','<%=product.id%>')"><i class="fa fa-heart"></i></a></li>
-              <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+              <li><a href="#" onclick="addToCart('<%=product.id%>','<%=product.name%>','<%=product.price%>')"><i class="fa fa-shopping-cart"></i></a></li>
             </ul>
           </div>
           <div class="featured__item__text">
@@ -131,7 +131,6 @@
         </div>
       </div>
       <% }) %>
-
     </div>
   </div>
 </section>
@@ -270,9 +269,18 @@
   </div>
 </section>
 
+<!-- Latest Product Section End -->
+
+<!-- addToCart -->
+<form action="/user/addToCart?_method=put" method="post" id="addToCartForm">
+  <input type="hidden" name="productId" id="cartProductId">
+  <input type="hidden" name="name" id="name" id="cartProductName">
+  <input type="hidden" name="quantity" value="1">
+  <input type="hidden" name="price" id="cartProductPrice">
+</form>
+
+<!-- add to wishlist -->
 <form action="/user/wishlist?_method=put" method="post" id="wishlistForm">
   <input type="hidden" name="name" value="" id="productName">
   <input type="hidden" name="productId" value="" id="productId">
 </form>
-<!-- Latest Product Section End -->
-<script src="/js/wishlist.js"></script>

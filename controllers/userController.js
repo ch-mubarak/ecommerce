@@ -1,6 +1,5 @@
 const User = require("../models/users")
 const passport = require("passport")
-const Wishlist = require("../models/wishlist")
 
 module.exports = {
     userRegister: (req, res) => {
@@ -39,7 +38,6 @@ module.exports = {
             if (err) {
                 console.log(err)
             } else {
-                // req.flash("logoutMessage", "you have successfully logout")
                 res.redirect('/')
             }
         })

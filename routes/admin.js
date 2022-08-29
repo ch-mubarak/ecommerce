@@ -9,29 +9,19 @@ const adminControl = require("../controllers/adminController")
 // router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
 router.get("/", adminControl.home)
-
 router.get("/users", adminControl.user)
-
 router.get("/categories", adminControl.categories)
-
 router.get("/products", adminControl.products)
 
 router.put("/addCategory", adminControl.addCategory)
-
 router.post("/addProduct", multer.send, productControl.addProduct)
-
 router.put("/editProduct/:id", multer.send, productControl.editProduct)
-
 router.put("/editCategory/:id", adminControl.editCategory)
-
 router.put("/blockUser/:id", adminControl.blockUser)
-
 router.put("/unblockUser/:id", adminControl.unblockUser)
 
 router.delete("/deleteProduct/:id", productControl.deleteProduct)
-
 router.delete("/deleteCategory/:id", adminControl.deleteCategory)
-
 router.delete("/logout", userControl.userLogout)
 
 

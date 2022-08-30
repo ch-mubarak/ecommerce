@@ -92,7 +92,7 @@
               <tr>
                 <td class="shoping__cart__item">
                   <img src="/files/<%= item.productId.productImagePath[0]%>" alt="" width="120" height="150">
-                  <h5><%= item.name %></h5>
+                  <a href="/product/<%=item.productId.id%>" class="text-dark"><%= item.productId.name%></a>
                 </td>
                 <td class="shoping__cart__price">
                   <%= item.price %>

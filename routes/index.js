@@ -49,7 +49,7 @@ router.post("/login", userControl.userLogin, (req, res) => {
     }
     else {
         const redirectTo=req.session.returnTo
-        res.redirect(redirectTo||"/user/home")
+        res.redirect(redirectTo||"/")
         delete req.session.returnTo;
     }
 })

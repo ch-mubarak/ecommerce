@@ -88,7 +88,7 @@
               <tr>
                 <td class="shoping__cart__item">
                   <img src="/files/<%= list.productId.productImagePath[0] %>" alt="" width="120" height="150">
-                  <h5><%= list.productId.name%></h5>
+                  <a href="/product/<%=list.productId.id%>" class="text-dark"><%= list.productId.name%></a>
                 </td>
                 <td>
                   <%= list.productId.price %>
@@ -113,15 +113,15 @@
 </section>
 <!-- wishlist Section End -->
 <%} else{%>
-  <section class="container">
-    <div class="text-center py-5">
-      <img src="/img/emptycart.png" alt="">
-      <div>
-        <p class="h4">There is nothing in your bag. Let's add some items.</p>
-      </div>
-      <a href="/" class="primary-btn">Shop</a>
+<section class="container">
+  <div class="text-center py-5">
+    <img src="/img/emptycart.png" alt="">
+    <div>
+      <p class="h4">There is nothing in your bag. Let's add some items.</p>
     </div>
-  </section>
+    <a href="/" class="primary-btn">Shop</a>
+  </div>
+</section>
 <%} %>
 
 <form action="/user/wishlist?_method=put" method="post" id="wishlistForm">

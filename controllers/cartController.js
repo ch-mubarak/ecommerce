@@ -1,11 +1,11 @@
 const Cart = require("../models/cart");
 
 module.exports = {
-
     addToCart: async (req, res) => {
         const { productId, name, } = req.body;
         const price = Number.parseFloat(req.body.price)
         const quantity = Number.parseInt(req.body.quantity)
+        console.log(req.body)
         const userId = req.user.id
         try {
             let cart = await Cart.findOne({ userId });
@@ -37,12 +37,10 @@ module.exports = {
                     total: total
                 });
             }
-            res.redirect("/user/cart")
+            // res.redirect("/user/cart")
+            res.status(201).json({message:"added to cart"})
         } catch (err) {
-            console.log(err);
-            req.flash("message", "Error adding item to cart")
-            res.redirect(`/product/${productId}`)
-
+            res.status(500).json({err})
         }
     },
 
@@ -81,9 +79,10 @@ module.exports = {
                 return acc + curr.quantity * curr.price;
             }, 0)
             await cart.save()
-            res.redirect("/user/cart")
+            // res.redirect("/user/cart")
+            res.status(200).json({message:"successfully deleted"})
         } catch (err) {
-            console.log(err)   
+            res.status(400).json({err})
         }
     }
 }

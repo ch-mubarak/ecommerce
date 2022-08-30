@@ -31,10 +31,12 @@ module.exports = {
                     myList: [{ productId, name }]
                 })
             }
-            res.redirect(req.get('referer'));
+            // res.redirect(req.get('referer'));
+            res.status(201).json({message:"added to wishlist"})
         } catch (err) {
             console.log(err)
-            res.redirect("/")
+            // res.redirect("/")
+            res.status(500).json({err})
         }
     },
     wishlistItemCount: async (req, res, next) => {

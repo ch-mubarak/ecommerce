@@ -27,6 +27,7 @@ app.set("layout", "layouts/masterLayout")
 app.use(express.static("public"))
 app.use(expressLayout)
 app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 app.use(methodOverride("_method"))
 
 app.use(session({

@@ -90,7 +90,6 @@
       </div>
       <div class="col-lg-6 col-md-6">
         <div class="product__details__text">
-          <form action="/user/addToCart?_method=PUT" method="post" id="cartForm">
             <h3><%= findProduct.name %></h3>
             <div class="product__details__rating">
               <i class="fa fa-star"></i>
@@ -105,12 +104,14 @@
             <div class="product__details__quantity">
               <div class="quantity">
                 <div class="pro-qty">
-                  <input type="text" value="1" name="quantity" form="cartForm">
+                  <span class="inc qtybtn">-</span>
+                  <input type="text" value="1" name="quantity" id="itemQuantity">
+                  <span class="inc qtybtn">+</span>
                 </div>
               </div>
             </div>
-            <button class="btn primary-btn" type="submit" form="cartForm">ADD TO CARD</button>
-            <a class="heart-icon" href="#" onclick="wishlist('<%=findProduct.name%>','<%=findProduct.id%>')"><span class="icon_heart_alt"></span></a>
+            <button class="btn primary-btn" onclick="cart('<%=findProduct.id%>','<%=findProduct.name%>','<%=findProduct.price%>')">ADD TO CARD</button>
+            <a class="heart-icon" href="" onclick="wishlist('<%=findProduct.name%>','<%=findProduct.id%>')"><i id="heartBox" class="fa-solid fa-heart fa-xl"></i></a>
             <ul>
               <li><b>Availability</b> <span>In Stock</span></li>
               <li><b>Shipping</b> <span>01 day shipping.</span></li>
@@ -123,10 +124,6 @@
                 </div>
               </li>
             </ul>
-            <input type="hidden" form="cartForm" name="productId" value="<%= findProduct.id %>">
-            <input type="hidden" form="cartForm" name="name" value="<%= findProduct.name%>">
-            <input type="hidden" form="cartForm" name="price" value="<%= findProduct.price %>">
-          </form>
         </div>
       </div>
       <div class="col-lg-12">
@@ -210,8 +207,8 @@
         <div class="product__item">
           <div class="product__item__pic set-bg" data-setbg="/files/<%=product.productImagePath[0]%>">
             <ul class="product__item__pic__hover">
-              <li><a href="#"><i class="fa fa-heart"></i></a></li>
-              <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+              <li><a href="" onclick="wishlist('<%=product.name%>','<%=product.id%>')"><i class="fa fa-heart"></i></a></li>
+              <li><a href="" onclick="addToCart('<%=product.id%>','<%=product.name%>','<%=product.price%>')"><i class="fa fa-shopping-cart"></i></a></li>
             </ul>
           </div>
           <div class="product__item__text">
@@ -225,8 +222,4 @@
   </div>
 </section>
 
-<form action="/user/wishlist?_method=put" method="post" id="wishlistForm">
-  <input type="hidden" name="name" value="" id="productName">
-  <input type="hidden" name="productId" value="" id="productId">
-</form>
 <!-- Related Product Section End -->

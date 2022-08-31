@@ -121,7 +121,7 @@
           <div class="featured__item__pic set-bg" data-setbg="/files/<%=product.productImagePath[0]%>">
             <ul class="featured__item__pic__hover">
               <li><a href="" onclick="wishlist('<%=product.name%>','<%=product.id%>')"><i class="fa fa-heart"></i></a></li>
-              <li><a href="" onclick="addToCart('<%=product.id%>','<%=product.name%>','<%=product.price%>',1)"><i class="fa fa-shopping-cart"></i></a></li>
+              <li><a href="" onclick="addToCart('<%=product.id%>','<%=product.name%>','<%=product.price%>',1,'<%=product?.offerPrice%>')"><i class="fa fa-shopping-cart"></i></a></li>
             </ul>
           </div>
           <% if(product.discount){ %>

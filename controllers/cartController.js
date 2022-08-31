@@ -3,7 +3,7 @@ const Cart = require("../models/cart");
 module.exports = {
     addToCart: async (req, res) => {
         const productId = req.params.id
-        const {name,price,quantity}= req.body;
+        const { name, price, quantity, offerPrice } = req.body;
         const userId = req.user.id
         try {
             let cart = await Cart.findOne({ userId });
@@ -14,24 +14,26 @@ module.exports = {
                     //product exists in the cart, update the quantity
                     let productItem = cart.products[itemIndex];
                     productItem.quantity += quantity
-                    productItem.subTotal = productItem.quantity * price
-                    cart.products[itemIndex] = productItem;
+                    // cart.products[itemIndex] = productItem;
                 } else {
                     //product does not exists in cart, add new item
-                    const subTotal = quantity * price
-                    cart.products.push({ productId, quantity, name, price, subTotal });
+                    cart.products.push({ productId, quantity, name, price, offerPrice });
                 }
-                cart.total = cart.products.reduce((acc, curr) => {
+                cart.subTotal = cart.products.reduce((acc, curr) => {
                     return acc + curr.quantity * curr.price;
+                }, 0)
+                cart.total = cart.products.reduce((acc, curr) => {
+                    return acc + curr.quantity * curr.offerPrice;
                 }, 0)
                 await cart.save();
             } else {
                 //no cart for user, create new cart
                 const subTotal = quantity * price
-                const total = subTotal
+                const total = quantity * offerPrice
                 await Cart.create({
                     userId,
-                    products: [{ productId, quantity, name, price, subTotal }],
+                    products: [{ productId, quantity, name, price, offerPrice }],
+                    subTotal: subTotal,
                     total: total
                 });
             }
@@ -49,6 +51,7 @@ module.exports = {
                 path: "products.productId",
                 model: "Product"
             })
+
             res.render("master/cart", {
                 findCart: findCart
             })

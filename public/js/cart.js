@@ -12,7 +12,7 @@ async function deleteItem(productId) {
     }
 }
 
-async function addToCart(productId, productName, productPrice, quantity,currentQuantity) {
+async function addToCart(productId, productName, productPrice, quantity, offerPrice, currentQuantity) {
     if (currentQuantity == 1 && quantity == -1) {
         deleteItem(productId);
     }
@@ -24,7 +24,8 @@ async function addToCart(productId, productName, productPrice, quantity,currentQ
                 data: {
                     name: productName,
                     price: Number.parseFloat(productPrice),
-                    quantity: Number.parseInt(quantity)
+                    quantity: Number.parseInt(quantity),
+                    offerPrice: Number.parseFloat(offerPrice),
                 }
             })
             window.location.reload()
@@ -37,7 +38,7 @@ async function addToCart(productId, productName, productPrice, quantity,currentQ
     }
 }
 
-function cart(id, name, price) {
+function cart(id, name, price, offerPrice) {
     let quantity = document.getElementById("itemQuantity").value
-    addToCart(id, name, price, quantity)
+    addToCart(id, name, price, quantity, offerPrice)
 }

@@ -113,13 +113,13 @@
           <div class="product__details__quantity">
             <div class="quantity">
               <div class="pro-qty">
-                <span class="inc qtybtn">-</span>
+                <span class="dec qtybtn">-</span>
                 <input type="text" value="1" name="quantity" id="itemQuantity">
                 <span class="inc qtybtn">+</span>
               </div>
             </div>
           </div>
-          <button class="btn primary-btn" onclick="cart('<%=findProduct.id%>','<%=findProduct.name%>','<%=findProduct.price%>')">ADD TO CARD</button>
+          <button class="btn primary-btn" onclick="cart('<%=findProduct.id%>','<%=findProduct.name%>','<%=findProduct.price%>','<%=findProduct?.offerPrice %>')">ADD TO CARD</button>
           <% if(isInMyList){ %>
           <a class="heart-icon" href="" onclick="wishlist('<%=findProduct.name%>','<%=findProduct.id%>')"><i id="heartBox" class="fa-solid fa-heart fa-xl" style="color: rgb(219, 47, 47);"></i></a>
           <% }else{ %>
@@ -221,7 +221,7 @@
           <div class="product__item__pic set-bg" data-setbg="/files/<%=product.productImagePath[0]%>">
             <ul class="product__item__pic__hover">
               <li><a href="" onclick="wishlist('<%=product.name%>','<%=product.id%>')"><i class="fa fa-heart"></i></a></li>
-              <li><a href="" onclick="addToCart('<%=product.id%>','<%=product.name%>','<%=product.price%>')"><i class="fa fa-shopping-cart"></i></a></li>
+              <li><a href="" onclick="addToCart('<%=product.id%>','<%=product.name%>','<%=product.price%>',1,'<%=product?.offerPrice%>')"><i class="fa fa-shopping-cart"></i></a></li>
             </ul>
           </div>
           <div class="product__item__text">

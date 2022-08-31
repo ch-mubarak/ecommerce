@@ -95,7 +95,7 @@
                 </td>
                 <td>
                   <div>
-                    <a href="" class="text-dark" onclick="addToCart('<%=list.productId.id%>','<%=list.name%>','<%=list.productId.price%>',1);wishlist('<%=list.name%>','<%=list.productId.id%>')"><i class="fa fa-shopping-cart fa-lg"></i></a>
+                    <a href="" class="text-dark" onclick="addToCart('<%=list.productId.id%>','<%=list.name%>','<%=list.productId.price%>',1,'<%=list.productId?.offerPrice%>');wishlist('<%=list.name%>','<%=list.productId.id%>')"><i class="fa fa-shopping-cart fa-lg"></i></a>
                   </div>
                   <div>
                     <a href="" onclick="wishlist('<%=list.name%>','<%=list.productId.id%>')" class="btn"><i class="fa-solid fa-trash-can fa-lg"></i></a>
@@ -127,7 +127,7 @@
 <script>
   function moveToCart(name, id, price) {
     console.log(name, id, price)
-    addToCart(id,name,price,1)
-    wishlist(name,id)
+    addToCart(id, name, price, 1)
+    wishlist(name, id)
   }
 </script>

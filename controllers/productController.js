@@ -1,5 +1,4 @@
 const Product = require("../models/product")
-const Wishlist = require("../models/wishlist")
 const fs = require("fs").promises
 
 module.exports = {

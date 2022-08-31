@@ -90,40 +90,44 @@
       </div>
       <div class="col-lg-6 col-md-6">
         <div class="product__details__text">
-            <h3><%= findProduct.name %></h3>
-            <div class="product__details__rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star-half-o"></i>
-              <span>(18 reviews)</span>
-            </div>
-            <div class="product__details__price"><%= findProduct.price %></div>
-            <p><%= findProduct.description %></p>
-            <div class="product__details__quantity">
-              <div class="quantity">
-                <div class="pro-qty">
-                  <span class="inc qtybtn">-</span>
-                  <input type="text" value="1" name="quantity" id="itemQuantity">
-                  <span class="inc qtybtn">+</span>
-                </div>
+          <h3><%= findProduct.name %></h3>
+          <div class="product__details__rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+            <span>(18 reviews)</span>
+          </div>
+          <div class="product__details__price"><%= findProduct.price %></div>
+          <p><%= findProduct.description %></p>
+          <div class="product__details__quantity">
+            <div class="quantity">
+              <div class="pro-qty">
+                <span class="inc qtybtn">-</span>
+                <input type="text" value="1" name="quantity" id="itemQuantity">
+                <span class="inc qtybtn">+</span>
               </div>
             </div>
-            <button class="btn primary-btn" onclick="cart('<%=findProduct.id%>','<%=findProduct.name%>','<%=findProduct.price%>')">ADD TO CARD</button>
-            <a class="heart-icon" href="" onclick="wishlist('<%=findProduct.name%>','<%=findProduct.id%>')"><i id="heartBox" class="fa-solid fa-heart fa-xl"></i></a>
-            <ul>
-              <li><b>Availability</b> <span>In Stock</span></li>
-              <li><b>Shipping</b> <span>01 day shipping.</span></li>
-              <li><b>Share on</b>
-                <div class="share">
-                  <a href="#"><i class="fa fa-facebook"></i></a>
-                  <a href="#"><i class="fa fa-twitter"></i></a>
-                  <a href="#"><i class="fa fa-instagram"></i></a>
-                  <a href="#"><i class="fa fa-pinterest"></i></a>
-                </div>
-              </li>
-            </ul>
+          </div>
+          <button class="btn primary-btn" onclick="cart('<%=findProduct.id%>','<%=findProduct.name%>','<%=findProduct.price%>')">ADD TO CARD</button>
+          <% if(isInMyList){ %>
+          <a class="heart-icon" href="" onclick="wishlist('<%=findProduct.name%>','<%=findProduct.id%>')"><i id="heartBox" class="fa-solid fa-heart fa-xl" style="color: rgb(219, 47, 47);"></i></a>
+          <% }else{ %>
+          <a class="heart-icon" href="" onclick="wishlist('<%=findProduct.name%>','<%=findProduct.id%>')"><i id="heartBox" class="fa-solid fa-heart fa-xl"></i></a>
+          <% } %>
+          <ul>
+            <li><b>Availability</b> <span>In Stock</span></li>
+            <li><b>Shipping</b> <span>01 day shipping.</span></li>
+            <li><b>Share on</b>
+              <div class="share">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-pinterest"></i></a>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="col-lg-12">

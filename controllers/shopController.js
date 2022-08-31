@@ -59,12 +59,13 @@ module.exports = {
     getProductById: async (req, res) => {
         try {
             const relatedProducts = await Product.find().limit(4).exec()
-            const isInMyList = await Wishlist.where("userId").equals(req.user?.id).where("myList.productId").equals(req.params.id).exists()
-            console.log(isInMyList)
+            const isInMyList = await Wishlist.exists().where("userId").equals(req.user?.id).where("myList.productId").equals(req.params.id)
+            // console.log(isInMyList)
             const findProduct = await Product.findById(req.params.id).populate("category").exec()
             res.render("master/productDetails", {
                 findProduct: findProduct,
-                relatedProducts: relatedProducts
+                relatedProducts: relatedProducts,
+                isInMyList:isInMyList
             })
         } catch (err) {
             console.log(err)

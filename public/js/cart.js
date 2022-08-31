@@ -1,13 +1,13 @@
 async function deleteItem(productId) {
     try {
-        const response=await axios({
-            method:"delete",
-            url:`/user/cart/${productId}`,
+        const response = await axios({
+            method: "delete",
+            url: `/user/cart/${productId}`,
         })
         console.log(response)
         window.location.reload()
     } catch (error) {
-        window.location.replace("/login")
+        window.location.replace("/user/cart")
         console.error(error)
     }
 }
@@ -31,13 +31,13 @@ async function addToCart(productId, productName, productPrice, quantity) {
             console.log(response)
         }
         catch (err) {
-            window.location.replace("/login")
+            window.location.replace("/user/cart")
             console.error(err)
         }
     }
 }
 
-function cart(id,name,price){
-   let quantity= document.getElementById("itemQuantity").value
-   addToCart(id,name,price,quantity)
+function cart(id, name, price) {
+    let quantity = document.getElementById("itemQuantity").value
+    addToCart(id, name, price, quantity)
 }

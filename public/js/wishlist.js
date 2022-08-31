@@ -11,7 +11,7 @@ async function wishlist(name, id) {
     window.location.reload()
     console.log(response);
   } catch (error) {
-    window.location.replace("/login")
+    window.location.replace("/user/wishlist")
     console.error(error);
   }
 }

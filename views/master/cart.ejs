@@ -100,8 +100,8 @@
                 <td class="shoping__cart__quantity">
                   <div class="quantity">
                     <div class="pro-qty">
-                      <span class="dec qtybtn" onclick="addToCart('<%=item.productId.id%>','<%=item.name%>','<%=item.price%>',-1)">-</span>
-                      <input type="text" id="cartQuantity" value="<%= item.quantity %>">
+                      <span class="dec qtybtn" onclick="addToCart('<%=item.productId.id%>','<%=item.name%>','<%=item.price%>',-1,'<%=item.quantity%>')">-</span>
+                      <input type="text" value="<%= item.quantity %>">
                       <span class="inc qtybtn" onclick="addToCart('<%=item.productId.id%>','<%=item.name%>','<%=item.price%>',1)">+</span>
                     </div>
                   </div>

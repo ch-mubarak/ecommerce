@@ -12,8 +12,8 @@ async function deleteItem(productId) {
     }
 }
 
-async function addToCart(productId, productName, productPrice, quantity) {
-    if (document?.getElementById("cartQuantity")?.value == 1 && quantity == -1) {
+async function addToCart(productId, productName, productPrice, quantity,currentQuantity) {
+    if (currentQuantity == 1 && quantity == -1) {
         deleteItem(productId);
     }
     else {

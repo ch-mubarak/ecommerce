@@ -5,14 +5,18 @@ module.exports = {
     addProduct: async (req, res) => {
         try {
             req.files.forEach(img => { console.log(img.filename) })
+            const price = parseFloat(req.body.price)
+            const discount = req.body.discount ? parseFloat(req.body.discount) : null
+            const offerPrice = req.body.discount ? price - (((price / 100) * discount).toFixed(2)) : null;
             const productImages = req.files != null ? req.files.map((img) => img.filename) : null
-            console.log(productImages)
             const product = new Product({
                 name: req.body.name,
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
-                price: req.body.price,
+                price: price,
+                discount: discount,
+                offerPrice: offerPrice,
                 description: req.body.description,
                 productImagePath: productImages
             })
@@ -31,6 +35,9 @@ module.exports = {
         let product
         try {
             product = await Product.findById(req.params.id)
+            const price = parseFloat(req.body.price)
+            const discount = req.body.discount ? parseFloat(req.body.discount) : null
+            const offerPrice = req.body.discount ? price - (((price / 100) * discount).toFixed(2)) : null;
             const oldProductImages = product.productImagePath
             const productImages = req.files.length > 0 ? req.files.map((img) => img.filename) : oldProductImages
             await Product.findByIdAndUpdate(req.params.id, {
@@ -38,7 +45,9 @@ module.exports = {
                 brand: req.body.brand,
                 category: req.body.category,
                 quantity: req.body.quantity,
-                price: req.body.price,
+                price: price,
+                discount: discount,
+                offerPrice: offerPrice,
                 description: req.body.description,
                 productImagePath: productImages
             })

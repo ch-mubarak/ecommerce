@@ -3,6 +3,7 @@ const Product = require("../models/product")
 const Category = require("../models/category")
 const Cart =require("../models/cart")
 const Wishlist =require("../models/wishlist")
+const category = require("../models/category")
 
 
 module.exports = {
@@ -26,6 +27,7 @@ module.exports = {
     getAllProducts: async (req, res) => {
         try {
             const allCategories = await Category.find()
+            // console.log(offerProduct)
             const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).exec()
             res.render("master/shop", {
                 allCategories: allCategories,

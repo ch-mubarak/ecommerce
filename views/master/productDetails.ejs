@@ -99,7 +99,16 @@
             <i class="fa fa-star-half-o"></i>
             <span>(18 reviews)</span>
           </div>
-          <div class="product__details__price"><%= findProduct.price %></div>
+          <% if(findProduct.discount){ %>
+          <div class="product__details__price">
+            <p><del>₹<%= findProduct.price %></del></p>
+            ₹<%= findProduct.offerPrice %>
+          </div>
+          <%  } else{ %>
+          <div class="product__details__price">
+            ₹<%= findProduct.price %>
+          </div>
+          <% } %>
           <p><%= findProduct.description %></p>
           <div class="product__details__quantity">
             <div class="quantity">

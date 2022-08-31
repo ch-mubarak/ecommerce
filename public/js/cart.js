@@ -2,10 +2,7 @@ async function deleteItem(productId) {
     try {
         const response=await axios({
             method:"delete",
-            url:"/user/cart",
-            date:{
-                productId:productId
-            }
+            url:`/user/cart/${productId}`,
         })
         console.log(response)
         window.location.reload()
@@ -23,12 +20,11 @@ async function addToCart(productId, productName, productPrice, quantity) {
         try {
             const response = await axios({
                 method: "put",
-                url: "/user/addToCart",
+                url: `/user/addToCart/${productId}`,
                 data: {
-                    productId: productId,
                     name: productName,
-                    price: productPrice,
-                    quantity: quantity
+                    price: Number.parseFloat(productPrice),
+                    quantity: Number.parseInt(quantity)
                 }
             })
             window.location.reload()

@@ -10,12 +10,12 @@ router.use(authentication.checkLoggedIn, authentication.checkAccountVerified)
 router.get("/home", userControl.getHome)
 router.get("/changePassword", userControl.getChangePassword)
 router.get("/wishlist", wishlistControl.wishlist)
-
-router.put("/wishlist", wishlistControl.addToWishlist)
 router.get("/cart", cartControl.getCart)
-router.put("/addToCart", cartControl.addToCart)
+
+router.put("/wishlist/:id", wishlistControl.addToWishlist)
+router.put("/addToCart/:id", cartControl.addToCart)
 router.put("/changePassword", userControl.changePassword)
 
-router.delete("/cart", cartControl.deleteItem)
+router.delete("/cart/:id", cartControl.deleteItem)
 
 module.exports = router

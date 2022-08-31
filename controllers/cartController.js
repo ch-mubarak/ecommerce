@@ -2,9 +2,8 @@ const Cart = require("../models/cart");
 
 module.exports = {
     addToCart: async (req, res) => {
-        const { productId, name, } = req.body;
-        const price = Number.parseFloat(req.body.price)
-        const quantity = Number.parseInt(req.body.quantity)
+        const productId = req.params.id
+        const {name,price,quantity}= req.body;
         console.log(req.body)
         const userId = req.user.id
         try {
@@ -38,9 +37,9 @@ module.exports = {
                 });
             }
             // res.redirect("/user/cart")
-            res.status(201).json({message:"added to cart"})
+            res.status(201).json({ message: "added to cart" })
         } catch (err) {
-            res.status(500).json({err})
+            res.status(500).json({ err })
         }
     },
 
@@ -70,19 +69,19 @@ module.exports = {
     },
     deleteItem: async (req, res, next) => {
         const userId = req.user.id
-        const productId=req.body.productId
+        const productId = req.params.id
         try {
-            const cart = await Cart.findOne({userId})
+            const cart = await Cart.findOne({ userId })
             const itemIndex = cart.products.findIndex(p => p.productId == productId);
-            cart.products.splice(itemIndex,1)
+            cart.products.splice(itemIndex, 1)
             cart.total = cart.products.reduce((acc, curr) => {
                 return acc + curr.quantity * curr.price;
             }, 0)
             await cart.save()
             // res.redirect("/user/cart")
-            res.status(200).json({message:"successfully deleted"})
+            res.status(200).json({ message: "successfully deleted" })
         } catch (err) {
-            res.status(400).json({err})
+            res.status(400).json({ err })
         }
     }
 }

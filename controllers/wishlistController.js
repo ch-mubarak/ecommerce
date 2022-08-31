@@ -14,7 +14,8 @@ module.exports = {
     addToWishlist: async (req, res, next) => {
         try {
             const userId = req.user.id
-            const { productId, name } = req.body
+            const name = req.body.name
+            const productId = req.params.id
             const wishlist = await Wishlist.findOne({ userId })
             if (wishlist) {
                 const ItemIndex = wishlist.myList.findIndex(p => p.productId == productId)
@@ -32,11 +33,11 @@ module.exports = {
                 })
             }
             // res.redirect(req.get('referer'));
-            res.status(201).json({message:"added to wishlist"})
+            res.status(201).json({ message: "added to wishlist" })
         } catch (err) {
             console.log(err)
             // res.redirect("/")
-            res.status(500).json({err})
+            res.status(500).json({ err })
         }
     },
     wishlistItemCount: async (req, res, next) => {

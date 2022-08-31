@@ -2,6 +2,8 @@ const _ = require("lodash")
 const Product = require("../models/product")
 const Category = require("../models/category")
 const Cart =require("../models/cart")
+const Wishlist =require("../models/wishlist")
+
 
 module.exports = {
     getHome: async (req, res) => {
@@ -57,6 +59,8 @@ module.exports = {
     getProductById: async (req, res) => {
         try {
             const relatedProducts = await Product.find().limit(4).exec()
+            const isInMyList = await Wishlist.where("userId").equals(req.user?.id).where("myList.productId").equals(req.params.id).exists()
+            console.log(isInMyList)
             const findProduct = await Product.findById(req.params.id).populate("category").exec()
             res.render("master/productDetails", {
                 findProduct: findProduct,

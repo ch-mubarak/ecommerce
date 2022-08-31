@@ -3,9 +3,8 @@ async function wishlist(name, id) {
   try {
     const response = await axios({
       method: 'put',
-      url: '/user/wishlist',
+      url: `/user/wishlist/${id}`,
       data: {
-        productId: id,
         name: name,
       }
     });

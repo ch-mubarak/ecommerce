@@ -13,7 +13,7 @@ router.get("/users", adminControl.user)
 router.get("/categories", adminControl.categories)
 router.get("/products", adminControl.products)
 
-router.put("/addCategory", adminControl.addCategory)
+router.post("/addCategory", adminControl.addCategory)
 router.post("/addProduct", multer.send, productControl.addProduct)
 router.put("/editProduct/:id", multer.send, productControl.editProduct)
 router.put("/editCategory/:id", adminControl.editCategory)

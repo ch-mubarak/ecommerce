@@ -96,13 +96,12 @@
                 </td>
                 <%if(item.offerPrice){%>
                 <td class="shoping__cart__price">
-                  <del>₹<%= item.price %></del>
+                  <del class="text-muted">₹<%= item.price %></del>
                   ₹<%= item.offerPrice %>
                 </td>
                 <% }else{ %>
                 <td class="shoping__cart__price">
-                  <del>₹<%= item.price %></del>
-                  ₹<%= item.offerPrice %>
+                  ₹<%= item.price %>
                 </td>
                 <% } %>
                 <td class="shoping__cart__quantity">
@@ -115,7 +114,11 @@
                   </div>
                 </td>
                 <td class="shoping__cart__total">
+                  <% if(item.offerPrice) {%>
                   ₹<%= (item.offerPrice * item.quantity).toFixed(2) %>
+                  <% }else {%>
+                  ₹<%= (item.price * item.quantity).toFixed(2) %>
+                  <% } %>
                 </td>
                 <td class="shoping__cart__item__close">
                   <span class="icon_close" onclick="deleteItem('<%=item.productId.id %>')"></span>

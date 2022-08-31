@@ -23,7 +23,7 @@ module.exports = {
                     return acc + curr.quantity * curr.price;
                 }, 0)
                 cart.total = cart.products.reduce((acc, curr) => {
-                    return acc + curr.quantity * curr.offerPrice;
+                    return acc + curr.quantity * (curr.offerPrice||curr.price) ;
                 }, 0)
                 await cart.save();
             } else {
@@ -76,8 +76,11 @@ module.exports = {
             const cart = await Cart.findOne({ userId })
             const itemIndex = cart.products.findIndex(p => p.productId == productId);
             cart.products.splice(itemIndex, 1)
-            cart.total = cart.products.reduce((acc, curr) => {
+            cart.subTotal = cart.products.reduce((acc, curr) => {
                 return acc + curr.quantity * curr.price;
+            }, 0)
+            cart.total = cart.products.reduce((acc, curr) => {
+                return acc + curr.quantity * (curr.offerPrice||curr.price) ;
             }, 0)
             await cart.save()
             // res.redirect("/user/cart")

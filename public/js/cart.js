@@ -1,8 +1,11 @@
-async function deleteItem(productId) {
+async function deleteItem(productId,cartCount) {
     try {
         const response = await axios({
             method: "delete",
             url: `/user/cart/${productId}`,
+            data:{
+                cartCount:parseInt(cartCount)
+            }
         })
         console.log(response)
         window.location.reload()
@@ -14,7 +17,7 @@ async function deleteItem(productId) {
 
 async function addToCart(productId, productName, productPrice, quantity, offerPrice, currentQuantity) {
     if (currentQuantity == 1 && quantity == -1) {
-        deleteItem(productId);
+        deleteItem(productId,1);
     }
     else {
         try {
@@ -32,7 +35,7 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
             console.log(response)
         }
         catch (err) {
-            window.location.replace("/user/cart")
+            window.location.replace(`/product/${productId}`)
             console.error(err)
         }
     }

@@ -59,7 +59,8 @@
         <div class="breadcrumb__text">
           <h2>Checkout</h2>
           <div class="breadcrumb__option">
-            <a href="./index.html">Home</a>
+            <a href="/">Home</a>
+            <a href="/user/cart">Cart</a>
             <span>Checkout</span>
           </div>
         </div>
@@ -134,13 +135,13 @@
             </div>
 
 
-            <!-- <div class="checkout__input__checkbox">
+            <div class="checkout__input__checkbox">
               <label for="diff-acc">
                 Ship to a different address?
                 <input type="checkbox" id="diff-acc">
                 <span class="checkmark"></span>
               </label>
-            </div> -->
+            </div>
             <!-- <div class="checkout__input">
               <p>Order notes<span>*</span></p>
               <input type="text" placeholder="Notes about your order, e.g. special notes for delivery.">
@@ -150,14 +151,18 @@
             <div class="checkout__order">
               <h4>Your Order</h4>
               <div class="checkout__order__products">Products <span>Total</span></div>
-              <div> 
+              <div>
                 <ul>
 
-                <% findCart.products.forEach(item=>{%>
-                  <li><%= item.name %> x<%= item.quantity %><span>₹<%= item.offerPrice || item.price %> </span></li>
-                <%}) %>
-            
-              </ul>
+                  <% findCart.products.forEach(item=>{%>
+                  <li class="mb-2">
+                    <img type="button" src="/files/<%= item.productId.productImagePath[0] %>" alt="" width="50" height="60">
+                    <%= item.name %> x<%= item.quantity %>
+                    <span>₹<%= item.offerPrice ? (item.offerPrice*item.quantity).toFixed(2) : (item.price*item.quantity).toFixed(2)  %> </span>
+                  </li>
+                  <%}) %>
+
+                </ul>
               </div>
               <div class="checkout__order__subtotal">Subtotal <span>₹<%= findCart.subTotal.toFixed(2) || findCart.total.toFixed(2) %></span></div>
               <div class="checkout__order__total">Discount <span>₹<%= (findCart.subTotal - findCart.total).toFixed(2) %></span></div>

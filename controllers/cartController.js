@@ -94,11 +94,14 @@ module.exports = {
     getCheckout: async (req, res) => {
         try {
             const userId = req.user.id
-            const user = await User.findById(userId,{email:1})
-            const findCart = await Cart.findOne({ userId: userId })
+            const user = await User.findById(userId, { email: 1 })
+            const findCart = await Cart.findOne({ userId: userId }).populate({
+                path: "products.productId",
+                model: "Product"
+            })
             res.render("master/checkout", {
                 findCart: findCart,
-                email:user.email
+                email: user.email
             })
         } catch (err) {
             console.log(err)

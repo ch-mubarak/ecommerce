@@ -1,10 +1,7 @@
 const _ = require("lodash")
 const Product = require("../models/product")
 const Category = require("../models/category")
-const Cart =require("../models/cart")
 const Wishlist =require("../models/wishlist")
-const category = require("../models/category")
-
 
 module.exports = {
     getHome: async (req, res) => {

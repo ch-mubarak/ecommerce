@@ -1,6 +1,41 @@
 const mongoose = require("mongoose")
 const passportLocalMongoose = require("passport-local-mongoose")
 
+const addressSchema = new mongoose.Schema({
+    firstName:{
+        type:String,
+        required:true
+    },
+    lastName:{
+        type:String,
+        require:true
+    },
+    country: {
+        type: String,
+        required: true,
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true,
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    pincode: {
+        type: Number,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+})
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -26,6 +61,9 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    address: {
+        type: addressSchema
     },
     otp: {
         type: Number

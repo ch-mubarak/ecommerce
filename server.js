@@ -7,9 +7,10 @@ const session = require("express-session")
 const flash = require("connect-flash")
 const methodOverride = require("method-override")
 const User = require("./models/users")
-const app = express();
 const cartControl = require("./controllers/cartController")
 const wishlistControl = require("./controllers/wishlistController")
+
+const app = express();
 
 const indexRouter = require("./routes/index")
 const userRouter = require("./routes/user")

@@ -1,4 +1,6 @@
 const Cart = require("../models/cart");
+const User = require("../models/users")
+const Order = require("../models/order")
 
 module.exports = {
     addToCart: async (req, res) => {
@@ -23,7 +25,7 @@ module.exports = {
                     return acc + curr.quantity * curr.price;
                 }, 0)
                 cart.total = cart.products.reduce((acc, curr) => {
-                    return acc + curr.quantity * (curr.offerPrice||curr.price) ;
+                    return acc + curr.quantity * (curr.offerPrice || curr.price);
                 }, 0)
                 await cart.save();
             } else {
@@ -80,13 +82,57 @@ module.exports = {
                 return acc + curr.quantity * curr.price;
             }, 0)
             cart.total = cart.products.reduce((acc, curr) => {
-                return acc + curr.quantity * (curr.offerPrice||curr.price) ;
+                return acc + curr.quantity * (curr.offerPrice || curr.price);
             }, 0)
             await cart.save()
             // res.redirect("/user/cart")
             res.status(200).json({ message: "successfully deleted" })
         } catch (err) {
             res.status(400).json({ err })
+        }
+    },
+    getCheckout: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const user = await User.findById(userId,{email:1})
+            const findCart = await Cart.findOne({ userId: userId })
+            res.render("master/checkout", {
+                findCart: findCart,
+                email:user.email
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    checkout: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const user = await User.findById(userId)
+            user.address = {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                country: req.body.country,
+                address: req.body.address1 + " " + req.body?.address2,
+                city: req.body.phone,
+                state: req.body.state,
+                pincode: req.body.pincode,
+                phone: req.body.phone
+            }
+            await user.save()
+            const cart = await Cart.findOne({ userId: userId })
+            await Order.create({
+                userId: req.user.id,
+                deliveryAddress: user.address,
+                products: cart.products,
+                total: cart.total
+            })
+            console.log("order success")
+            await cart.remove()
+            res.redirect("/")
+        } catch (err) {
+            console.log(err)
+
         }
     }
 }

@@ -12,9 +12,6 @@ router.get("/", shopControl.getHome)
 router.get("/shop", shopControl.getAllProducts)
 router.get("/shop/:category", shopControl.getShopByCategory)
 router.get("/product/:id", shopControl.getProductById)
-router.get("/checkout", (req, res) => {
-    res.render("master/checkout")
-})
 router.get("/contact", (req, res) => {
     res.render("master/contact")
 })

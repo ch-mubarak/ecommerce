@@ -5,6 +5,7 @@ const multer = require("../middleware/multer")
 const authentication = require("../middleware/authentication")
 const productControl = require("../controllers/productController")
 const adminControl = require("../controllers/adminController")
+const User = require("../models/users")
 
 // router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
@@ -23,6 +24,25 @@ router.put("/unblockUser/:id", adminControl.unblockUser)
 router.delete("/deleteProduct/:id", productControl.deleteProduct)
 router.delete("/deleteCategory/:id", adminControl.deleteCategory)
 router.delete("/logout", userControl.userLogout)
+
+
+
+router.get("/new",async(req,res)=>{
+    try {
+        const errorMessage = req.flash("message")
+        const users = await User.find({}).sort({ createdAt: -1 }).exec()
+        res.render("adminPanel/index", {
+            users: users,
+            errorMessage: errorMessage,
+            layout: "layouts/adminLayout",
+            extractScripts: true
+        })
+    } catch (err) {
+        console.log(err.message)
+        res.redirect("/")
+
+    }
+})
 
 
 module.exports = router

@@ -31,8 +31,8 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
                     offerPrice: Number.parseFloat(offerPrice),
                 }
             })
-            window.location.reload()
             console.log(response)
+            // window.location.reload()
         }
         catch (err) {
             window.location.replace(`/product/${productId}`)

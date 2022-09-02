@@ -9,10 +9,10 @@
     <thead>
       <tr>
         <th>#id</th>
+        <th>Image</th>
         <th>Name</th>
         <th>Brand</th>
         <th>Category</th>
-        <th>Image</th>
         <th>Stock</th>
         <th>Price</th>
         <th>Discount%</th>
@@ -29,6 +29,9 @@
           <%= index+1 %>
         </td>
         <td>
+          <img src="/files/<%=product.productImagePath[0]%>" alt="" width="80" height="100">
+        </td>
+        <td>
           <%= product.name %>
         </td>
         <td>
@@ -36,10 +39,7 @@
         </td>
         <td>
           <%= product.category.categoryName %>
-        </td>
-        <td>
-          <img src="/files/<%=product.productImagePath[0]%>" alt="" width="110" height="150">
-        </td>
+        </td> 
         <td>
           <%= product.quantity %>
         </td>

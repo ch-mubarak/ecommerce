@@ -23,9 +23,9 @@
 
 <body>
   <!-- Page Preloder -->
-  <div id="preloder">
+  <!-- <div id="preloder">
     <div class="loader"></div>
-  </div>
+  </div> -->
 
   <!-- Humberger Begin -->
   <div class="humberger__menu__overlay"></div>
@@ -35,13 +35,13 @@
     </div>
     <div class="humberger__menu__cart">
       <ul>
-        <% if(locals.user){%>
+       <% if(locals.user){%>
         <li><a href="/user/wishlist"><i class="fa fa-heart"></i> <span><%= locals.wishlistItemCount %></span></a></li>
         <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i> <span><%= locals.cartItemCount %></span></a></li>
         <% } else{%>
         <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
         <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i></a></li>
-        <% } %>
+       <% } %>  
       </ul>
     </div>
     <div class="humberger__menu__widget">

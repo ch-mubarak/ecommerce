@@ -16,7 +16,7 @@ module.exports = {
             const userId = req.user.id
             const name = req.body.name
             const productId = req.params.id
-            const wishlist = await Wishlist.findOne({ userId })
+            const wishlist = await Wishlist.findOne({ userId:userId })
             if (wishlist) {
                 const ItemIndex = wishlist.myList.findIndex(p => p.productId == productId)
                 if (ItemIndex > -1) {

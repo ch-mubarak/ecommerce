@@ -11,10 +11,11 @@ const wishlistSchema = new mongoose.Schema({
             productId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Product",
-                unique: true
+                required:true
             },
             name: {
-                type: String
+                type: String,
+                required:true
             },
         }
     ]

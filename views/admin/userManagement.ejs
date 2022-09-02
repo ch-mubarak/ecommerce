@@ -30,6 +30,7 @@
           <td class="table-danger">Blocked</td>
           <% } %>
           <td class>
+            <% if(!user.isAdmin){%>
             <% if(user.isActive){ %>
             <form action="/admin/blockUser/<%= user.id %>?_method=PUT" method="post">
               <button type="button" data-bs-target="#modalBlock<%= user.id %>" data-bs-toggle="modal" class="btn btn-success"><i class="fa-solid fa-lock-open"></i></button>
@@ -57,8 +58,9 @@
             <form action="/admin/unblockUser/<%= user.id %>?_method=PUT" method="post">
               <button type="submit" class="btn btn-danger"><i class="fa-solid fa-lock"></i></button>
             </form>
+            <% } } else{%>
+            <button type="button" disabled class="btn btn-dark"><i class="fa-solid fa-lock-open"></i></button>
             <% } %>
-
           </td>
         </tr>
         <% }) %>

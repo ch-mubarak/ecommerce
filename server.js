@@ -68,7 +68,6 @@ app.use("/user", userRouter)
 app.use("/admin", adminRouter)
 
 
-
 // app.use(function(req, res, next){
 //     res.status(404);
 //     if (req.accepts('html')) {

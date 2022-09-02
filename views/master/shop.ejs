@@ -223,9 +223,9 @@
           </div>
           <div class="row">
             <div class="product__discount__slider owl-carousel">
-
-              <% allProducts.slice(0,5).forEach(product=>{ %>
-              <% if(product.category.categoryName=="On Sale"){ %>
+              <% let flag =0 %>
+              <% allProducts.every(product=>{ %>
+              <% if(product.category.categoryName=="On Sale"){ flag++ %>
               <div class="col-lg-4">
                 <div class="product__discount__item">
                   <div class="product__discount__item__pic set-bg" data-setbg="/files/<%=product.productImagePath[0]  %>">
@@ -242,7 +242,8 @@
                   </div>
                 </div>
               </div>
-              <% }}) %>
+              <% if(flag >4) return false } %>
+              <% return true }) %>
 
             </div>
           </div>

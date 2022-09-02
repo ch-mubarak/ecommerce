@@ -12,9 +12,8 @@ router.get("/", shopControl.getHome)
 router.get("/shop", shopControl.getAllProducts)
 router.get("/shop/:category", shopControl.getShopByCategory)
 router.get("/product/:id", shopControl.getProductById)
-router.get("/contact", (req, res) => {
-    res.render("master/contact")
-})
+router.get("/contact", (req, res) => res.render("master/contact"))
+
 router.get("/login", authentication.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")
     res.render("user/login", {
@@ -45,8 +44,8 @@ router.post("/login", userControl.userLogin, (req, res) => {
         res.redirect("/admin")
     }
     else {
-        const redirectTo=req.session.returnTo
-        res.redirect(redirectTo||"/")
+        const redirectTo = req.session.returnTo
+        res.redirect(redirectTo || "/")
         delete req.session.returnTo;
     }
 })

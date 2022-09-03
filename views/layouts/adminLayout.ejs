@@ -36,7 +36,11 @@
           <li>
             <hr class="dropdown-divider" />
           </li>
-          <li><a class="dropdown-item" href="#">Logout</a></li>
+          <li>
+            <form action="/admin/logout?_method=DELETE" method="post">
+              <button class="dropdown-item" type="submit">Logout</button>
+            </form>
+          </li>
         </ul>
       </li>
     </ul>
@@ -47,20 +51,20 @@
         <div class="sb-sidenav-menu">
           <div class="nav">
             <div class="sb-sidenav-menu-heading">Core</div>
-            <a class="nav-link" href="/admin/new">
+            <a class="nav-link" href="/admin">
               <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
               Dashboard
             </a>
             <div class="sb-sidenav-menu-heading">Addons</div>
-            <a class="nav-link" href="/admin/new/productManagement">
+            <a class="nav-link" href="/admin/products">
               <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
               Products
             </a>
-            <a class="nav-link" href="/admin/new/categoryManagement">
+            <a class="nav-link" href="/admin/categories">
               <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
               Category
             </a>
-            <a class="nav-link" href="/admin/new/tables">
+            <a class="nav-link" href="#">
               <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
               Orders
             </a>
@@ -81,7 +85,7 @@
       <footer class="py-4 bg-light mt-auto">
         <div class="container-fluid px-4">
           <div class="d-flex align-items-center justify-content-between small">
-            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+            <div class="text-muted">Copyright &copy; Fashionari 2022</div>
             <div>
               <a href="#">Privacy Policy</a>
               &middot;

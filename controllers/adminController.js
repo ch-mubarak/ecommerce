@@ -4,21 +4,14 @@ const Product = require("../models/product")
 
 module.exports = {
 
-    home: (req, res) => {
-        res.render("admin/dashboard", {
-            layout: "layouts/layouts",
-            extractScripts: true
-        })
-    },
-
-    user: async (req, res) => {
+    home: async (req, res) => {
         try {
             const errorMessage = req.flash("message")
             const users = await User.find({}).sort({ createdAt: -1 }).exec()
-            res.render("admin/userManagement", {
+            res.render("admin/index", {
                 users: users,
                 errorMessage: errorMessage,
-                layout: "layouts/layouts",
+                layout: "layouts/adminLayout",
                 extractScripts: true
             })
         } catch (err) {
@@ -35,29 +28,32 @@ module.exports = {
             res.render("admin/categoryManagement", {
                 allCategories: allCategories,
                 errorMessage: errorMessage,
-                layout: "layouts/layouts",
+                layout: "layouts/adminLayout",
                 extractScripts: true
             })
         } catch (err) {
             console.log(err.message)
+            res.redirect("/")
+
         }
     },
 
     products: async (req, res) => {
         try {
+            const errorMessage = req.flash("message")
             const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
             const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).exec()
-            const errorMessage = req.flash("message")
             res.render("admin/productManagement", {
-                allProducts: allProducts,
                 allCategories: allCategories,
-                layout: "layouts/layouts",
+                allProducts: allProducts,
                 errorMessage: errorMessage,
+                layout: "layouts/adminLayout",
                 extractScripts: true
             })
-
         } catch (err) {
             console.log(err.message)
+            res.redirect("/")
+
         }
     },
 
@@ -114,22 +110,22 @@ module.exports = {
             await User.findByIdAndUpdate(
                 req.params.id,
                 { isActive: false })
-            res.redirect("/admin/users")
+            res.redirect("/admin")
         } catch (err) {
             console.log(err.message)
             req.flash("message", "Error blocking User")
-            res.redirect("/admin/users")
+            res.redirect("/admin")
         }
     },
 
     unblockUser: async (req, res) => {
         try {
             await User.findByIdAndUpdate(req.params.id, { isActive: true })
-            res.redirect("/admin/users")
+            res.redirect("/admin")
         } catch (error) {
             console.log(err.message)
             req.flash("message", "Error un blocking User")
-            res.redirect("/admin/users")
+            res.redirect("/admin")
         }
     }
 

@@ -1,0 +1,58 @@
+<div class="container-fluid px-4">
+  <h1 class="mt-4">Product Management</h1>
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      Products
+    </div>
+    <div class="card-body">
+      <table id="datatablesSimple">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Discount %</th>
+            <th>Offer Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Discount %</th>
+            <th>Offer Price</th>
+            <th>Action</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <% allProducts.forEach(product=>{ %>
+          <tr>
+            <td><img src="/files/<%= product.productImagePath[0]  %>" alt="<%= product.name %>" width="60" height="75"></td>
+            <td><%= product.name %></td>
+            <td><%= product.brand %></td>
+            <td><%= product.category.categoryName %></td>
+            <td><%= product.quantity %></td>
+            <td><%= product.price %></td>
+            <td><%= product.discount %></td>
+            <td><%= product.offerPrice %></td>
+            <td>
+              <button class="btn btn-sm btn-outline-dark" type="button"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="btn btn-sm btn-outline-danger" type="button"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

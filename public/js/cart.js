@@ -32,7 +32,7 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
                 }
             })
             console.log(response)
-            // window.location.reload()
+            window.location.reload()
         }
         catch (err) {
             window.location.replace(`/product/${productId}`)

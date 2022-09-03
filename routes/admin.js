@@ -6,6 +6,8 @@ const authentication = require("../middleware/authentication")
 const productControl = require("../controllers/productController")
 const adminControl = require("../controllers/adminController")
 const User = require("../models/users")
+const Product = require("../models/product")
+const Category = require("../models/category")
 
 // router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
@@ -27,12 +29,48 @@ router.delete("/logout", userControl.userLogout)
 
 
 
-router.get("/new",async(req,res)=>{
+router.get("/new", async (req, res) => {
     try {
         const errorMessage = req.flash("message")
         const users = await User.find({}).sort({ createdAt: -1 }).exec()
         res.render("adminPanel/index", {
             users: users,
+            errorMessage: errorMessage,
+            layout: "layouts/adminLayout",
+            extractScripts: true
+        })
+    } catch (err) {
+        console.log(err.message)
+        res.redirect("/")
+
+    }
+})
+
+router.get("/new/productManagement", async (req, res) => {
+    try {
+        const errorMessage = req.flash("message")
+        const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
+        const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).exec()
+        res.render("adminPanel/productManagement", {
+            allCategories: allCategories,
+            allProducts: allProducts,
+            errorMessage: errorMessage,
+            layout: "layouts/adminLayout",
+            extractScripts: true
+        })
+    } catch (err) {
+        console.log(err.message)
+        res.redirect("/")
+
+    }
+})
+
+router.get("/new/categoryManagement", async (req, res) => {
+    try {
+        const errorMessage = req.flash("message")
+        const allCategories = await Category.find().sort({ categoryName: 1 }).exec()
+        res.render("adminPanel/categoryManagement", {
+            allCategories: allCategories,
             errorMessage: errorMessage,
             layout: "layouts/adminLayout",
             extractScripts: true

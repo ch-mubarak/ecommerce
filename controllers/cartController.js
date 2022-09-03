@@ -50,7 +50,7 @@ module.exports = {
                 res.status(201).json({ message: "added to cart" })
             }
             else {
-                req.flash("message","this item is out of stock.")
+                req.flash("message", "this item is out of stock.")
                 res.status(404).json({ message: "item not available" })
             }
         } catch (err) {
@@ -61,7 +61,7 @@ module.exports = {
     getCart: async (req, res) => {
         const userId = req.user.id
         try {
-            const errorMessage =req.flash("message")
+            const errorMessage = req.flash("message")
             const findCart = await Cart.findOne({ userId: userId }).populate({
                 path: "products.productId",
                 model: "Product"
@@ -69,7 +69,7 @@ module.exports = {
 
             res.render("master/cart", {
                 findCart: findCart,
-                errorMessage:errorMessage
+                errorMessage: errorMessage
             })
         } catch (err) {
             console.log(err)
@@ -78,8 +78,14 @@ module.exports = {
     cartItemCount: async (req, res, next) => {
         const userId = req.user.id
         try {
+            let count = 0
             const cart = await Cart.findOne({ userId })
-            res.locals.cartItemCount = (cart?.products) ? (cart.products.length) : 0
+            if (cart) {
+                cart.products.forEach(product => {
+                    count += product.quantity
+                })
+            }
+            res.locals.cartItemCount = count
 
         } catch (err) {
             console.log(err)

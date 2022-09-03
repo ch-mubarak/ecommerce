@@ -36,8 +36,8 @@
     <div class="humberger__menu__cart">
       <ul>
        <% if(locals.user){%>
-        <li><a href="/user/wishlist"><i class="fa fa-heart"></i> <span><%= locals.wishlistItemCount %></span></a></li>
-        <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i> <span><%= locals.cartItemCount %></span></a></li>
+        <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span class="wishlist-count">0</span></a></li>
+        <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i><span class="cart-count">0</span></a></li>
         <% } else{%>
         <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
         <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i></a></li>
@@ -165,8 +165,8 @@
           <div class="header__cart">
             <ul>
               <% if(locals.user){%>
-              <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span><%= locals.wishlistItemCount %></span></a></li>
-              <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i><span><%= locals.cartItemCount %></span></a></li>
+              <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span class="wishlist-count">0</span></a></li>
+              <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i><span class="cart-count">0</span></a></li>
               <li><a href="/user/home"><i class="fa fa-user"></i></a></li>
               <% } else{%>
               <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>

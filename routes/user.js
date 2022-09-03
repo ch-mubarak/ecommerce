@@ -12,6 +12,9 @@ router.get("/changePassword", userControl.getChangePassword)
 router.get("/wishlist", wishlistControl.wishlist)
 router.get("/cart", cartControl.getCart)
 router.get("/checkout", cartControl.getCheckout)
+router.get("/cartItemCount",cartControl.cartItemCount)
+router.get("/wishlistCount",wishlistControl.wishlistItemCount)
+
 router.post("/checkout", cartControl.checkout)
 
 router.put("/wishlist/:id", wishlistControl.addToWishlist)

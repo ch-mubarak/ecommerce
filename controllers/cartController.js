@@ -9,7 +9,6 @@ module.exports = {
         const { name, price, quantity, offerPrice } = req.body;
         const userId = req.user.id
         try {
-
             const findProduct = await Product.findById(productId)
             if (findProduct.quantity >= quantity) {
                 findProduct.quantity -= quantity
@@ -39,7 +38,7 @@ module.exports = {
                     //no cart for user, create new cart
                     const subTotal = quantity * price
                     const total = quantity * offerPrice
-                    await Cart.create({
+                    cart = await Cart.create({
                         userId,
                         products: [{ productId, quantity, name, price, offerPrice }],
                         subTotal: subTotal,
@@ -47,21 +46,24 @@ module.exports = {
                     });
                     await findProduct.save()
                 }
-                res.status(201).json({ message: "added to cart" })
+                let count = 0
+                cart.products.forEach(item => {
+                    count += item.quantity
+                })
+                return res.status(201).json({ message: "added to cart", count: count })
             }
             else {
-                req.flash("message","this item is out of stock.")
-                res.status(404).json({ message: "item not available" })
+                return res.status(404).json({ message: "item not available" })
             }
         } catch (err) {
-            res.status(500).json({ err })
+            return res.status(500).json({ err })
         }
     },
 
     getCart: async (req, res) => {
         const userId = req.user.id
         try {
-            const errorMessage =req.flash("message")
+            const errorMessage = req.flash("message")
             const findCart = await Cart.findOne({ userId: userId }).populate({
                 path: "products.productId",
                 model: "Product"
@@ -69,7 +71,7 @@ module.exports = {
 
             res.render("master/cart", {
                 findCart: findCart,
-                errorMessage:errorMessage
+                errorMessage: errorMessage
             })
         } catch (err) {
             console.log(err)
@@ -79,10 +81,18 @@ module.exports = {
         const userId = req.user.id
         try {
             const cart = await Cart.findOne({ userId })
-            res.locals.cartItemCount = (cart?.products) ? (cart.products.length) : 0
+            let count = 0
+            if (cart) {
+                cart.products.forEach(item => {
+                    count += item.quantity
+                })
+            }
+            return res.status(200).json({ count: count })
+            // res.locals.cartItemCount = count
 
         } catch (err) {
             console.log(err)
+            return res.status(500).json({ err })
         }
     },
     deleteItem: async (req, res, next) => {
@@ -103,9 +113,10 @@ module.exports = {
             }, 0)
             await cart.save()
             await findProduct.save()
-            res.status(200).json({ message: "successfully deleted" })
+            let count = 0
+            return res.status(200).json({ message: "successfully deleted" })
         } catch (err) {
-            res.status(400).json({ err })
+            return res.status(400).json({ err })
         }
     },
     getCheckout: async (req, res) => {

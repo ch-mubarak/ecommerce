@@ -28,26 +28,31 @@ module.exports = {
                     await myWishlist.save()
                 }
             } else {
-                await Wishlist.create({
+                myWishlist = await Wishlist.create({
                     userId: userId,
                     myList: [{ productId, name }]
                 })
             }
-
-            res.status(201).json({ message: "added to wishlist" })
+            let count = myWishlist.myList.length
+            return res.status(201).json({ message: "added to wishlist", count: count })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ err })
+            return res.status(500).json({ err })
         }
     },
     wishlistItemCount: async (req, res, next) => {
         const userId = req.user.id
         try {
+            let count = 0
             const wishlist = await Wishlist.findOne({ userId })
-            res.locals.wishlistItemCount = (wishlist?.myList) ? (wishlist.myList.length) : 0
+            if (wishlist) {
+                count = wishlist.myList.length
+            }
+            return res.status(200).json({ count: count })
 
         } catch (err) {
             console.log(err)
+            return res.status(500).json({ err })
         }
     }
 }

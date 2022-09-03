@@ -44,9 +44,7 @@ router.post("/login", userControl.userLogin, (req, res) => {
         res.redirect("/admin")
     }
     else {
-        const redirectTo = req.session.returnTo
-        res.redirect(redirectTo || "/")
-        delete req.session.returnTo;
+        res.redirect("/")
     }
 })
 router.post("/register", userControl.userRegister)

@@ -18,7 +18,6 @@ module.exports = {
             next()
         }
         else {
-            req.session.returnTo = req.originalUrl;
             res.redirect("/login")
         }
     },

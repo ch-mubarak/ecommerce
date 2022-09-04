@@ -1,6 +1,7 @@
 const User = require("../models/users")
 const Category = require("../models/category")
 const Product = require("../models/product")
+const Order = require("../models/order")
 
 module.exports = {
 
@@ -46,6 +47,23 @@ module.exports = {
             res.render("admin/productManagement", {
                 allCategories: allCategories,
                 allProducts: allProducts,
+                errorMessage: errorMessage,
+                layout: "layouts/adminLayout",
+                extractScripts: true
+            })
+        } catch (err) {
+            console.log(err.message)
+            res.redirect("/")
+
+        }
+    },
+
+    orders: async (req, res) => {
+        try {
+            const errorMessage = req.flash("message")
+            const allOrders = await Order.find().populate("userId").exec()
+            res.render("admin/orderManagement", {
+                allOrders: allOrders,
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
                 extractScripts: true

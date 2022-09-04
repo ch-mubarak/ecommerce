@@ -5,15 +5,13 @@ const multer = require("../middleware/multer")
 const authentication = require("../middleware/authentication")
 const productControl = require("../controllers/productController")
 const adminControl = require("../controllers/adminController")
-const User = require("../models/users")
-const Product = require("../models/product")
-const Category = require("../models/category")
 
 // router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
 router.get("/", adminControl.home)
 router.get("/categories", adminControl.categories)
 router.get("/products", adminControl.products)
+router.get("/orders", adminControl.orders)
 
 router.post("/addCategory", adminControl.addCategory)
 router.post("/addProduct", multer.send, productControl.addProduct)

@@ -35,13 +35,13 @@
     </div>
     <div class="humberger__menu__cart">
       <ul>
-       <% if(locals.user){%>
+        <% if(locals.user){%>
         <li><a href="/user/wishlist"><i class="fa fa-heart"></i> <span><%= locals.wishlistItemCount %></span></a></li>
         <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i> <span><%= locals.cartItemCount %></span></a></li>
         <% } else{%>
         <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
         <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i></a></li>
-       <% } %>  
+        <% } %>
       </ul>
     </div>
     <div class="humberger__menu__widget">
@@ -129,9 +129,19 @@
               </div>
               <div class="header__top__right__auth">
                 <% if(locals.user){ %>
-                <form action="/logout?_method=DELETE" method="post" id="logoutForm2">
-                  <a href="#" onclick="document.getElementById('logoutForm2').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-                </form>
+                <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hi Mubarak <%=user.name %> <i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="/user/home">Account</a></li>
+                      <li>
+                        <form action="/logout?_method=DELETE" method="post" id="logoutForm2">
+                          <a href="#" class="dropdown-item" onclick="document.getElementById('logoutForm2').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                        </form>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
 
                 <% } else {%>
                 <a href="/login"><i class="fa fa-user"></i> Login</a>
@@ -167,7 +177,6 @@
               <% if(locals.user){%>
               <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span><%= locals.wishlistItemCount %></span></a></li>
               <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i><span><%= locals.cartItemCount %></span></a></li>
-              <li><a href="/user/home"><i class="fa fa-user"></i></a></li>
               <% } else{%>
               <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
               <li><a href="/user/cart"><i class="fa fa-shopping-bag"></i></a></li>

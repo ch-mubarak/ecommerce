@@ -133,6 +133,7 @@ module.exports = {
 
     checkout: async (req, res) => {
         try {
+            console.log(req.body)
             const userId = req.user.id
             const user = await User.findById(userId)
             user.address = {
@@ -140,7 +141,7 @@ module.exports = {
                 lastName: req.body.lastName,
                 country: req.body.country,
                 address: req.body.address1 + " " + req.body?.address2,
-                city: req.body.phone,
+                city: req.body.city,
                 state: req.body.state,
                 pincode: req.body.pincode,
                 phone: req.body.phone
@@ -151,7 +152,8 @@ module.exports = {
                 userId: req.user.id,
                 deliveryAddress: user.address,
                 products: cart.products,
-                total: cart.total
+                total: cart.total,
+                paymentType: "COD"
             })
             console.log("order success")
             await cart.remove()

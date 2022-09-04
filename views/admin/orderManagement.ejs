@@ -1,0 +1,62 @@
+<div class="container-fluid px-4">
+  <h1 class="mt-4">Order Management</h1>
+  <%- include("../partials/errorMessage") %>
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      All Orders
+    </div>
+    <div class="card-body">
+      <table id="datatablesSimple">
+        <thead>
+          <tr>
+            <th>orderId</th>
+            <th>User</th>
+            <th>Address</th>
+            <th>Products</th>
+            <th>Total Price</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>orderId</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Products</th>
+            <th>Total Price</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <% allOrders.forEach(order=>{ %>
+          <tr>
+            <td><%=order.id%></td>
+            <td><%=order.userId.email %></td>
+            <td>
+              <%=order.deliveryAddress.firstName%>
+              <%=order.deliveryAddress.lastName%>,
+              <%=order.deliveryAddress.address%>,
+              <%=order.deliveryAddress.city%>,
+              <%=order.deliveryAddress.state%>,
+              <%=order.deliveryAddress.pincode%>
+            </td>
+            <td>
+              <% order.products.forEach(product=>{%>
+              <%= product.quantity %>x <%= product.name %>
+              <% }) %>
+            </td>
+            <td><%=order.total %></td>
+            <td><%=order.createdAt %></td>
+            <td><span class="badge bg-warning"><%=order.status %></span></td>
+            <td><button class="btn btn-sm btn-outline-dark"><i class="fa-solid fa-boxes-packing"></i></button></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>

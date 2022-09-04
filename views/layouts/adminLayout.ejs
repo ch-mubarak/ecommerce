@@ -29,7 +29,7 @@
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+        <a class="nav-link active dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
           <li><a class="dropdown-item" href="#!">Settings</a></li>
           <li><a class="dropdown-item" href="#!">Activity Log</a></li>
@@ -64,7 +64,7 @@
               <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
               Category
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/admin/orders">
               <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
               Orders
             </a>
@@ -104,6 +104,18 @@
   <script src="/assets/demo/chart-bar-demo.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
   <script src="/js/datatables-simple-demo.js"></script>
+
+  <script>
+    const currentLocation = (location.href).toLowerCase()
+    const navItem = document.querySelectorAll(".nav-link")
+    const length = navItem.length
+    for (let i = 0; i < length; i++) {
+      if (navItem[i].href === currentLocation) {
+        navItem[i].classList.add("active")
+      }
+    }
+  </script>
+
 </body>
 
 </html>

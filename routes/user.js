@@ -12,6 +12,10 @@ router.get("/changePassword", userControl.getChangePassword)
 router.get("/wishlist", wishlistControl.wishlist)
 router.get("/cart", cartControl.getCart)
 router.get("/checkout", cartControl.getCheckout)
+router.get("/myorders",(req,res)=>{
+    res.render("master/myOrders")
+})
+
 router.post("/checkout", cartControl.checkout)
 
 router.put("/wishlist/:id", wishlistControl.addToWishlist)

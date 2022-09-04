@@ -8,11 +8,16 @@ module.exports = {
     home: async (req, res) => {
         try {
             const errorMessage = req.flash("message")
+            const orderStatusPending = await Order.find({ status: "Pending" }).countDocuments()
+            const orderStatusDelivered = await Order.find({ status: "Delivered" }).countDocuments()
+            const orderStatusCancelled = await Order.find({ status: "Cancelled" }).countDocuments()
+            const orderStatusCount = [orderStatusPending, orderStatusDelivered, orderStatusCancelled]
             const users = await User.find({}).sort({ createdAt: -1 }).exec()
             res.render("admin/index", {
                 users: users,
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
+                orderStatusCount: orderStatusCount,
                 extractScripts: true
             })
         } catch (err) {

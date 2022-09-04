@@ -8,8 +8,10 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <title>Fashionari Admin panel</title>
+
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
   <link href="/css/admin-styles.css" rel="stylesheet" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -97,24 +99,29 @@
     </div>
   </div>
 
+  <script src="/js/jquery-3.3.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src="/js/admin-scripts.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
   <script src="/assets/demo/chart-area-demo.js"></script>
   <script src="/assets/demo/chart-bar-demo.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="/js/datatables-simple-demo.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
   <script>
     const currentLocation = (location.href).toLowerCase()
     const navItem = document.querySelectorAll(".nav-link")
-    const length = navItem.length
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < navItem.length; i++) {
       if (navItem[i].href === currentLocation) {
         navItem[i].classList.add("active")
       }
     }
   </script>
+
+  <%- script %>
 
 </body>
 

@@ -5,6 +5,7 @@ const multer = require("../middleware/multer")
 const authentication = require("../middleware/authentication")
 const productControl = require("../controllers/productController")
 const adminControl = require("../controllers/adminController")
+const orderControl = require("../controllers/orderController")
 
 // router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
@@ -20,9 +21,13 @@ router.put("/editCategory/:id", adminControl.editCategory)
 router.put("/blockUser/:id", adminControl.blockUser)
 router.put("/unblockUser/:id", adminControl.unblockUser)
 
+router.put("/packOrder/:id", orderControl.packOrder)
+router.put("/shipOrder/:id", orderControl.shipOrder)
+router.put("/deliverPackage/:id", orderControl.deliverPackage)
+router.put("/cancelOrder/:id",orderControl.cancelOrder)
+
 router.delete("/deleteProduct/:id", productControl.deleteProduct)
 router.delete("/deleteCategory/:id", adminControl.deleteCategory)
 router.delete("/logout", userControl.userLogout)
-
 
 module.exports = router

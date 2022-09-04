@@ -52,11 +52,24 @@
             </td>
             <td><%=order.total %></td>
             <td><%=order.createdAt %></td>
-            <td><span class="badge bg-warning"><%=order.status %></span></td>
-            <td><button class="btn btn-sm btn-outline-dark"><i class="fa-solid fa-boxes-packing"></i></button></td>
+            <td><span class="badge order-status" id="status-<%= order.id%>"><%=order.status %></span></td>
+            <td id="action-<%= order.id %>">
+              <% if(order.status==="Pending"){%>
+              <button class="btn btn-sm btn-outline-dark mb-1" onclick="packOrder('<%=order.id%>')"><i class="fa-solid fa-boxes-packing"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="cancelOrder('<%=order.id%>')"><i class="fa-solid fa-ban"></i></button>
+              <% }else if(order.status==="Packed"){ %>
+              <button class="btn btn-sm btn-outline-dark" onclick="shipOrder('<%=order.id%>')"><i class="fa-solid fa-truck-fast"></i></button>
+              <% }else if(order.status==="Shipped"){ %>
+              <button class="btn btn-sm btn-outline-dark" onclick="deliverPackage('<%=order.id%>')"><i class="fa-solid fa-thumbs-up"></i></button>
+              <% }else{%>
+              <button class="btn btn-sm btn-outline-dark" disabled><i class="fa-solid fa-thumbs-up"></i></button>
+              <%} %>
+            </td>
           </tr>
           <% }) %>
         </tbody>
       </table>
     </div>
   </div>
+  
+  <script src="/js/order-management.js"></script>

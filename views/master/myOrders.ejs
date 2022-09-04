@@ -16,6 +16,17 @@
     display: inline-block
   }
 
+  .blank-dot {
+    height: 10px;
+    width: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 0px;
+    background-color: #afc0bc;
+    border-radius: 50%;
+    display: inline-block
+  }
+
   .big-dot {
     height: 25px;
     width: 25px;
@@ -36,18 +47,92 @@
   }
 </style>
 
-<section class="vh-100" style="background-color: #eee;">
+<section class="hero hero-normal">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="hero__categories">
+          <div class="hero__categories__all">
+            <i class="fa fa-bars"></i>
+            <span>All departments</span>
+          </div>
+          <ul>
+            <li><a href="#">Fresh Meat</a></li>
+            <li><a href="#">Vegetables</a></li>
+            <li><a href="#">Fruit & Nut Gifts</a></li>
+            <li><a href="#">Fresh Berries</a></li>
+            <li><a href="#">Ocean Foods</a></li>
+            <li><a href="#">Butter & Eggs</a></li>
+            <li><a href="#">Fastfood</a></li>
+            <li><a href="#">Fresh Onion</a></li>
+            <li><a href="#">Papayaya & Crisps</a></li>
+            <li><a href="#">Oatmeal</a></li>
+            <li><a href="#">Fresh Bananas</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="hero__search">
+          <div class="hero__search__form">
+            <form action="#">
+              <div class="hero__search__categories">
+                All Categories
+                <span class="arrow_carrot-down"></span>
+              </div>
+              <input type="text" placeholder="What do yo u need?">
+              <button type="submit" class="site-btn">SEARCH</button>
+            </form>
+          </div>
+          <div class="hero__search__phone">
+            <div class="hero__search__phone__icon">
+              <i class="fa fa-phone"></i>
+            </div>
+            <div class="hero__search__phone__text">
+              <h5>+65 11.188.888</h5>
+              <span>support 24/7 time</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb__text">
+          <h2>My Orders</h2>
+          <div class="breadcrumb__option">
+            <a href="/">Home</a>
+            <span>My orders</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<section class="vh-100">
   <div class="container py-2">
     <div class="row d-flex justify-content-center align-items-center">
       <div class="col">
-        <div class="card card-stepper" style="border-radius: 10px;">
+        <% orders.forEach(order=>{ %>
+        <div class="card card-stepper mb-2" style="border-radius: 10px;">
           <div class="card-body p-4">
-
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex flex-column">
-                <span class="lead fw-normal">Your order has been delivered</span>
-                <span class="text-muted small">on 21 Oct, 2022</span>
+                <!-- <span class="lead fw-normal">Your order has been delivered</span> -->
+                <span class="text-muted small bold">orderId: #<%= order.id %></span>
+                <%order.products.forEach(product=>{%>
+                <span class="text-muted mb-2"><img src="/img/product/product-1.jpg" alt="" width="60" height="80"><%= product.name %> x <%= product.quantity %> </span>
+                <%})%>
 
+                <span class="text-muted small">on 21 Oct, 2022</span>
               </div>
               <div>
                 <button class="btn btn-outline-dark" type="button">Track order details</button>
@@ -56,26 +141,56 @@
             <hr class="my-4">
 
             <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
+              <% if(order.status==="Pending"){%>
+              <span class="d-flex justify-content-center align-items-center big-dot dot">
+                <i class="fa fa-check text-white"></i></span>
+              <hr class="flex-fill"><span class="blank-dot"></span>
+              <hr class="flex-fill"><span class="blank-dot"></span>
+              <hr class="flex-fill"><span class="blank-dot"></span>
+              <%}else if(order.status==="Packed"){ %>
+              <span class="dot"></span>
+              <hr class="flex-fill track-line"><span class="d-flex justify-content-center align-items-center big-dot dot">
+                <i class="fa fa-check text-white"></i></span>
+              <hr class="flex-fill"><span class="blank-dot"></span>
+              <hr class="flex-fill"><span class="blank-dot"></span>
+              <% }else if(order.status==="Shipped"){ %>
+              <span class="dot"></span>
+              <hr class="flex-fill track-line"><span class="dot"></span>
+              <hr class="flex-fill track-line"><span class="d-flex justify-content-center align-items-center big-dot dot">
+                <i class="fa fa-check text-white"></i></span>
+              <hr class="flex-fill"><span class="blank-dot"></span>
+              <% }else if(order.status==="Delivered"){%>
               <span class="dot"></span>
               <hr class="flex-fill track-line"><span class="dot"></span>
               <hr class="flex-fill track-line"><span class="dot"></span>
               <hr class="flex-fill track-line"><span class="d-flex justify-content-center align-items-center big-dot dot">
                 <i class="fa fa-check text-white"></i></span>
+
+              <%}else{ %>
+              <span class="dot"></span>
+              <hr class="flex-fill track-line"><span class="dot"></span>
+              <hr class="flex-fill track-line"><span class="dot"></span>
+              <hr class="flex-fill track-line"><span class="d-flex justify-content-center align-items-center big-dot dot">
+                <i class="fa fa-check text-white"></i></span>
+              <% } %>
             </div>
 
             <div class="d-flex flex-row justify-content-between align-items-center">
-              <div class="d-flex flex-column justify-content-center"><span>15 Mar</span><span>Order
+              <div class="d-flex flex-column justify-content-center"><span>Order
                   placed</span></div>
-              <div class="d-flex flex-column justify-content-center align-items-center"><span>15
-                  Mar</span><span>Order Dispatched</span></div>
-              <div class="d-flex flex-column align-items-center"><span>15 Mar</span><span>Out for
-                  delivery</span></div>
-              <div class="d-flex flex-column align-items-end"><span>15 Mar</span><span>Delivered</span></div>
+              <div class="d-flex flex-column justify-content-center align-items-center"><span>Order Packed</span></div>
+              <div class="d-flex flex-column justify-content-center align-items-center"><span>Order Dispatched</span></div>
+              <div class="d-flex flex-column align-items-end"><span>Delivered</span></div>
             </div>
 
           </div>
         </div>
+        <% }) %>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+
+</style>

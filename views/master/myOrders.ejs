@@ -85,15 +85,15 @@
               <span class="text-muted small">on <%= order.createdAt.toDateString() %></span>
             </div>
             <div>
-              <button class="btn btn-outline-dark" type="button">Track order details</button>
+              <button class="btn btn-sm btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" type="button">Track order details</button>
               <% if(order.status !== "Delivered" && order.status !== "Cancelled"){ %>
-                <button class="btn btn-outline-danger" type="button"><i class="fa-solid fa-ban"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="sweetConfirm('<%=order.id%>')" type="button"><i class="fa-solid fa-ban"></i></button>
               <%  } %>
             </div>
           </div>
           <hr class="my-4">
 
-          <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
+          <div class="d-flex flex-row justify-content-between align-items-center align-content-center" id="orderStatusRoad-<%= order.id %>">
             <% if(order.status==="Pending"){%>
             <span class="d-flex justify-content-center align-items-center big-dot dot">
               <i class="fa fa-check text-white"></i></span>
@@ -139,7 +139,7 @@
             <% } %>
           </div>
 
-          <div class="d-flex flex-row justify-content-between align-items-center">
+          <div class="d-flex flex-row justify-content-between align-items-center" id="orderStatusUpdate-<%= order.id %>">
             <% if(order.status != "Cancelled"){ %>
             <div class="d-flex flex-column justify-content-center"><span>Order
                 placed</span></div>
@@ -175,3 +175,5 @@
   </div>
 </section>
 <%}%>
+
+<script src="/js/sweet-alert.js"></script>

@@ -61,13 +61,13 @@ module.exports = {
             const relatedProducts = await Product.find().limit(4).exec()
             const isInMyList = await Wishlist.exists().where("userId").equals(req.user?.id).where("myList.productId").equals(req.params.id)
             const findProduct = await Product.findById(req.params.id).populate("category").exec()
-            if(findProduct){
+            if (findProduct) {
                 res.render("master/productDetails", {
                     findProduct: findProduct,
                     relatedProducts: relatedProducts,
                     isInMyList: isInMyList,
                 })
-            }else{
+            } else {
                 res.render("errorPage/error", { layout: false })
             }
         } catch (err) {
@@ -94,6 +94,25 @@ module.exports = {
             console.log(err)
             res.redirect("/")
         }
-    }
+    },
+
+    cancelOrder: async (req, res) => {
+        try {
+            const orderId = req.params.id
+            const order = await Order.findByIdAndUpdate(orderId, {
+                status: "Cancelled"
+            })
+
+            let myProduct = await Product.findById(order.product)
+            myProduct.quantity += order.quantity
+            await myProduct.save()
+
+            return res.status(201).json({ message: "order cancelled and stock updated" })
+
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json(err)
+        }
+    },
 
 }

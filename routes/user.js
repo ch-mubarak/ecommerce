@@ -6,7 +6,7 @@ const cartControl = require("../controllers/cartController")
 const shopControl = require("../controllers/shopController")
 const router = express.Router()
 
-// router.use(authentication.checkLoggedIn, authentication.checkAccountVerified)
+router.use(authentication.checkLoggedIn, authentication.checkAccountVerified)
 
 router.get("/home", userControl.getHome)
 router.get("/changePassword", userControl.getChangePassword)
@@ -17,6 +17,7 @@ router.get("/myOrders", shopControl.myOrders)
 
 router.post("/checkout", cartControl.checkout)
 
+router.put("/cancelOrder/:id", shopControl.cancelOrder)
 router.put("/wishlist/:id", wishlistControl.addToWishlist)
 router.put("/addToCart/:id", cartControl.addToCart)
 router.put("/changePassword", userControl.changePassword)

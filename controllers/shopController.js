@@ -2,6 +2,7 @@ const _ = require("lodash")
 const Product = require("../models/product")
 const Category = require("../models/category")
 const Wishlist = require("../models/wishlist")
+const Order = require("../models/order")
 
 module.exports = {
     getHome: async (req, res) => {
@@ -70,5 +71,25 @@ module.exports = {
             res.render("errorPage/error", { layout: false })
         }
     },
+
+    myOrders: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const orders = await Order.find({ userId }).populate([
+                {
+                    path: "userId",
+                    model: "User"
+                },
+                {
+                    path: "product",
+                    model: "Product"
+                }
+            ]).exec()
+            res.render("master/myOrders", { orders: orders })
+        } catch (err) {
+            console.log(err)
+            res.redirect("/")
+        }
+    }
 
 }

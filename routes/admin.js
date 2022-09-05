@@ -23,6 +23,7 @@ router.put("/unblockUser/:id", adminControl.unblockUser)
 
 router.put("/packOrder/:id", orderControl.packOrder)
 router.put("/shipOrder/:id", orderControl.shipOrder)
+router.put("/outForDelivery/:id", orderControl.outForDelivery)
 router.put("/deliverPackage/:id", orderControl.deliverPackage)
 router.put("/cancelOrder/:id",orderControl.cancelOrder)
 

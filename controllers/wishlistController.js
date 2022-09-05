@@ -19,7 +19,7 @@ module.exports = {
             const myWishlist = await Wishlist.findOne({ userId: userId })
 
             if (myWishlist) {
-                const ItemIndex = myWishlist.myList.findIndex(p => p.productId == productId)
+                const ItemIndex = myWishlist.myList.findIndex(product => product.productId == productId)
                 if (ItemIndex > -1) {
                     myWishlist.myList.splice(ItemIndex, 1)
                     await myWishlist.save()

@@ -4,7 +4,6 @@ const fs = require("fs").promises
 module.exports = {
     addProduct: async (req, res) => {
         try {
-            req.files.forEach(img => { console.log(img.filename) })
             const price = parseFloat(req.body.price)
             const discount = req.body.discount ? parseFloat(req.body.discount) : null
             const offerPrice = req.body.discount ? price - (((price / 100) * discount).toFixed(2)) : null;

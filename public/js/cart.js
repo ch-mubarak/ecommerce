@@ -1,10 +1,10 @@
-async function deleteItem(productId,cartCount) {
+async function deleteItem(productId, cartCount) {
     try {
         const response = await axios({
             method: "delete",
             url: `/user/cart/${productId}`,
-            data:{
-                cartCount:parseInt(cartCount)
+            data: {
+                cartCount: parseInt(cartCount)
             }
         })
         console.log(response)
@@ -17,7 +17,7 @@ async function deleteItem(productId,cartCount) {
 
 async function addToCart(productId, productName, productPrice, quantity, offerPrice, currentQuantity) {
     if (currentQuantity == 1 && quantity == -1) {
-        deleteItem(productId,1);
+        deleteItem(productId, 1);
     }
     else {
         try {
@@ -32,10 +32,14 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
                 }
             })
             console.log(response)
-            window.location.reload()
+            if (response.status == 200) {
+                toastr.error('This product is Out of stock.')
+            } else {
+                window.location.reload()
+            }
         }
         catch (err) {
-            window.location.replace(`/product/${productId}`)
+            window.location.replace("/login")
             console.error(err)
         }
     }

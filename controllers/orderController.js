@@ -30,6 +30,20 @@ module.exports = {
 
     },
 
+    outForDelivery: async (req, res) => {
+        try {
+            const orderId = req.params.id
+            await Order.findByIdAndUpdate(orderId, {
+                status: "Out for delivery"
+            })
+            return res.status(201).json({ message: "out for delivery" })
+
+        } catch (err) {
+            return res.status(500).json(err)
+        }
+
+    },
+
     deliverPackage: async (req, res) => {
         try {
             const orderId = req.params.id
@@ -50,15 +64,15 @@ module.exports = {
             const order = await Order.findByIdAndUpdate(orderId, {
                 status: "Cancelled"
             })
-            order.products.forEach(async product => {
-                let myProduct = await Product.findById(product.productId)
-                myProduct.quantity += product.quantity
-                await myProduct.save()
-            })
 
+            let myProduct = await Product.findById(order.product)
+            myProduct.quantity += order.quantity
+            await myProduct.save()
+            
             return res.status(201).json({ message: "order cancelled and stock updated" })
 
         } catch (err) {
+            console.log(err)
             return res.status(500).json(err)
         }
     },

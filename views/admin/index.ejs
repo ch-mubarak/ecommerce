@@ -1,5 +1,6 @@
 <div class="container-fluid px-4">
   <h1 class="mt-4">Dashboard</h1>
+  <%- include("../partials/errorMessage") %>
   <!-- <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Dashboard</li>
   </ol> -->
@@ -95,7 +96,7 @@
           <tr>
             <td><%= user.name %></td>
             <td><%= user.email %></td>
-            <td><%= user.createdAt %> </td>
+            <td><%= user.createdAt?.toDateString() %> </td>
             <% if(user.isActive){%>
             <% if(user.isAdmin){ %>
             <td><span class="badge bg-primary">Admin</span></td>

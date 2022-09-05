@@ -14,10 +14,12 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
   <link rel="stylesheet" href="/css/jquery-ui.min.css" type="text/css">
   <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
   <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/styles.css" type="text/css">
   <link rel="stylesheet" href="/css/style.css" type="text/css">
 </head>
 
@@ -134,6 +136,7 @@
                     <a class="nav-link active dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hi Mubarak <%=user.name %> <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="/user/home">Account</a></li>
+                      <li><a class="dropdown-item" href="/user/myOrders">My orders</a></li>
                       <li>
                         <form action="/logout?_method=DELETE" method="post" id="logoutForm2">
                           <a href="#" class="dropdown-item" onclick="document.getElementById('logoutForm2').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
@@ -283,6 +286,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="/js/wishlist.js"></script>
   <script src="/js/cart.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
   <script>
     const currentLocation = (location.href).toLowerCase()

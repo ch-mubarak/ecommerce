@@ -80,5 +80,6 @@ module.exports = {
             layout: "layouts/layouts",
             extractScripts: true
         })
-    }
+    },
+
 }

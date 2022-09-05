@@ -66,7 +66,16 @@ module.exports = {
     orders: async (req, res) => {
         try {
             const errorMessage = req.flash("message")
-            const allOrders = await Order.find().populate("userId").exec()
+            const allOrders = await Order.find().populate([
+                {
+                    path: "userId",
+                    model: "User"
+                },
+                {
+                    path: "product",
+                    model: "Product" 
+                }
+            ]).exec()
             res.render("admin/orderManagement", {
                 allOrders: allOrders,
                 errorMessage: errorMessage,
@@ -74,8 +83,9 @@ module.exports = {
                 extractScripts: true
             })
         } catch (err) {
-            console.log(err.message)
-            res.redirect("/")
+            console.log(err)
+            req.flash("message","Error getting order details")
+            res.redirect("/admin")
 
         }
     },

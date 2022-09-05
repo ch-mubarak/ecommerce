@@ -9,6 +9,81 @@
   color: #FF0000;
 }
 
-.heart-color{
+.heart-color {
   color: rgb(207, 36, 36);
+}
+
+.track-line {
+  height: 2px !important;
+  background-color: #488978;
+  opacity: 1;
+}
+
+.track-line-danger {
+  height: 2px !important;
+  background-color: #e12121;
+  opacity: 1;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-top: 0px;
+  background-color: #488978;
+  border-radius: 50%;
+  display: inline-block
+}
+
+.dot-danger {
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-top: 0px;
+  background-color: #e12121;
+  border-radius: 50%;
+  display: inline-block
+}
+
+.blank-dot {
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-top: 0px;
+  background-color: #afc0bc;
+  border-radius: 50%;
+  display: inline-block
+}
+
+.big-dot {
+  height: 25px;
+  width: 25px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  background-color: #488978;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.big-dot-danger {
+  height: 25px;
+  width: 25px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  background-color: #e12121;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.big-dot i {
+  font-size: 12px;
+}
+
+.card-stepper {
+  z-index: 0
 }

@@ -17,7 +17,7 @@ module.exports = {
                 let cart = await Cart.findOne({ userId });
                 if (cart) {
                     //cart exists for user
-                    let itemIndex = cart.products.findIndex(p => p.productId == productId);
+                    let itemIndex = cart.products.findIndex(product => product.productId == productId);
                     if (itemIndex != -1) {
                         //product exists in the cart, update the quantity
                         let productItem = cart.products[itemIndex];
@@ -47,14 +47,13 @@ module.exports = {
                     });
                     await findProduct.save()
                 }
-                res.status(201).json({ message: "added to cart" })
+                return res.status(201).json({ message: "added to cart" })
             }
             else {
-                req.flash("message", "this item is out of stock.")
-                res.status(404).json({ message: "item not available" })
+                return res.status(200).json({ message: "item not available" })
             }
         } catch (err) {
-            res.status(500).json({ err })
+            return res.status(500).json({ err })
         }
     },
 
@@ -99,7 +98,7 @@ module.exports = {
             const findProduct = await Product.findById(productId)
             findProduct.quantity += cartCount
             const cart = await Cart.findOne({ userId })
-            const itemIndex = cart.products.findIndex(p => p.productId == productId);
+            const itemIndex = cart.products.findIndex(product => product.productId == productId);
             cart.products.splice(itemIndex, 1)
             cart.subTotal = cart.products.reduce((acc, curr) => {
                 return acc + curr.quantity * curr.price;
@@ -109,9 +108,9 @@ module.exports = {
             }, 0)
             await cart.save()
             await findProduct.save()
-            res.status(200).json({ message: "successfully deleted" })
+            return res.status(200).json({ message: "successfully deleted" })
         } catch (err) {
-            res.status(400).json({ err })
+            return res.status(400).json({ err })
         }
     },
     getCheckout: async (req, res) => {
@@ -133,7 +132,6 @@ module.exports = {
 
     checkout: async (req, res) => {
         try {
-            console.log(req.body)
             const userId = req.user.id
             const user = await User.findById(userId)
             user.address = {
@@ -148,12 +146,18 @@ module.exports = {
             }
             await user.save()
             const cart = await Cart.findOne({ userId: userId })
-            await Order.create({
-                userId: req.user.id,
-                deliveryAddress: user.address,
-                products: cart.products,
-                total: cart.total,
-                paymentType: "COD"
+            cart.products.forEach(async product => {
+                let subTotal = product.price * product.quantity
+                let total = product.offerPrice ? product.offerPrice * product.quantity : subTotal
+                await Order.create({
+                    userId: req.user.id,
+                    deliveryAddress: user.address,
+                    product: product.productId,
+                    quantity: product.quantity,
+                    subTotal: subTotal,
+                    total: total,
+                    paymentType: "COD"
+                })
             })
             console.log("order success")
             await cart.remove()

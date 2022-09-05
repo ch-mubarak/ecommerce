@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const Order = require("./order")
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -31,5 +32,20 @@ const productSchema = new mongoose.Schema({
     },
     brand: String,
 }, { timestamps: true })
+
+
+productSchema.pre("remove", function (next) {
+    Order.find({ product: this.id }, (err, orders) => {
+        if (err) {
+            next(err)
+        }
+        else if (orders.length > 0) {
+            next(new Error("This item cant be deleted."))
+        }
+        else {
+            next()
+        }
+    })
+})
 
 module.exports = mongoose.model("Product", productSchema)

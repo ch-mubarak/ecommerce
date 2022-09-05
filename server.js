@@ -69,14 +69,14 @@ app.use("/user", userRouter)
 app.use("/admin", adminRouter)
 
 
-// app.use(function(req, res, next){
-//     res.status(404);
-//     if (req.accepts('html')) {
-//       res.render('errorPage/error', { url: req.url,layout:false });
-//       return;
-//     }
+app.use(function(req, res, next){
+    res.status(404);
+    if (req.accepts('html')) {
+      res.render('errorPage/error', { url: req.url,layout:false });
+      return;
+    }
 
-//   });
+  });
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log("server is up and running on port" + PORT))

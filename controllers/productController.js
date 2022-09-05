@@ -1,3 +1,4 @@
+const { findById } = require("../models/product")
 const Product = require("../models/product")
 const fs = require("fs").promises
 
@@ -71,6 +72,7 @@ module.exports = {
             productImages.forEach(async (image) => {
                 await fs.unlink("./public/files/" + image)
             })
+            
             res.redirect("/admin/products")
         } catch (err) {
             console.log(err)

@@ -61,11 +61,15 @@ module.exports = {
             const relatedProducts = await Product.find().limit(4).exec()
             const isInMyList = await Wishlist.exists().where("userId").equals(req.user?.id).where("myList.productId").equals(req.params.id)
             const findProduct = await Product.findById(req.params.id).populate("category").exec()
-            res.render("master/productDetails", {
-                findProduct: findProduct,
-                relatedProducts: relatedProducts,
-                isInMyList: isInMyList,
-            })
+            if(findProduct){
+                res.render("master/productDetails", {
+                    findProduct: findProduct,
+                    relatedProducts: relatedProducts,
+                    isInMyList: isInMyList,
+                })
+            }else{
+                res.render("errorPage/error", { layout: false })
+            }
         } catch (err) {
             console.log(err)
             res.render("errorPage/error", { layout: false })

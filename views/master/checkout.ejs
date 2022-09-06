@@ -73,17 +73,34 @@
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
   <div class="container">
+
+    <% if(user.address.length>0){ %>
     <div class="row">
-      <div class="col-lg-12">
-        <h6><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click here</a> to enter your code
-        </h6>
+      <% user.address.forEach((myAddress,index)=>{%>
+      <div class="col-md-4 col-sm-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fa-solid fa-location-dot"></i> <%= myAddress.firstName %></h5>
+            <address class="card-text">
+              <%= myAddress.firstName +' '+ myAddress.lastName %>, <%= myAddress.house %>, <%= myAddress.address %>,
+              <%=myAddress.city  %>, <%=myAddress.state %>, <br>
+              pincode: <%= myAddress.pincode %><br>
+              ph:<%= myAddress.phone %>
+            </address>
+            <button class="btn btn-outline-dark" onclick="fillForm('<%=JSON.stringify(myAddress)%>','<%=Number(index)%>')">Use this address</button>
+            <!-- <button class="btn btn-sm btn-outline-dark"><i class="fa-solid fa-pen-to-square"></i></button> -->
+          </div>
+        </div>
       </div>
+      <%}) %>
     </div>
+    <% } %>
+
     <div class="checkout__form">
       <h4>Shipping Address</h4>
       <form action="/user/checkout" method="post">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-6" id="addressInputField">
             <div class="row">
               <div class="col-lg-6">
                 <div class="checkout__input">
@@ -99,13 +116,9 @@
               </div>
             </div>
             <div class="checkout__input">
-              <p>Country<span>*</span></p>
-              <input type="text" name="country" required>
-            </div>
-            <div class="checkout__input">
               <p>Address<span>*</span></p>
-              <input type="text" name="address1" required placeholder="Street Address" class="checkout__input__add">
-              <input type="text" name="address2" placeholder="Apartment, suite, unite ect (optinal)">
+              <input type="text" name="address" required placeholder="Street Address" class="checkout__input__add">
+              <input type="text" name="house" placeholder="Apartment, suite, unite ect (optinal)">
             </div>
             <div class="checkout__input">
               <p>Town/City<span>*</span></p>
@@ -129,23 +142,20 @@
               <div class="col-lg-6">
                 <div class="checkout__input">
                   <p>Email<span>*</span></p>
-                  <input type="text" value="<%= email %>" disabled>
+                  <input type="text" placeholder="<%= user.email %>" disabled>
                 </div>
               </div>
             </div>
 
+            <input type="hidden" name="addressIndex" value="0">
 
             <div class="checkout__input__checkbox">
               <label for="diff-acc">
                 Ship to a different address?
-                <input type="checkbox" id="diff-acc">
+                <input id="diff-acc" type="checkbox" id="diff-acc" onchange='handleChange(this)'>
                 <span class="checkmark"></span>
               </label>
             </div>
-            <!-- <div class="checkout__input">
-              <p>Order notes<span>*</span></p>
-              <input type="text" placeholder="Notes about your order, e.g. special notes for delivery.">
-            </div> -->
           </div>
           <div class="col-lg-6">
             <div class="checkout__order">
@@ -192,3 +202,29 @@
   </div>
 </section>
 <!-- Checkout Section End -->
+<script>
+  function fillForm(address, index) {
+    let myAddress = JSON.parse(address)
+    console.log(index)
+    $("#addressInputField :input").prop("disabled", true)
+    $("#diff-acc").prop("disabled", false)
+    $("#diff-acc").prop("checked", false)
+    $("[name='addressIndex']").val(index)
+    $("[name='addressIndex']").prop("disabled", false)
+
+    $("[name='firstName']").val(myAddress.firstName)
+    $("[name='lastName']").val(myAddress.lastName)
+    $("[name='house']").val(myAddress?.house)
+    $("[name='address']").val(myAddress.address)
+    $("[name='city']").val(myAddress.city)
+    $("[name='state']").val(myAddress.state)
+    $("[name='pincode']").val(myAddress.pincode)
+    $("[name='phone']").val(myAddress.phone)
+  }
+
+  function handleChange(checkbox) {
+    if (checkbox.checked == true){
+      $("#addressInputField :input").prop("disabled", false)
+    }
+  }
+</script>

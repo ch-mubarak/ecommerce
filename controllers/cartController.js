@@ -38,7 +38,7 @@ module.exports = {
                 } else {
                     //no cart for user, create new cart
                     const subTotal = quantity * price
-                    const total = offerPrice ? quantity * offerPrice : quantity * price
+                    const total = offerPrice ? quantity * offerPrice : subTotal
                     await Cart.create({
                         userId,
                         products: [{ productId, quantity, name, price, offerPrice }],
@@ -116,7 +116,7 @@ module.exports = {
     getCheckout: async (req, res) => {
         try {
             const userId = req.user.id
-            const user = await User.findById(userId, { email: 1 })
+            const user = await User.findById(userId, { email: 1, address: 1 })
             const findCart = await Cart.findOne({ userId: userId }).populate({
                 path: "products.productId",
                 model: "Product"
@@ -124,7 +124,7 @@ module.exports = {
             if (findCart?.products.length > 0) {
                 res.render("master/checkout", {
                     findCart: findCart,
-                    email: user.email
+                    user: user
                 })
             } else {
                 res.redirect("/user/cart")
@@ -137,22 +137,25 @@ module.exports = {
     checkout: async (req, res) => {
         try {
             const userId = req.user.id
+            const addressIndex = req.body.addressIndex
             const user = await User.findById(userId)
-            user.address = {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                country: req.body.country,
-                address: req.body.address1 + " " + req.body?.address2,
-                city: req.body.city,
-                state: req.body.state,
-                pincode: req.body.pincode,
-                phone: req.body.phone
+            if (req.body.firstName) {
+                user.address.unshift({
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    house: req.body.house,
+                    address: req.body.address,
+                    city: req.body.city,
+                    state: req.body.state,
+                    pincode: req.body.pincode,
+                    phone: req.body.phone
+                })
             }
             await user.save()
             const cart = await Cart.findOne({ userId: userId })
             await Order.create({
                 userId: userId,
-                deliveryAddress: user.address,
+                deliveryAddress: user.address[addressIndex],
                 products: cart.products,
                 quantity: cart.quantity,
                 subTotal: cart.subTotal,

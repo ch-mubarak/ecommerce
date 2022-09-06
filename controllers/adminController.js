@@ -72,7 +72,7 @@ module.exports = {
                     model: "User"
                 },
                 {
-                    path: "product",
+                    path: "products.productId",
                     model: "Product" 
                 }
             ]).exec()

@@ -46,7 +46,9 @@
               <%=order.deliveryAddress.pincode%>
             </td>
             <td>
-              <%= order.product.name %> x<%= order.quantity %>
+              <% order.products.forEach(product=>{ %>
+                <%= product.name %> x<%= product.quantity %>,
+             <% }) %> 
             </td>
             <td><%=order.total %></td>
             <td><%=order.createdAt.toDateString() %></td>

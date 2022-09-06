@@ -79,39 +79,20 @@ module.exports = {
     myOrders: async (req, res) => {
         try {
             const userId = req.user.id
-            const orders = await Order.find({ userId }).populate([
+            const myOrders = await Order.find({ userId }).populate([
                 {
                     path: "userId",
                     model: "User"
                 },
                 {
-                    path: "product",
+                    path: "products.productId",
                     model: "Product"
                 }
             ]).exec()
-            res.render("master/myOrders", { orders: orders })
+            res.render("master/myOrders", { myOrders: myOrders })
         } catch (err) {
             console.log(err)
             res.redirect("/")
-        }
-    },
-
-    cancelOrder: async (req, res) => {
-        try {
-            const orderId = req.params.id
-            const order = await Order.findByIdAndUpdate(orderId, {
-                status: "Cancelled"
-            })
-
-            let myProduct = await Product.findById(order.product)
-            myProduct.quantity += order.quantity
-            await myProduct.save()
-
-            return res.status(201).json({ message: "order cancelled and stock updated" })
-
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json(err)
         }
     },
 

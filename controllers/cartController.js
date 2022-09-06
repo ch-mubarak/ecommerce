@@ -38,7 +38,7 @@ module.exports = {
                 } else {
                     //no cart for user, create new cart
                     const subTotal = quantity * price
-                    const total = quantity * offerPrice
+                    const total = offerPrice ? quantity * offerPrice : quantity * price
                     await Cart.create({
                         userId,
                         products: [{ productId, quantity, name, price, offerPrice }],
@@ -121,10 +121,14 @@ module.exports = {
                 path: "products.productId",
                 model: "Product"
             })
-            res.render("master/checkout", {
-                findCart: findCart,
-                email: user.email
-            })
+            if (findCart?.products.length > 0) {
+                res.render("master/checkout", {
+                    findCart: findCart,
+                    email: user.email
+                })
+            } else {
+                res.redirect("/user/cart")
+            }
         } catch (err) {
             console.log(err)
         }
@@ -146,18 +150,14 @@ module.exports = {
             }
             await user.save()
             const cart = await Cart.findOne({ userId: userId })
-            cart.products.forEach(async product => {
-                let subTotal = product.price * product.quantity
-                let total = product.offerPrice ? product.offerPrice * product.quantity : subTotal
-                await Order.create({
-                    userId: req.user.id,
-                    deliveryAddress: user.address,
-                    product: product.productId,
-                    quantity: product.quantity,
-                    subTotal: subTotal,
-                    total: total,
-                    paymentType: "COD"
-                })
+            await Order.create({
+                userId: userId,
+                deliveryAddress: user.address,
+                products: cart.products,
+                quantity: cart.quantity,
+                subTotal: cart.subTotal,
+                total: cart.total,
+                paymentType: "COD"
             })
             console.log("order success")
             await cart.remove()

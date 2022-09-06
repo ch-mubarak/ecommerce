@@ -15,11 +15,11 @@ const CartSchema = new mongoose.Schema(
         quantity: Number,
         name: String,
         price: Number,
-        offerPrice:Number,
+        offerPrice: Number,
       }
     ],
-    subTotal:{
-      type:Number
+    subTotal: {
+      type: Number
     },
     total: {
       type: Number,

@@ -67,25 +67,27 @@
   </div>
 </section>
 <!-- Breadcrumb Section End -->
-<% if(orders.length>0){%>
+<% if(myOrders.length>0){%>
 
 <section class=""">
   <div class=" container py-2">
   <div class="row d-flex justify-content-center align-items-center">
     <div class="col">
-      <% orders.forEach(order=>{ %>
+      <% myOrders.forEach(order=>{ %>
       <div class="card card-stepper mb-2" style="border-radius: 10px;">
         <div class="card-body p-4">
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex flex-column">
               <!-- <span class="lead fw-normal">Your order has been delivered</span> -->
               <span class="text-muted small bold mb-1">orderId: #<%= order.id %></span>
-              <span class="text-muted mb-2"><img src="/files/<%= order.product.productImagePath[0] %>" alt="" width="60" height="80"> <%= order.product.name %> x <%= order.quantity %> </span>
+              <% order.products.forEach(product=>{%>
+                <span class="text-muted mb-2"><img src="/files/<%= product.productId.productImagePath[0] %>" alt="" width="60" height="80"> <%= product.productId.name %> x <%= product.quantity %> </span>
+              <% }) %>
 
               <span class="text-muted small">on <%= order.createdAt.toDateString() %></span>
             </div>
             <div>
-              <button class="btn btn-sm btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" type="button">Track order details</button>
+              <button class="btn btn-sm btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" type="button">View order details</button>
               <% if(order.status !== "Delivered" && order.status !== "Cancelled"){ %>
               <button class="btn btn-sm btn-outline-danger" onclick="sweetConfirm('<%=order.id%>')" type="button"><i class="fa-solid fa-ban"></i></button>
               <%  } %>

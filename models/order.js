@@ -9,11 +9,18 @@ const orderSchema = new mongoose.Schema({
     deliveryAddress: {
         type: Object
     },
-    product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-        required:true
-    },
+    products: [
+        {
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product"
+            },
+            quantity: Number,
+            name: String,
+            price: Number,
+            offerPrice: Number,
+        }
+    ],
     quantity: {
         type: Number
     },

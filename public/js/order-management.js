@@ -107,26 +107,39 @@ async function deliverPackage(orderId) {
         console.error(err)
     }
 }
-
 async function cancelOrder(orderId) {
     try {
-        const response = await axios({
-            method: "put",
-            url: `/admin/cancelOrder/${orderId}`
+        let result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor:'#6F7E8B',
+            cancelButtonColor:'#212529',
+            confirmButtonText: 'Yes, cancel it!',
+            cancelButtonText: 'No.',
+            width:'25em'
         })
-        if (response.status == 201) {
-            let myOrderStatus = document.getElementById("status-" + orderId)
-            let myOrderAction = document.getElementById("action-" + orderId)
-            myOrderStatus.classList.replace("bg-warning", "bg-danger")
-            myOrderStatus.innerHTML = "Cancelled"
-            myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" disabled ><i class="fa-solid fa-thumbs-up"></i></button>`
+        if (result.isConfirmed) {
+            const response = await axios({
+                method: "put",
+                url: `/admin/cancelOrder/${orderId}`
+            })
+            if (response.status == 201) {
+                let myOrderStatus = document.getElementById("status-" + orderId)
+                let myOrderAction = document.getElementById("action-" + orderId)
+                myOrderStatus.classList.replace("bg-warning", "bg-danger")
+                myOrderStatus.innerHTML = "Cancelled"
+                myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" disabled ><i class="fa-solid fa-thumbs-up"></i></button>`
 
-            toastr.warning('Order cancelled successfully.')
-        } else {
-            toastr.error('Error updating order status')
+                toastr.success('Order cancelled successfully.')
+            } else {
+                toastr.error('Error updating order status')
+            }
         }
     } catch (err) {
-        window.location.reload()
+        // window.location.reload()
+        console.error(err)
     }
-
 }
+

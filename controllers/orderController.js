@@ -8,6 +8,7 @@ module.exports = {
             const myOrder = await Order.findById(orderId)
             if (myOrder.status != "Cancelled") {
                 myOrder.status = "Packed"
+                await myOrder.save()
                 return res.status(201).json({ message: "order Packed" })
             } else {
                 return res.status(400).json({ message: "cant update status, Item is cancelled" })
@@ -25,6 +26,7 @@ module.exports = {
             const myOrder = await Order.findById(orderId)
             if (myOrder.status != "Cancelled") {
                 myOrder.status = "Shipped"
+                await myOrder.save()
                 return res.status(201).json({ message: "order shipped" })
             } else {
                 return res.status(400).json({ message: "cant update status, Item is cancelled" })
@@ -42,6 +44,7 @@ module.exports = {
             const myOrder = await Order.findById(orderId)
             if (myOrder.status != "Cancelled") {
                 myOrder.status = "Out for delivery"
+                await myOrder.save()
                 return res.status(201).json({ message: "out for delivery" })
             } else {
                 return res.status(400).json({ message: "cant update status, Item is cancelled" })
@@ -59,6 +62,7 @@ module.exports = {
             const myOrder = await Order.findById(orderId)
             if (myOrder.status != "Cancelled") {
                 myOrder.status = "Delivered"
+                await myOrder.save()
                 return res.status(201).json({ message: "order delivered" })
             } else {
                 return res.status(400).json({ message: "cant update status, Item is cancelled" })

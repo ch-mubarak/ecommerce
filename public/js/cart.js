@@ -2,7 +2,7 @@ $(document).ready(async () => {
     try {
         const response = await axios.get("/user/cartItemCount")
         const itemCount = response.data.itemCount ? response.data.itemCount : 0
-        $(".cart-item-count").html(itemCount)
+        $(".cart-item-count").text(itemCount)
 
     } catch (err) {
         console.error(err)

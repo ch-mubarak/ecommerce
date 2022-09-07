@@ -85,7 +85,7 @@
             </thead>
             <tbody>
               <% findWishlist.myList.forEach(list=>{ %>
-              <tr>
+              <tr id="wishlist-<%= list.productId.id %>">
                 <td class="shoping__cart__item">
                   <img src="/files/<%= list.productId.productImagePath[0] %>" alt="" width="120" height="150">
                   <a href="/product/<%=list.productId.id%>" class="text-dark"><%= list.productId.name%></a>
@@ -98,7 +98,7 @@
                     <a class="text-dark" onclick="addToCart('<%=list.productId.id%>','<%=list.name%>','<%=list.productId.price%>',1,'<%=list.productId?.offerPrice%>');wishlist('<%=list.name%>','<%=list.productId.id%>')"><i class="fa fa-shopping-cart fa-lg"></i></a>
                   </div>
                   <div>
-                    <a onclick="wishlist('<%=list.name%>','<%=list.productId.id%>')" class="btn"><i class="fa-solid fa-trash-can fa-lg"></i></a>
+                    <a onclick="removeFromWishlist('<%=list.name%>','<%=list.productId.id%>')" class="btn"><i class="fa-solid fa-trash-can fa-lg"></i></a>
                   </div>
                 </td>
               </tr>
@@ -126,8 +126,7 @@
 <!-- Latest Product Section End -->
 <script>
   function moveToCart(name, id, price) {
-    console.log(name, id, price)
     addToCart(id, name, price, 1)
-    wishlist(name, id)
+    removeFromWishlist(name, id)
   }
 </script>

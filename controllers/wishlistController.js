@@ -23,21 +23,24 @@ module.exports = {
                 if (ItemIndex > -1) {
                     myWishlist.myList.splice(ItemIndex, 1)
                     await myWishlist.save()
+                    return res.status(204).json({ message: "removed from wishlist" })
                 } else {
                     myWishlist.myList.push({ productId, name })
                     await myWishlist.save()
+                    return res.status(201).json({ message: "added to wishlist" })
                 }
             } else {
                 await Wishlist.create({
                     userId: userId,
                     myList: [{ productId, name }]
                 })
+                return res.status(201).json({ message: "added to wishlist" })
             }
 
-            res.status(201).json({ message: "added to wishlist" })
+
         } catch (err) {
             console.log(err)
-            res.status(500).json({ err })
+            return res.status(500).json({ err })
         }
     },
     wishlistItemCount: async (req, res, next) => {

@@ -89,7 +89,7 @@
             <tbody>
 
               <% findCart.products.forEach(item=>{ %>
-              <tr>
+              <tr id="cartItem-<%= item.productId.id %>">
                 <td class="shoping__cart__item">
                   <img src="/files/<%= item.productId.productImagePath[0]%>" alt="" width="120" height="150">
                   <a href="/product/<%=item.productId.id%>" class="text-dark"><%= item.productId.name%></a>
@@ -107,13 +107,13 @@
                 <td class="shoping__cart__quantity">
                   <div class="quantity">
                     <div class="pro-qty">
-                      <span class="dec qtybtn" onclick="addToCart('<%=item.productId.id%>','<%=item.name%>','<%=item.price%>',-1,'<%=item?.offerPrice%>','<%=item.quantity%>')">-</span>
-                      <input type="text" value="<%= item.quantity %>">
+                      <span class="dec qtybtn" onclick="addToCart('<%=item.productId.id%>','<%=item.name%>','<%=item.price%>',-1,'<%=item?.offerPrice%>')">-</span>
+                      <input type="text" id="currentQuantity-<%= item.productId.id %>" value="<%= item.quantity %>">
                       <span class="inc qtybtn" onclick="addToCart('<%=item.productId.id%>','<%=item.name%>','<%=item.price%>',1,'<%=item?.offerPrice%>')">+</span>
                     </div>
                   </div>
                 </td>
-                <td class="shoping__cart__total">
+                <td class="shoping__cart__total" id="item-<%=item.productId.id %>">
                   <% if(item.offerPrice) {%>
                   ₹<%= (item.offerPrice * item.quantity).toFixed(2) %>
                   <% }else {%>
@@ -153,10 +153,10 @@
         <div class="shoping__checkout">
           <h5>Cart Total</h5>
           <ul>
-            <li>Subtotal <span><del>₹<%= findCart.subTotal.toFixed(2) %></del></span></li>
+            <li>Subtotal <span><del id="cartSubTotal" s>₹<%= findCart.subTotal.toFixed(2) %></del></span></li>
             <% let discount = findCart.subTotal - findCart.total %>
-            <li>Discount <span>₹<%=discount.toFixed(2)%></span></li>
-            <li>Total <span>₹<%= findCart.total.toFixed(2) %></span></li>
+            <li>Discount <span id="cartDiscount">₹<%=discount.toFixed(2)%></span></li>
+            <li>Total <span id="cartTotal">₹<%= findCart.total.toFixed(2) %></span></li>
           </ul>
           <a href="/user/checkout" class="primary-btn">PROCEED TO CHECKOUT</a>
         </div>

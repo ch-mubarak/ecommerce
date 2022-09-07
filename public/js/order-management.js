@@ -28,6 +28,7 @@ async function packOrder(orderId) {
             myOrderStatus.classList.replace("bg-warning", "bg-info")
             myOrderStatus.innerHTML = "Packed"
             myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="shipOrder('${orderId}')"><i class="fa-solid fa-truck-fast"></i></button>`
+            toastr.options = { "positionClass": "toast-bottom-right" }
             toastr.success('<i class="fa-solid fa-boxes-packing"></i> orderId:' + orderId + ' ' + 'status updated to Packed.')
         } else {
             toastr.error('Error updating order status')
@@ -50,7 +51,7 @@ async function shipOrder(orderId) {
             myOrderStatus.classList.replace("bg-info", "bg-primary")
             myOrderStatus.innerHTML = "Shipped"
             myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="outForDelivery('${orderId}')"><i class="fa-solid fa-house-chimney"></i></button>`
-
+            toastr.options = { "positionClass": "toast-bottom-right" }
             toastr.success('orderId:' + orderId + ' ' + 'status updated to Out for delivery.')
         } else {
             toastr.error('Error updating order status')
@@ -74,7 +75,7 @@ async function outForDelivery(orderId) {
             myOrderStatus.classList.replace("bg-primary", "bg-dark")
             myOrderStatus.innerHTML = "Out for delivery"
             myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="deliverPackage('${orderId}')"><i class="fa-solid fa-thumbs-up"></i></button>`
-
+            toastr.options = { "positionClass": "toast-bottom-right" }
             toastr.success('<i class="fa-solid fa-truck-fast"></i> orderId:' + orderId + ' ' + 'is out for delivery.')
         } else {
             toastr.error('Error updating order status')
@@ -97,7 +98,7 @@ async function deliverPackage(orderId) {
             myOrderStatus.classList.replace("bg-dark", "bg-success")
             myOrderStatus.innerHTML = "Delivered"
             myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" disabled ><i class="fa-solid fa-thumbs-up"></i></button>`
-
+            toastr.options = { "positionClass": "toast-bottom-right" }
             toastr.success('Order id' + orderId + 'status updated to delivered.')
         } else {
             toastr.error('Error updating status')
@@ -114,11 +115,11 @@ async function cancelOrder(orderId) {
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor:'#6F7E8B',
-            cancelButtonColor:'#212529',
+            confirmButtonColor: '#6F7E8B',
+            cancelButtonColor: '#212529',
             confirmButtonText: 'Yes, cancel it!',
             cancelButtonText: 'No.',
-            width:'25em'
+            width: '25em'
         })
         if (result.isConfirmed) {
             const response = await axios({
@@ -131,14 +132,14 @@ async function cancelOrder(orderId) {
                 myOrderStatus.classList.replace("bg-warning", "bg-danger")
                 myOrderStatus.innerHTML = "Cancelled"
                 myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" disabled ><i class="fa-solid fa-thumbs-up"></i></button>`
-
+                toastr.options = { "positionClass": "toast-bottom-right" }
                 toastr.success('Order cancelled successfully.')
             } else {
                 toastr.error('Error updating order status')
             }
         }
     } catch (err) {
-        // window.location.reload()
+        window.location.reload()
         console.error(err)
     }
 }

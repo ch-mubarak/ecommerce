@@ -2,14 +2,12 @@ $(document).ready(async () => {
     try {
         const response = await axios.get("/user/cartItemCount")
         const itemCount = response.data.itemCount ? response.data.itemCount : 0
-        $(".cart-item-count").text(itemCount)
+        $(".cart-item-count").html(itemCount)
 
     } catch (err) {
         console.error(err)
     }
 })
-
-
 
 async function deleteItem(productId, cartCount) {
     try {
@@ -20,16 +18,29 @@ async function deleteItem(productId, cartCount) {
                 cartCount: parseInt(cartCount)
             }
         })
-        console.log(response)
-        window.location.reload()
+        let itemCount = Number($(".cart-item-count").html())
+        console.log(cartCount)
+        itemCount -= cartCount
+        if (itemCount != 0) {
+            document.getElementById(`cartItem-${productId}`).remove()
+            $(".cart-item-count").html(itemCount)
+            $("#cartSubTotal").html(response.data.cartSubTotal)
+            $("#cartTotal").html(response.data.cartTotal)
+            $("#cartDiscount").html(response.data.cartDiscount)
+            toastr.options = { "positionClass": "toast-bottom-right" }
+            toastr.info('item removed from cart.')
+        } else {
+            window.location.reload()
+        }
+
     } catch (error) {
-        window.location.replace("/user/cart")
         console.error(error)
     }
 }
 
-async function addToCart(productId, productName, productPrice, quantity, offerPrice, currentQuantity) {
-    if (currentQuantity == 1 && quantity == -1) {
+async function addToCart(productId, productName, productPrice, quantity, offerPrice) {
+    let currentQuantity = document.getElementById(`currentQuantity-${productId}`)?.value
+    if (quantity == -1 && currentQuantity == 1) {
         deleteItem(productId, 1);
     }
     else {
@@ -44,11 +55,24 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
                     offerPrice: Number.parseFloat(offerPrice),
                 }
             })
-            console.log(response)
             if (response.status == 200) {
+                toastr.options = { "positionClass": "toast-bottom-right" }
                 toastr.error('This product is Out of stock.')
             } else {
-                window.location.reload()
+                if (quantity == -1) {
+                    toastr.options = { "positionClass": "toast-bottom-right" }
+                    toastr.info('item removed from cart.')
+                } else {
+                    toastr.options = { "positionClass": "toast-bottom-right" }
+                    toastr.success('item added to cart.')
+                }
+                let itemCount = Number($(".cart-item-count").html())
+                itemCount += Number.parseInt(quantity)
+                $(".cart-item-count").html(itemCount)
+                $(`#item-${productId}`).html(response.data.itemTotal)
+                $("#cartSubTotal").html(response.data.cartSubTotal)
+                $("#cartTotal").html(response.data.cartTotal)
+                $("#cartDiscount").html(response.data.cartDiscount)
             }
         }
         catch (err) {

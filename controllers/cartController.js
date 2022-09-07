@@ -14,6 +14,7 @@ module.exports = {
             if (findProduct.quantity >= quantity) {
                 findProduct.quantity -= quantity
 
+                let itemTotal
                 let cart = await Cart.findOne({ userId });
                 if (cart) {
                     //cart exists for user
@@ -23,9 +24,11 @@ module.exports = {
                         let productItem = cart.products[itemIndex];
                         productItem.quantity += quantity
                         // cart.products[itemIndex] = productItem;
+                        itemTotal = offerPrice ? offerPrice * productItem.quantity : price * productItem.quantity
                     } else {
                         //product does not exists in cart, add new item
                         cart.products.push({ productId, quantity, name, price, offerPrice });
+                        itemTotal = offerPrice ? offerPrice * quantity : price * quantity
                     }
                     cart.subTotal = cart.products.reduce((acc, curr) => {
                         return acc + curr.quantity * curr.price;
@@ -39,15 +42,22 @@ module.exports = {
                     //no cart for user, create new cart
                     const subTotal = quantity * price
                     const total = offerPrice ? quantity * offerPrice : subTotal
-                    await Cart.create({
+                    cart = await Cart.create({
                         userId,
                         products: [{ productId, quantity, name, price, offerPrice }],
                         subTotal: subTotal,
                         total: total
                     });
                     await findProduct.save()
+                    itemTotal = offerPrice ? offerPrice * quantity : price * quantity
                 }
-                return res.status(201).json({ message: "added to cart" })
+                return res.status(201).json({
+                    message: "cart updated",
+                    cartSubTotal: (cart.subTotal).toFixed(2),
+                    cartDiscount: (cart.subTotal - cart.total).toFixed(2),
+                    cartTotal: (cart.total).toFixed(2),
+                    itemTotal: itemTotal.toFixed(2)
+                })
             }
             else {
                 return res.status(200).json({ message: "item not available" })
@@ -110,7 +120,12 @@ module.exports = {
             }, 0)
             await cart.save()
             await findProduct.save()
-            return res.status(200).json({ message: "successfully deleted" })
+            return res.status(200).json({
+                message: "successfully deleted",
+                cartSubTotal: (cart.subTotal).toFixed(2),
+                cartDiscount: (cart.subTotal - cart.total).toFixed(2),
+                cartTotal: (cart.total).toFixed(2)
+            })
         } catch (err) {
             return res.status(400).json({ err })
         }

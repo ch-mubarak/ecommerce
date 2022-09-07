@@ -23,11 +23,15 @@ async function wishlist(name, id) {
       itemCount -= 1
       $(".wishlist-item-count").html(itemCount)
       $(".heart-icon").css("color","#6f6f6f")
+      toastr.options = { "positionClass": "toast-bottom-right" }
+      toastr.info('Item removed from wishlist.')
     } else if (response.status == 201) {
       let itemCount = Number($(".wishlist-item-count").html())
       itemCount += 1
       $(".wishlist-item-count").html(itemCount)
       $(".heart-icon").css("color","rgb(219, 47, 47)")
+      toastr.options = { "positionClass": "toast-bottom-right" }
+      toastr.success('Item added to wishlist.')
     }
     console.log(response);
   } catch (error) {
@@ -52,6 +56,8 @@ async function removeFromWishlist(name, id) {
       if (itemCount != 0) {
         $(".wishlist-item-count").html(itemCount)
         document.getElementById(`wishlist-${id}`).remove()
+        toastr.options = { "positionClass": "toast-bottom-right" }
+        toastr.info('Item removed from wishlist.')
       } else {
         window.location.reload()
       }

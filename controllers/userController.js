@@ -75,6 +75,18 @@ module.exports = {
         })
     },
 
+    removeAddress: async (req, res) => {
+        try {
+            const addressIndex = Number(req.query.path)
+            const user = await User.findById(req.user.id)
+            user.address.splice(addressIndex, 1)
+            await user.save()
+            return res.status(204).json({ message: "address removed" })
+        } catch (err) {
+
+        }
+    },
+
     getHome: (req, res) => {
         res.render("user/home", {
             layout: "layouts/layouts",

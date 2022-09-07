@@ -26,5 +26,6 @@ router.put("/addToCart/:id", cartControl.addToCart)
 router.put("/changePassword", userControl.changePassword)
 
 router.delete("/cart/:id", cartControl.deleteItem)
+router.delete("/deleteAddress",userControl.removeAddress)
 
 module.exports = router

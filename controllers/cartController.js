@@ -156,8 +156,7 @@ module.exports = {
             const userId = req.user.id
             const addressIndex = req.body.addressIndex
             const user = await User.findById(userId)
-            console.log(req.body)
-            if (req.body.firstName) {
+            if (req.body.newAddress == 'on') {
                 user.address.unshift({
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
@@ -171,6 +170,7 @@ module.exports = {
             }
             await user.save()
             const cart = await Cart.findOne({ userId: userId })
+            const paymentType = req.body.paypal == 'on' ? "Paypal" : "COD"
             await Order.create({
                 userId: userId,
                 deliveryAddress: user.address[addressIndex],
@@ -178,9 +178,10 @@ module.exports = {
                 quantity: cart.quantity,
                 subTotal: cart.subTotal,
                 total: cart.total,
-                paymentType: "COD"
+                paymentType: paymentType
             })
             console.log("order success")
+            res.redirect("/user/myOrders")
             await cart.remove()
             res.redirect("/")
         } catch (err) {

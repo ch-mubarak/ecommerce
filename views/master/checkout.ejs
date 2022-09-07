@@ -77,7 +77,7 @@
     <% if(user.address.length>0){ %>
     <div class="row">
       <% user.address.forEach((myAddress,index)=>{%>
-      <div class="col-md-4 col-sm-6 mb-2">
+      <div class="col-md-4 col-sm-6 mb-2" id="address-<%= index %>">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title"><i class="fa-solid fa-location-dot"></i> <%= myAddress.firstName %></h5>
@@ -88,7 +88,7 @@
               ph:<%= myAddress.phone %>
             </address>
             <button class="btn btn-outline-dark" onclick="fillForm('<%=JSON.stringify(myAddress)%>','<%=Number(index)%>')">Use this address</button>
-            <!-- <button class="btn btn-sm btn-outline-dark"><i class="fa-solid fa-pen-to-square"></i></button> -->
+            <button class="float-right btn btn-outline-secondary" onclick="removeAddress('<%=Number(index)%>')"><i class="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
       </div>
@@ -150,9 +150,9 @@
             <input type="hidden" name="addressIndex" value="0">
 
             <div class="checkout__input__checkbox">
-              <label for="diff-acc">
+              <label for="new-address">
                 Ship to a different address?
-                <input id="diff-acc" type="checkbox" id="diff-acc" onchange='handleChange(this)'>
+                <input name="newAddress" type="checkbox" id="new-address" onchange='handleChange(this)'>
                 <span class="checkmark"></span>
               </label>
             </div>
@@ -180,9 +180,9 @@
               <!-- <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
                 ut labore et dolore magna aliqua.</p> -->
               <div class="checkout__input__checkbox">
-                <label for="payment">
+                <label for="cod">
                   Cash on delivery <i class="fa-solid fa-money-bill-1"></i>
-                  <input type="checkbox" id="cod" name="cod">
+                  <input type="checkbox" id="cod" name="cod" checked>
                   <span class="checkmark"></span>
                 </label>
               </div>
@@ -205,10 +205,9 @@
 <script>
   function fillForm(address, index) {
     let myAddress = JSON.parse(address)
-    console.log(index)
     $("#addressInputField :input").prop("disabled", true)
-    $("#diff-acc").prop("disabled", false)
-    $("#diff-acc").prop("checked", false)
+    $("#new-address").prop("disabled", false)
+    $("#new-address").prop("checked", false)
     $("[name='addressIndex']").val(index)
     $("[name='addressIndex']").prop("disabled", false)
 
@@ -223,8 +222,39 @@
   }
 
   function handleChange(checkbox) {
-    if (checkbox.checked == true){
+    if (checkbox.checked == true) {
       $("#addressInputField :input").prop("disabled", false)
+    }
+    if (checkbox.checked ==false){
+      $("#addressInputField :input").val('')
+    }  
+  }
+
+  async function removeAddress(index) {
+    try {
+      let result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#6F7E8B',
+        cancelButtonColor: '#273952',
+        confirmButtonText: 'Yes, Delete it!',
+        cancelButtonText: 'No.',
+        width: '25em'
+      })
+      if (result.isConfirmed) {
+        const response = await axios.delete(`/user/deleteAddress?path=${index}`)
+        if (response.status == 204) {
+          document.getElementById(`address-${index}`).remove()
+          toastr.options = {
+            "positionClass": "toast-bottom-right"
+          }
+          toastr.success('address removed successfully.')
+        }
+      }
+    } catch (error) {
+      console.error(err)
     }
   }
 </script>

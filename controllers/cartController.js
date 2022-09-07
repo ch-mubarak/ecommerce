@@ -77,17 +77,19 @@ module.exports = {
     cartItemCount: async (req, res, next) => {
         const userId = req.user.id
         try {
-            let count = 0
+            let itemCount = 0
             const cart = await Cart.findOne({ userId })
             if (cart) {
                 cart.products.forEach(product => {
-                    count += product.quantity
+                    itemCount += product.quantity
                 })
             }
-            res.locals.cartItemCount = count
+            res.locals.cartItemCount = itemCount
+            return res.status(200).json({ itemCount: itemCount })
 
         } catch (err) {
             console.log(err)
+            return res.status(500).json({ err })
         }
     },
     deleteItem: async (req, res, next) => {
@@ -139,6 +141,7 @@ module.exports = {
             const userId = req.user.id
             const addressIndex = req.body.addressIndex
             const user = await User.findById(userId)
+            console.log(req.body)
             if (req.body.firstName) {
                 user.address.unshift({
                     firstName: req.body.firstName,

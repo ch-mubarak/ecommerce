@@ -1,3 +1,16 @@
+$(document).ready(async () => {
+    try {
+        const response = await axios.get("/user/cartItemCount")
+        const itemCount = response.data.itemCount ? response.data.itemCount : 0
+        $(".cart-item-count").html(itemCount)
+
+    } catch (err) {
+        console.error(err)
+    }
+})
+
+
+
 async function deleteItem(productId, cartCount) {
     try {
         const response = await axios({

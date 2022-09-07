@@ -58,8 +58,6 @@ app.use(function (req, res, next) {
   if (req.isAuthenticated()) {
     res.locals.user = true
     res.locals.userName = req.user.name
-    cartControl.cartItemCount(req,res)
-    wishlistControl.wishlistItemCount(req,res)
   }
   next();
 });

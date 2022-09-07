@@ -15,6 +15,8 @@ router.get("/wishlist", wishlistControl.wishlist)
 router.get("/cart", cartControl.getCart)
 router.get("/checkout", cartControl.getCheckout)
 router.get("/myOrders", shopControl.myOrders)
+router.get("/cartItemCount",cartControl.cartItemCount)
+router.get("/wishlistItemCount",wishlistControl.wishlistItemCount)
 
 router.post("/checkout", cartControl.checkout)
 

@@ -1,3 +1,14 @@
+$(document).ready(async () => {
+  try {
+      const response = await axios.get("/user/wishlistItemCount")
+      const itemCount = response.data.itemCount ? response.data.itemCount : 0
+      $(".wishlist-item-count").html(itemCount)
+
+  } catch (err) {
+      console.error(err)
+  }
+})
+
 
 async function wishlist(name, id) {
   try {

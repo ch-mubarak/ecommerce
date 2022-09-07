@@ -95,7 +95,7 @@
                 </td>
                 <td>
                   <div>
-                    <a class="text-dark" onclick="addToCart('<%=list.productId.id%>','<%=list.name%>','<%=list.productId.price%>',1,'<%=list.productId?.offerPrice%>');wishlist('<%=list.name%>','<%=list.productId.id%>')"><i class="fa fa-shopping-cart fa-lg"></i></a>
+                    <a class="text-dark" onclick="addToCart('<%=list.productId.id%>','<%=list.name%>','<%=list.productId.price%>',1,'<%=list.productId?.offerPrice%>');removeFromWishlist('<%=list.name%>','<%=list.productId.id%>')"><i class="fa fa-shopping-cart fa-lg"></i></a>
                   </div>
                   <div>
                     <a onclick="removeFromWishlist('<%=list.name%>','<%=list.productId.id%>')" class="btn"><i class="fa-solid fa-trash-can fa-lg"></i></a>

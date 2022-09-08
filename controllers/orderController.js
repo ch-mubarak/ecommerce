@@ -25,6 +25,21 @@ module.exports = {
         });
         return res.status(201).json({ "orderId": orderId })
     },
+    verify: async (req, res) => {
+        let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
+
+        const crypto = require("crypto");
+        const expectedSignature = crypto.createHmac('sha256', '<YOUR_API_SECRET>')
+            .update(body.toString())
+            .digest('hex');
+        console.log("sig received ", req.body.response.razorpay_signature);
+        console.log("sig generated ", expectedSignature);
+        let response = { "signatureIsValid": "false" }
+        if (expectedSignature === req.body.response.razorpay_signature)
+            response = { "signatureIsValid": "true" }
+        res.send(response);
+
+    },
     checkout: async (req, res) => {
         try {
             const userId = req.user.id
@@ -46,7 +61,7 @@ module.exports = {
             const cart = await Cart.findOne({ userId: userId })
             const paymentType = req.body?.paypal == 'on' ? "Paypal" : "COD"
             const deliveryAddress = addressIndex ? user.address[addressIndex] : user.address[0]
-    
+
             await Order.create({
                 userId: userId,
                 deliveryAddress: deliveryAddress,

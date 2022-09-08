@@ -19,6 +19,7 @@ router.get("/cartItemCount",cartControl.cartItemCount)
 router.get("/wishlistItemCount",wishlistControl.wishlistItemCount)
 
 router.post("/payment",orderControl.payment)
+routuer.post("/payment/verify",orderControl.verify)
 router.post("/checkout", orderControl.checkout)
 
 router.put("/cancelOrder/:id", orderControl.cancelOrder)

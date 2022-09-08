@@ -1,7 +1,42 @@
 const Cart = require("../models/cart");
 const User = require("../models/users")
-const Order = require("../models/order")
 const Product = require("../models/product")
+const states = ["Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chhattisgarh",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu and Kashmir",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttarakhand",
+    "Uttar Pradesh",
+    "West Bengal",
+    "Andaman and Nicobar Islands",
+    "Chandigarh",
+    "Dadra and Nagar Haveli",
+    "Daman and Diu",
+    "Delhi",
+    "Lakshadweep",
+    "Puducherry"]
 
 module.exports = {
     addToCart: async (req, res) => {
@@ -141,6 +176,7 @@ module.exports = {
             if (findCart?.products.length > 0) {
                 res.render("master/checkout", {
                     findCart: findCart,
+                    states:states,
                     user: user
                 })
             } else {
@@ -150,43 +186,4 @@ module.exports = {
             console.log(err)
         }
     },
-
-    checkout: async (req, res) => {
-        try {
-            const userId = req.user.id
-            const addressIndex = req.body.addressIndex
-            const user = await User.findById(userId)
-            if (req.body.newAddress == 'on') {
-                user.address.unshift({
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    house: req.body.house,
-                    address: req.body.address,
-                    city: req.body.city,
-                    state: req.body.state,
-                    pincode: req.body.pincode,
-                    phone: req.body.phone
-                })
-            }
-            await user.save()
-            const cart = await Cart.findOne({ userId: userId })
-            const paymentType = req.body.paypal == 'on' ? "Paypal" : "COD"
-            await Order.create({
-                userId: userId,
-                deliveryAddress: user.address[addressIndex],
-                products: cart.products,
-                quantity: cart.quantity,
-                subTotal: cart.subTotal,
-                total: cart.total,
-                paymentType: paymentType
-            })
-            console.log("order success")
-            res.redirect("/user/myOrders")
-            await cart.remove()
-            res.redirect("/")
-        } catch (err) {
-            console.log(err)
-
-        }
-    }
 }

@@ -7,8 +7,7 @@ const session = require("express-session")
 const flash = require("connect-flash")
 const methodOverride = require("method-override")
 const User = require("./models/users")
-const cartControl = require("./controllers/cartController")
-const wishlistControl = require("./controllers/wishlistController")
+const cors = require("cors")
 
 const app = express();
 
@@ -25,6 +24,7 @@ db.once("open", () => console.log("mongoose is connected"))
 app.set("view engine", "ejs")
 app.set("layout", "layouts/masterLayout")
 
+app.use(cors())
 app.use(express.static("public"))
 app.use(expressLayout)
 app.use(express.urlencoded({ extended: false }))

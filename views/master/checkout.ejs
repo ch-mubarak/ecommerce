@@ -98,6 +98,7 @@
 
     <div class="checkout__form">
       <h4>Shipping Address</h4>
+      <!-- <form action="/user/checkout" method="post"> -->
       <form action="/user/checkout" method="post">
         <div class="row">
           <div class="col-lg-6" id="addressInputField">
@@ -130,7 +131,7 @@
             </div>
             <div class="checkout__input">
               <p>Postcode<span>*</span></p>
-              <input type="number" name="pincode" required>
+              <input type="tel" name="pincode" minlength="6" maxlength="6" required>
             </div>
             <div class="row">
               <div class="col-lg-6">
@@ -142,12 +143,12 @@
               <div class="col-lg-6">
                 <div class="checkout__input">
                   <p>Email<span>*</span></p>
-                  <input type="text" placeholder="<%= user.email %>" disabled>
+                  <input type="text" name="email" placeholder="<%= user.email %>" disabled>
                 </div>
               </div>
             </div>
 
-            <input type="hidden" name="addressIndex" value="0">
+            <input type="hidden" id="address-index" name="addressIndex" value="">
 
             <div class="checkout__input__checkbox">
               <label for="new-address">
@@ -193,7 +194,7 @@
                   <span class="checkmark"></span>
                 </label>
               </div>
-              <button type="submit" class="site-btn">PLACE ORDER</button>
+              <button type="submit" class="site-btn" id="rzp-button">PLACE ORDER</button>
             </div>
           </div>
         </div>
@@ -201,59 +202,54 @@
     </div>
   </div>
 </section>
+
 <!-- Checkout Section End -->
+
+<script src="/js/checkout.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
-  function fillForm(address, index) {
-    let myAddress = JSON.parse(address)
-    $("#addressInputField :input").prop("disabled", true)
-    $("#new-address").prop("disabled", false)
-    $("#new-address").prop("checked", false)
-    $("[name='addressIndex']").val(index)
-    $("[name='addressIndex']").prop("disabled", false)
-
-    $("[name='firstName']").val(myAddress.firstName)
-    $("[name='lastName']").val(myAddress.lastName)
-    $("[name='house']").val(myAddress?.house)
-    $("[name='address']").val(myAddress.address)
-    $("[name='city']").val(myAddress.city)
-    $("[name='state']").val(myAddress.state)
-    $("[name='pincode']").val(myAddress.pincode)
-    $("[name='phone']").val(myAddress.phone)
-  }
-
-  function handleChange(checkbox) {
-    if (checkbox.checked == true) {
-      $("#addressInputField :input").prop("disabled", false)
-    }
-    if (checkbox.checked ==false){
-      $("#addressInputField :input").val('')
-    }  
-  }
-
-  async function removeAddress(index) {
+  document.getElementById('rzp-button1').onclick = async function(e) {
+    e.preventDefault();
     try {
-      let result = await Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#6F7E8B',
-        cancelButtonColor: '#273952',
-        confirmButtonText: 'Yes, Delete it!',
-        cancelButtonText: 'No.',
-        width: '25em'
-      })
-      if (result.isConfirmed) {
-        const response = await axios.delete(`/user/deleteAddress?path=${index}`)
-        if (response.status == 204) {
-          document.getElementById(`address-${index}`).remove()
-          toastr.options = {
-            "positionClass": "toast-bottom-right"
-          }
-          toastr.success('address removed successfully.')
+      const orderResponse = await axios({
+        method: "post",
+        url: "/user/payment",
+        data: {
+          amount: '<%=findCart.total%>'
         }
-      }
-    } catch (error) {
+      })
+      let options = {
+        "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard 
+        "name": "Fashion",
+        "amount": '<%=findCart.total%>' * 100,
+        "order_id": orderResponse.orderId, // For one time payment
+        "theme": {
+          "color": "#273952"
+        },
+        // This handler function will handle the success payment
+        "handler": function(response) {
+          // alert(response.razorpay_payment_id);
+          Swal.fire({
+            title: 'Congrats!',
+            text: 'Payment Successful',
+            icon: 'success',
+            width: "25em",
+            timer: 5000
+          })
+        },
+      };
+      const rzp1 = new Razorpay(options);
+      rzp1.open();
+      rzp1.on('payment.failed', function(response) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          width: "25em"
+        })
+      });
+    } catch (err) {
       console.error(err)
     }
   }

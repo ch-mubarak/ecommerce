@@ -1,7 +1,72 @@
 const Order = require("../models/order")
 const Product = require("../models/product")
+const Cart = require("../models/cart")
+const User = require("../models/users")
+const Razorpay = require("razorpay");
+
+const instance = new Razorpay({
+    key_id: process.env.key_id,
+    key_secret: process.env.key_secret,
+});
 
 module.exports = {
+
+    payment: async (req, res) => {
+        const options = {
+            amount: Number.parseFloat(req.body.amount) * 100,  // amount in the smallest currency unit
+            currency: "INR",
+            receipt: "order001"
+        };
+        let orderId
+        instance.orders.create(options, function (err, order) {
+            orderId = order.id
+            // console.log(order);
+            // console.log(orderId);
+        });
+        return res.status(201).json({ "orderId": orderId })
+    },
+    checkout: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const addressIndex = req.body.addressIndex
+            const user = await User.findById(userId)
+            if (req.body.newAddress == 'on') {
+                user.address.unshift({
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    house: req.body.house,
+                    address: req.body.address,
+                    city: req.body.city,
+                    state: req.body.state,
+                    pincode: req.body.pincode,
+                    phone: req.body.phone
+                })
+                await user.save()
+            }
+            const cart = await Cart.findOne({ userId: userId })
+            const paymentType = req.body?.paypal == 'on' ? "Paypal" : "COD"
+            const deliveryAddress = addressIndex ? user.address[addressIndex] : user.address[0]
+    
+            await Order.create({
+                userId: userId,
+                deliveryAddress: deliveryAddress,
+                products: cart.products,
+                quantity: cart.quantity,
+                subTotal: cart.subTotal,
+                total: cart.total,
+                paymentType: paymentType
+            })
+            console.log("order success")
+            res.redirect("/user/myOrders")
+            return res.status(201)
+            // await cart.remove()
+        } catch (err) {
+            res.redirect("/")
+            // return res.status(500)
+            console.log(err)
+
+        }
+    },
     packOrder: async (req, res) => {
         try {
             const orderId = req.params.id

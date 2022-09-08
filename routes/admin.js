@@ -6,6 +6,7 @@ const authentication = require("../middleware/authentication")
 const productControl = require("../controllers/productController")
 const adminControl = require("../controllers/adminController")
 const orderControl = require("../controllers/orderController")
+const bannerControl =require("../controllers/bannerController")
 
 // router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
@@ -13,6 +14,8 @@ router.get("/", adminControl.home)
 router.get("/categories", adminControl.categories)
 router.get("/products", adminControl.products)
 router.get("/orders", adminControl.orders)
+router.get("/banners",bannerControl.getBanner)
+
 
 router.post("/addCategory", adminControl.addCategory)
 router.post("/addProduct", multer.send, productControl.addProduct)

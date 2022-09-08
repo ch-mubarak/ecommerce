@@ -194,7 +194,7 @@
                   <span class="checkmark"></span>
                 </label>
               </div>
-              <button type="submit" class="site-btn" id="rzp-button">PLACE ORDER</button>
+              <button type="submit" class="site-btn" id="rzp-button1">PLACE ORDER</button>
             </div>
           </div>
         </div>
@@ -204,53 +204,62 @@
 </section>
 
 <!-- Checkout Section End -->
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="/js/checkout.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
-  document.getElementById('rzp-button1').onclick = async function(e) {
-    e.preventDefault();
+  let orderId;
+  $(document).ready(async function() {
     try {
-      const orderResponse = await axios({
-        method: "post",
-        url: "/user/payment",
-        data: {
-          amount: '<%=findCart.total%>'
+      const settings = await axios({
+        "url": "/user/payment/orderId",
+        "method": "POST",
+        "data": {
+          "amount": '<%=findCart.total * 100%>'
         }
-      })
-      let options = {
-        "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard 
-        "name": "Fashion",
-        "amount": '<%=findCart.total%>' * 100,
-        "order_id": orderResponse.orderId, // For one time payment
-        "theme": {
-          "color": "#273952"
-        },
-        // This handler function will handle the success payment
-        "handler": function(response) {
-          // alert(response.razorpay_payment_id);
-          Swal.fire({
-            title: 'Congrats!',
-            text: 'Payment Successful',
-            icon: 'success',
-            width: "25em",
-            timer: 5000
-          })
-        },
-      };
-      const rzp1 = new Razorpay(options);
-      rzp1.open();
-      rzp1.on('payment.failed', function(response) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          width: "25em"
-        })
       });
+      console.log(settings)
+      orderId = settings.data.orderId;
+      console.log(orderId);
+      // $("button").show();
     } catch (err) {
       console.error(err)
     }
+  });
+
+
+  document.getElementById('rzp-button1').onclick = function(e) {
+    e.preventDefault();
+    let options = {
+      "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard 
+      "name": "Fashion",
+      "amount": '<%=findCart.total%>' * 100,
+      "order_id": orderId, // For one time payment
+      "theme": {
+        "color": "#273952"
+      },
+      // This handler function will handle the success payment
+      "handler": function(response) {
+        // alert(response.razorpay_payment_id);
+        Swal.fire({
+          title: 'Congrats!',
+          text: 'Payment Successful',
+          icon: 'success',
+          width: "25em",
+          timer: 5000
+        })
+      },
+    };
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+    rzp1.on('payment.failed', function(response) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+        width: "25em"
+      })
+    });
   }
 </script>

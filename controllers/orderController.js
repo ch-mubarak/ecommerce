@@ -11,21 +11,19 @@ const instance = new Razorpay({
 
 module.exports = {
 
-    payment: async (req, res) => {
+    generateOrder: (req, res) => {
         const options = {
-            amount: Number.parseFloat(req.body.amount) * 100,  // amount in the smallest currency unit
+            amount: req.body.amount,  // amount in the smallest currency unit
             currency: "INR",
-            receipt: "order001"
+            receipt: "order1001"
         };
-        let orderId
         instance.orders.create(options, function (err, order) {
-            orderId = order.id
-            // console.log(order);
-            // console.log(orderId);
+            console.log(order);
+            res.send({orderId:order.id})
         });
-        return res.status(201).json({ "orderId": orderId })
     },
-    verify: async (req, res) => {
+
+    verifyPayment: async (req, res) => {
         let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
 
         const crypto = require("crypto");

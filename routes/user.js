@@ -18,8 +18,8 @@ router.get("/myOrders", shopControl.myOrders)
 router.get("/cartItemCount",cartControl.cartItemCount)
 router.get("/wishlistItemCount",wishlistControl.wishlistItemCount)
 
-router.post("/payment",orderControl.payment)
-routuer.post("/payment/verify",orderControl.verify)
+router.post("/payment/orderId",orderControl.generateOrder)
+router.post("/payment/verify",orderControl.verifyPayment)
 router.post("/checkout", orderControl.checkout)
 
 router.put("/cancelOrder/:id", orderControl.cancelOrder)

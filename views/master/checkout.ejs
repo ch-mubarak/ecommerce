@@ -209,17 +209,17 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="/js/checkout.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-
+<!-- <script src="/js/payment.js"></script> -->
 <script>
   let orderId
+  const amount = Number('<%=findCart.total * 100%>')
   $(document).ready(async function() {
     try {
       const settings = await axios({
         "url": "/user/payment/orderId",
         "method": "POST",
         "data": {
-          "amount": '<%=findCart.total * 100%>'
+          "amount": amount
         }
       });
       orderId = settings.data.orderId;
@@ -229,14 +229,23 @@
   });
   document.forms["checkoutForm"].addEventListener("submit", async (event) => {
     event.preventDefault();
+    const paymentType = $('input[name=paymentType]:checked', '#checkoutForm').val()
     const data = new URLSearchParams(new FormData(event.target))
+    if (paymentType == "cod") {
+      checkout(data)
+    } else {
+      razorpay(orderId, amount, data)
+    }
+  });
+
+
+  async function checkout(data) {
     try {
-      const response = await axios(event.target.action, {
-        url: event.target.action,
+      const response = await axios({
+        url: '/user/checkout',
         method: "post",
         data: data,
       });
-      console.log(response)
       if (response.status == 201) {
         await Swal.fire({
           title: 'Congrats!',
@@ -246,8 +255,6 @@
           timer: 3000
         })
         window.location = "/user/myOrders"
-      } else if (response.status == 202) {
-        razorpay()
       }
     } catch (err) {
       console.error(err)
@@ -256,43 +263,48 @@
         title: 'Oops...',
         text: 'Something went wrong!',
         width: "25em",
-        timer: 5000
+        timer: 3000
       })
-      // window.location = "/user/checkout"
+      window.location = "/user/checkout"
     }
-  });
+  }
 
 
-  function razorpay() {
+  function razorpay(orderId, amount, data) {
     let options = {
       "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard
       "name": "Fashion",
-      "amount": '<%=findCart.total * 100%>',
+      "amount": amount,
       "order_id": orderId, // For one time payment
+      "retry": false,
       "theme": {
         "color": "#273952"
       },
       // This handler function will handle the success payment
-      "handler": function(response) {
+      "handler": async function(response) {
         // alert(response.razorpay_payment_id);
-        Swal.fire({
+        checkout(data)
+        await Swal.fire({
           title: 'Congrats!',
           text: 'Payment Successful',
           icon: 'success',
           width: "25em",
           timer: 5000
         })
+        window.location = "/user/myOrders"
       },
     };
     const rzp1 = new Razorpay(options);
     rzp1.open();
-    rzp1.on('payment.failed', function(response) {
-      Swal.fire({
+    rzp1.on('payment.failed', async function(response) {
+      await Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Payment Failed!',
-        width: "25em"
+        width: "25em",
+        timer: 2000,
       })
+      window.location = "/user/checkout"
     });
 
   }

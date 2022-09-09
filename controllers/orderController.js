@@ -40,7 +40,6 @@ module.exports = {
     },
     checkout: async (req, res) => {
         try {
-            console.log(req.body)
             const userId = req.user.id
             const addressIndex = req.body.addressIndex
             const user = await User.findById(userId)
@@ -70,18 +69,14 @@ module.exports = {
                 total: cart.total,
                 paymentType: paymentType
             })
-            if (paymentType == "cod") {
-                await cart.remove()
-                res.sendStatus(201)
-            } else {
-                res.status(202).json({ paymentType: "razorpay" })
-            }
+            await cart.remove()
+            res.sendStatus(201)
             console.log("order success")
             // res.redirect("/user/myOrders")
         } catch (err) {
             console.log(err)
-            res.redirect("/")
-            // return res.status(500)
+            return res.status(500)
+            // res.redirect("/")
 
         }
     },

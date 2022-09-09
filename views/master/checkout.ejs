@@ -222,9 +222,7 @@
           "amount": '<%=findCart.total * 100%>'
         }
       });
-      console.log(settings)
       orderId = settings.data.orderId;
-      console.log(orderId);
     } catch (err) {
       console.error(err)
     }
@@ -248,30 +246,28 @@
           timer: 3000
         })
         window.location = "/user/myOrders"
+      } else if (response.status == 202) {
+        razorpay()
       }
-
-    } catch (error) {
+    } catch (err) {
       console.error(err)
-      Swal.fire({
+      await Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Something went wrong!',
         width: "25em",
-        timer: 2000
+        timer: 5000
       })
-      window.location = "/user/checkout"
+      // window.location = "/user/checkout"
     }
   });
-</script>
 
-<!-- <script>
- 
-  document.getElementById('rzp-button1').onsubmit = function(e) {
-    e.preventDefault();
+
+  function razorpay() {
     let options = {
       "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard
       "name": "Fashion",
-      "amount": 5000,
+      "amount": '<%=findCart.total * 100%>',
       "order_id": orderId, // For one time payment
       "theme": {
         "color": "#273952"
@@ -294,9 +290,10 @@
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Something went wrong!',
+        text: 'Payment Failed!',
         width: "25em"
       })
     });
+
   }
-</script> -->
+</script>

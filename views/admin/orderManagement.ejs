@@ -16,6 +16,7 @@
             <th>Products</th>
             <th>Total Price</th>
             <th>Order Date</th>
+            <th>Payment</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -28,6 +29,7 @@
             <th>Products</th>
             <th>Total Price</th>
             <th>Order Date</th>
+            <th>Payment</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -47,11 +49,16 @@
             </td>
             <td>
               <% order.products.forEach(product=>{ %>
-                <%= product.name %> x<%= product.quantity %>,
-             <% }) %> 
+              <%= product.name %> x<%= product.quantity %>,
+              <% }) %>
             </td>
             <td><%=order.total %></td>
             <td><%=order.createdAt.toDateString() %></td>
+            <% if(order.paymentType == "cod" ){%>
+            <td><span class="badge" style="background-color:rgb(177, 39, 85) ;">COD</span></td>
+            <%}else{%>
+            <td><span class="badge bg-success">Online</span></td>
+            <% } %>
             <td><span class="badge order-status" id="status-<%= order.id%>"><%=order.status %></span></td>
             <td id="action-<%= order.id %>">
               <% if(order.status==="Pending"){%>

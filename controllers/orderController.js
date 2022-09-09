@@ -26,7 +26,7 @@ module.exports = {
         let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
 
         const crypto = require("crypto");
-        const expectedSignature = crypto.createHmac('sha256', '<YOUR_API_SECRET>')
+        const expectedSignature = crypto.createHmac('sha256', process.env.key_secret)
             .update(body.toString())
             .digest('hex');
         console.log("sig received ", req.body.response.razorpay_signature);

@@ -283,15 +283,31 @@
       // This handler function will handle the success payment
       "handler": async function(response) {
         // alert(response.razorpay_payment_id);
-        checkout(data)
-        await Swal.fire({
-          title: 'Congrats!',
-          text: 'Payment Successful',
-          icon: 'success',
-          width: "25em",
-          timer: 5000
-        })
-        window.location = "/user/myOrders"
+        try {
+          const verification = await axios({
+            method: "post",
+            url: "/user/payment/verify",
+            data: {
+              response: response
+            }
+          })
+          if (verification.data.signatureIsValid) {
+            checkout(data)
+          } else {
+            await Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Payment Failed!',
+              width: "25em",
+              timer: 2000,
+            })
+            // window.location = "/user/checkout"
+          }
+        } catch (err) {
+          console.log(err)
+          window.location = "/user/myOrders"
+        }
+
       },
     };
     const rzp1 = new Razorpay(options);

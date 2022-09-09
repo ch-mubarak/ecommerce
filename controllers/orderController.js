@@ -23,7 +23,7 @@ module.exports = {
     },
 
     verifyPayment: async (req, res) => {
-        let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
+        let body = req.body.orderId+ "|" + req.body.response.razorpay_payment_id;
 
         const crypto = require("crypto");
         const expectedSignature = crypto.createHmac('sha256', process.env.key_secret)

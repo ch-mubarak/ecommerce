@@ -142,7 +142,7 @@
               <div class="col-lg-6">
                 <div class="checkout__input">
                   <p>Email<span>*</span></p>
-                  <input type="text" name="email" placeholder="<%= user.email %>" disabled>
+                  <input type="text" name="email" placeholder="<%= user.email %>" readonly>
                 </div>
               </div>
             </div>
@@ -212,14 +212,30 @@
 
 
 <script>
+  let orderId
+  $(document).ready(async function() {
+    try {
+      const settings = await axios({
+        "url": "/user/payment/orderId",
+        "method": "POST",
+        "data": {
+          "amount": '<%=findCart.total * 100%>'
+        }
+      });
+      console.log(settings)
+      orderId = settings.data.orderId;
+      console.log(orderId);
+    } catch (err) {
+      console.error(err)
+    }
+  });
   document.forms["checkoutForm"].addEventListener("submit", async (event) => {
     event.preventDefault();
-    const data = new FormData(event.target)
-    console.log(data)
+    const data = new URLSearchParams(new FormData(event.target))
     try {
       const response = await axios(event.target.action, {
         url: event.target.action,
-        method: "POST",
+        method: "post",
         data: data,
       });
       console.log(response)
@@ -241,34 +257,15 @@
         title: 'Oops...',
         text: 'Something went wrong!',
         width: "25em",
-        timer:2000
+        timer: 2000
       })
-      window.location ="/user/checkout"
+      window.location = "/user/checkout"
     }
   });
 </script>
 
 <!-- <script>
-  let orderId;
-  $(document).ready(async function() {
-    try {
-      const settings = await axios({
-        "url": "/user/payment/orderId",
-        "method": "POST",
-        "data": {
-          "amount": 5000
-        }
-      });
-      console.log(settings)
-      orderId = settings.data.orderId;
-      console.log(orderId);
-      // $("button").show();
-    } catch (err) {
-      console.error(err)
-    }
-  });
-
-
+ 
   document.getElementById('rzp-button1').onsubmit = function(e) {
     e.preventDefault();
     let options = {

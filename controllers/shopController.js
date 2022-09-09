@@ -88,7 +88,7 @@ module.exports = {
                     path: "products.productId",
                     model: "Product"
                 }
-            ]).exec()
+            ]).sort({createdAt:-1}).exec()
             res.render("master/myOrders", { myOrders: myOrders })
         } catch (err) {
             console.log(err)

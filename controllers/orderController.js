@@ -40,10 +40,11 @@ module.exports = {
     },
     checkout: async (req, res) => {
         try {
+            console.log(req.body)
             const userId = req.user.id
             const addressIndex = req.body.addressIndex
             const user = await User.findById(userId)
-            if (req.body.newAddress == 'on') {
+            if (!addressIndex) {
                 user.address.unshift({
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
@@ -67,7 +68,7 @@ module.exports = {
                 quantity: cart.quantity,
                 subTotal: cart.subTotal,
                 total: cart.total,
-                paymentType: "cod"
+                paymentType: paymentType
             })
             await cart.remove()
             console.log("order success")

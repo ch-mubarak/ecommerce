@@ -20,10 +20,8 @@ function fillForm(address, index) {
 
 function handleChange(checkbox) {
     if (checkbox.checked == true) {
-        $("#addressInputField :input").prop("disabled", false)
-        $("[name='email']").prop("disabled", true)
-        $("#addressInputField :input").val('')
-        $("[name='newAddress']").val('on')
+        $("#addressInputField :input").not("[name=email]").prop("disabled", false)
+        $("#addressInputField :input").not("[name=newAddress]").val('')
     }
 }
 

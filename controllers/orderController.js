@@ -18,7 +18,6 @@ module.exports = {
             receipt: "order1001"
         };
         instance.orders.create(options, function (err, order) {
-            console.log(order);
             res.send({orderId:order.id})
         });
     },
@@ -33,8 +32,9 @@ module.exports = {
         console.log("sig received ", req.body.response.razorpay_signature);
         console.log("sig generated ", expectedSignature);
         let response = { "signatureIsValid": "false" }
-        if (expectedSignature === req.body.response.razorpay_signature)
+        if (expectedSignature === req.body.response.razorpay_signature){
             response = { "signatureIsValid": "true" }
+        }
         res.send(response);
 
     },
@@ -57,7 +57,7 @@ module.exports = {
                 await user.save()
             }
             const cart = await Cart.findOne({ userId: userId })
-            const paymentType = req.body?.paypal == 'on' ? "Paypal" : "COD"
+            const paymentType = req.body.paymentType
             const deliveryAddress = addressIndex ? user.address[addressIndex] : user.address[0]
 
             await Order.create({
@@ -67,16 +67,16 @@ module.exports = {
                 quantity: cart.quantity,
                 subTotal: cart.subTotal,
                 total: cart.total,
-                paymentType: paymentType
+                paymentType: "cod"
             })
+            await cart.remove()
             console.log("order success")
-            res.redirect("/user/myOrders")
-            return res.status(201)
-            // await cart.remove()
+            res.sendStatus(201)
+            // res.redirect("/user/myOrders")
         } catch (err) {
+            console.log(err)
             res.redirect("/")
             // return res.status(500)
-            console.log(err)
 
         }
     },

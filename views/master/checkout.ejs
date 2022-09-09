@@ -98,8 +98,7 @@
 
     <div class="checkout__form">
       <h4>Shipping Address</h4>
-      <!-- <form action="/user/checkout" method="post"> -->
-      <form action="/user/checkout" method="post">
+      <form action="/user/checkout" method="post" id="checkoutForm">
         <div class="row">
           <div class="col-lg-6" id="addressInputField">
             <div class="row">
@@ -150,13 +149,17 @@
 
             <input type="hidden" id="address-index" name="addressIndex" value="">
 
+            <% if(user.address.length>0){%>
             <div class="checkout__input__checkbox">
               <label for="new-address">
                 Ship to a different address?
-                <input name="newAddress" type="checkbox" id="new-address" onchange='handleChange(this)'>
+                <input name="newAddress" type="checkbox" id="new-address" checked onchange='handleChange(this)'>
                 <span class="checkmark"></span>
               </label>
             </div>
+            <% }else{%>
+            <input name="newAddress" type="hidden" value="on">
+            <% } %>
           </div>
           <div class="col-lg-6">
             <div class="checkout__order">
@@ -180,18 +183,17 @@
               <div class="checkout__order__total">Total <span>₹<%= findCart.total.toFixed(2) %></span></div>
               <!-- <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
                 ut labore et dolore magna aliqua.</p> -->
-              <div class="checkout__input__checkbox">
+              <div class="form-check">
                 <label for="cod">
+                  <input class="form-check-input" type="radio" id="cod" name="paymentType" checked value="cod">
                   Cash on delivery <i class="fa-solid fa-money-bill-1"></i>
-                  <input type="checkbox" id="cod" name="cod" checked>
-                  <span class="checkmark"></span>
                 </label>
               </div>
-              <div class="checkout__input__checkbox">
-                <label for="paypal">
-                  Paypal <i class="fa-brands fa-paypal"></i>
-                  <input type="checkbox" id="paypal" name="paypal">
-                  <span class="checkmark"></span>
+
+              <div class="form-check">
+                <label for="online-payment">
+                  <input class="form-check-input" id="online-payment" type="radio" name="paymentType" value="razorpay">
+                  Online Payment <i class="fa-brands fa-cc-visa"></i> <i class="fa-solid fa-credit-card"></i> <i class="fa-brands fa-cc-mastercard"></i> <i class="fa-brands fa-google-pay"></i>
                 </label>
               </div>
               <button type="submit" class="site-btn" id="rzp-button1">PLACE ORDER</button>
@@ -208,7 +210,45 @@
 <script src="/js/checkout.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+
 <script>
+  document.forms["checkoutForm"].addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.target)
+    console.log(data)
+    try {
+      const response = await axios(event.target.action, {
+        url: event.target.action,
+        method: "POST",
+        data: data,
+      });
+      console.log(response)
+      if (response.status == 201) {
+        await Swal.fire({
+          title: 'Congrats!',
+          text: 'Order Successful',
+          icon: 'success',
+          width: "25em",
+          timer: 3000
+        })
+        window.location = "/user/myOrders"
+      }
+
+    } catch (error) {
+      console.error(err)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+        width: "25em",
+        timer:2000
+      })
+      window.location ="/user/checkout"
+    }
+  });
+</script>
+
+<!-- <script>
   let orderId;
   $(document).ready(async function() {
     try {
@@ -216,7 +256,7 @@
         "url": "/user/payment/orderId",
         "method": "POST",
         "data": {
-          "amount": '<%=findCart.total * 100%>'
+          "amount": 5000
         }
       });
       console.log(settings)
@@ -229,12 +269,12 @@
   });
 
 
-  document.getElementById('rzp-button1').onclick = function(e) {
+  document.getElementById('rzp-button1').onsubmit = function(e) {
     e.preventDefault();
     let options = {
-      "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard 
+      "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard
       "name": "Fashion",
-      "amount": '<%=findCart.total%>' * 100,
+      "amount": 5000,
       "order_id": orderId, // For one time payment
       "theme": {
         "color": "#273952"
@@ -262,4 +302,4 @@
       })
     });
   }
-</script>
+</script> -->

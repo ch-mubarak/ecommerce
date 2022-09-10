@@ -92,7 +92,7 @@ async function deliverPackage(orderId) {
             method: "put",
             url: `/admin/deliverPackage/${orderId}`
         })
-        if (response.location == 201) {
+        if (response.status == 201) {
             let myOrderStatus = document.getElementById("status-" + orderId)
             let myOrderAction = document.getElementById("action-" + orderId)
             myOrderStatus.classList.replace("bg-dark", "bg-success")

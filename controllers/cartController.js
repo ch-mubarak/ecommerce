@@ -69,14 +69,14 @@ module.exports = {
                         return acc + curr.quantity * curr.price;
                     }, 0)
                     cart.total = cart.products.reduce((acc, curr) => {
-                        return acc + curr.quantity * (curr.offerPrice || curr.price);
+                        return acc + curr.quantity * (curr.offerPrice.toFixed || curr.price).toFixed(2);
                     }, 0)
                     await findProduct.save()
                     await cart.save();
                 } else {
                     //no cart for user, create new cart
-                    const subTotal = quantity * price
-                    const total = offerPrice ? quantity * offerPrice : subTotal
+                    const subTotal = (quantity * price).toFixed(2)
+                    const total = offerPrice ? (quantity * offerPrice).toFixed(2) : subTotal
                     cart = await Cart.create({
                         userId,
                         products: [{ productId, quantity, name, price, offerPrice }],

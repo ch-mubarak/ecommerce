@@ -1,0 +1,96 @@
+<div class="container-fluid px-4">
+  <h1 class="mt-4">Coupon Management</h1>
+  <%- include("../partials/errorMessage") %>
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      Coupons
+      <button class="btn btn-dark btn-sm float-end" data-bs-toggle="modal" data-bs-target="#couponModal">New Coupon <i class="fa-solid fa-circle-plus"></i></button>
+      <%-include("_modal_coupon") %>
+    </div>
+    <div class="card-body">
+      <table id="datatablesSimple">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Coupon</th>
+            <th>Discount %</th>
+            <th>Coupon Limit</th>
+            <th>Min Purchase</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Name</th>
+            <th>Coupon</th>
+            <th>Discount %</th>
+            <th>Coupon Limit</th>
+            <th>Min Purchase</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <% allCoupons.forEach(coupon=>{%>
+          <tr>
+            <td><%= coupon.name %> </td>
+            <td><i class="fa-solid fa-tags"></i> <strong><%= coupon.couponCode %> </strong></td>
+            <td><%= coupon.discount %></td>
+            <td><%= coupon.maxLimit %></td>
+            <td><%= coupon.minPurchase %></td>
+            <td id="couponStatus_<%= coupon.id%>">
+              <% if(coupon.isActive){%>
+              <span class="badge bg-success">Active</span>
+              <% }else {%>
+              <span class="badge bg-danger">Deactivated</span>
+              <%}%>
+            </td>
+            <td id="couponAction_<%= coupon.id%>">
+              <% if(coupon.isActive){%>
+              <button class="btn btn-sm btn-outline-danger" onclick="deactivate('<%=coupon.id%>')">Deactivate</button>
+              <% }else {%>
+              <button class="btn btn-sm btn-outline-success" onclick="activate('<%=coupon.id%>')">Activate</button>
+              <%}%>
+            </td>
+          </tr>
+          <%}) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+  async function activate(couponId) {
+    try {
+      const response = await axios.put(`/admin/activateCoupon/${couponId}`);
+      if (response.status == 201) {
+        document.getElementById(`couponStatus_${couponId}`).innerHTML = '<span class="badge bg-success">Active</span>'
+        document.getElementById(`couponAction_${couponId}`).innerHTML = `<button class="btn btn-sm btn-outline-danger" onclick="deactivate('${couponId}')">Deactivate</button>`
+        toastr.success('<i class="fa-solid fa-tags"></i> Coupon activated')
+      }
+
+    } catch (err) {
+      console.error(err)
+      toastr.error("something went wrong")
+    }
+  }
+
+  async function deactivate(couponId) {
+    try {
+      const response = await axios.put(`/admin/deactivateCoupon/${couponId}`);
+      if (response.status == 201) {
+        document.getElementById(`couponStatus_${couponId}`).innerHTML = '<span class="badge bg-danger">Deactivated</span>'
+        document.getElementById(`couponAction_${couponId}`).innerHTML = `<button class="btn btn-sm btn-outline-success" onclick="activate('${couponId}')">Activate</button>`
+        toastr.success('<i class="fa-solid fa-tags"></i> Coupon deactivated')
+      }
+    } catch (err) {
+      console.error(err)
+      toastr.error("something went wrong")
+    }
+  }
+</script>

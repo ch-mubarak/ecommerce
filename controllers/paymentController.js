@@ -34,12 +34,16 @@ module.exports = {
 
     },
 
-    refund: (req, res) => {
-        const paymentId = req.params.id
-        instance.payments.refund(paymentId, {
-            "amount": req.body.amount,
-            "speed": "optimum",
-            "receipt": "Receipt No. 31"
-        })
+    refund: async (req, res) => {
+        try {
+            const paymentId = req.params.id
+            await instance.payments.refund(paymentId, {
+                "amount": req.body.amount,
+                "speed": "optimum",
+            })
+            res.status(201).json({ message: "refund success"})
+        } catch (err) {
+            res.status(500).json({err})
+        }
     },
 }

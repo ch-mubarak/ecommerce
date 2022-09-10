@@ -27,7 +27,7 @@ module.exports = {
             const paymentType = req.body.paymentType
             const deliveryAddress = addressIndex ? user.address[addressIndex] : user.address[0]
 
-            await Order.create({
+            const newOrder = new Order({
                 userId: userId,
                 deliveryAddress: deliveryAddress,
                 products: cart.products,
@@ -38,6 +38,11 @@ module.exports = {
             })
             await cart.remove()
             res.sendStatus(201)
+            if (paymentType == "razorpay") {
+                newOrder.razorpayOrderId = req.query.orderId
+                newOrder.razorpayPaymentId = req.query.paymentId
+            }
+            newOrder.save()
             console.log("order success")
             // res.redirect("/user/myOrders")
         } catch (err) {

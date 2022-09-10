@@ -2,6 +2,7 @@ const User = require("../models/users")
 const Category = require("../models/category")
 const Product = require("../models/product")
 const Order = require("../models/order")
+const Coupon = require("../models/coupon")
 
 module.exports = {
 
@@ -73,7 +74,7 @@ module.exports = {
                 },
                 {
                     path: "products.productId",
-                    model: "Product" 
+                    model: "Product"
                 }
             ]).exec()
             res.render("admin/orderManagement", {
@@ -84,10 +85,21 @@ module.exports = {
             })
         } catch (err) {
             console.log(err)
-            req.flash("message","Error getting order details")
+            req.flash("message", "Error getting order details")
             res.redirect("/admin")
 
         }
+    },
+
+    coupons: async (req, res) => {
+        const allCoupons = await Coupon.find().sort({ createdAt: -1 }).exec()
+        const errorMessage = req.flash("message")
+        res.render("admin/couponManagement", {
+            allCoupons: allCoupons,
+            errorMessage: errorMessage,
+            layout: "layouts/adminLayout",
+            extractScripts: true
+        })
     },
 
     addCategory: async (req, res) => {

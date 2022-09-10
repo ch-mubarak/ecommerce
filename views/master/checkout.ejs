@@ -239,10 +239,10 @@
   });
 
 
-  async function checkout(data) {
+  async function checkout(data,orderId,paymentId) {
     try {
       const response = await axios({
-        url: '/user/checkout',
+        url: `/user/checkout?orderId=${orderId}&paymentId=${paymentId}`,
         method: "post",
         data: data,
       });
@@ -288,12 +288,13 @@
             method: "post",
             url: "/user/payment/verify",
             data: {
-              response:response,
-              orderId:orderId
+              response: response,
+              orderId: orderId
             }
           })
           if (verification.data.signatureIsValid) {
-            checkout(data)
+            const paymentId = response.razorpay_payment_id
+            checkout(data, orderId, paymentId)
           } else {
             await Swal.fire({
               icon: 'error',
@@ -302,7 +303,7 @@
               width: "25em",
               timer: 2000,
             })
-            // window.location = "/user/checkout"
+            window.location = "/user/checkout"
           }
         } catch (err) {
           console.log(err)

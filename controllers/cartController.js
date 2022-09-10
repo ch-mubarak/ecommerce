@@ -69,7 +69,7 @@ module.exports = {
                         return acc + curr.quantity * curr.price;
                     }, 0)
                     cart.total = cart.products.reduce((acc, curr) => {
-                        return acc + curr.quantity * (curr.offerPrice.toFixed || curr.price).toFixed(2);
+                        return acc + curr.quantity * (curr.offerPrice || curr.price).toFixed(2);
                     }, 0)
                     await findProduct.save()
                     await cart.save();
@@ -98,6 +98,7 @@ module.exports = {
                 return res.status(200).json({ message: "item not available" })
             }
         } catch (err) {
+            console.log(err)
             return res.status(500).json({ err })
         }
     },
@@ -176,7 +177,7 @@ module.exports = {
             if (findCart?.products.length > 0) {
                 res.render("master/checkout", {
                     findCart: findCart,
-                    states:states,
+                    states: states,
                     user: user
                 })
             } else {

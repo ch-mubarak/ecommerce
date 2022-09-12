@@ -19,7 +19,6 @@ async function deleteItem(productId, cartCount) {
             }
         })
         let itemCount = Number($(".cart-item-count").html())
-        console.log(cartCount)
         itemCount -= cartCount
         if (itemCount != 0) {
             document.getElementById(`cartItem-${productId}`).remove()
@@ -29,6 +28,7 @@ async function deleteItem(productId, cartCount) {
             $("#cartDiscount").html('₹' + response.data.cartDiscount)
             toastr.options = { "positionClass": "toast-bottom-right" }
             toastr.info('item removed from cart.')
+            $("#cartCoupon").attr("hidden",true)
         } else {
             window.location.reload()
         }
@@ -73,6 +73,7 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
                 $("#cartSubTotal").html('₹' + response.data.cartSubTotal)
                 $("#cartTotal").html('₹' + response.data.cartTotal)
                 $("#cartDiscount").html('₹' + response.data.cartDiscount)
+                $("#cartCoupon").attr("hidden",true)
             }
         }
         catch (err) {

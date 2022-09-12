@@ -31,7 +31,7 @@
                 All Categories
                 <span class="arrow_carrot-down"></span>
               </div>
-              <input type="text" placeholder="What do yo u need?">
+              <input type="text" placeholder="What do yo u need?" />
               <button type="submit" class="site-btn">SEARCH</button>
             </form>
           </div>
@@ -87,11 +87,10 @@
               </tr>
             </thead>
             <tbody>
-
               <% findCart.products.forEach(item=>{ %>
               <tr id="cartItem-<%= item.productId.id %>">
                 <td class="shoping__cart__item">
-                  <img src="/files/<%= item.productId.productImagePath[0]%>" alt="" width="120" height="150">
+                  <img src="/files/<%= item.productId.productImagePath[0]%>" alt="" width="120" height="150" />
                   <a href="/product/<%=item.productId.id%>" class="text-dark"><%= item.productId.name%></a>
                 </td>
                 <%if(item.offerPrice){%>
@@ -100,31 +99,27 @@
                   ₹<%= item.offerPrice %>
                 </td>
                 <% }else{ %>
-                <td class="shoping__cart__price">
-                  ₹<%= item.price %>
-                </td>
+                <td class="shoping__cart__price">₹<%= item.price %></td>
                 <% } %>
                 <td class="shoping__cart__quantity">
                   <div class="quantity">
                     <div class="pro-qty">
                       <span class="dec qtybtn" onclick="addToCart('<%=item.productId.id%>','<%=item.name%>','<%=item.price%>',-1,'<%=item?.offerPrice%>')">-</span>
-                      <input type="text" id="currentQuantity-<%= item.productId.id %>" value="<%= item.quantity %>">
+                      <input type="text" id="currentQuantity-<%= item.productId.id %>" value="<%= item.quantity %>" />
                       <span class="inc qtybtn" onclick="addToCart('<%=item.productId.id%>','<%=item.name%>','<%=item.price%>',1,'<%=item?.offerPrice%>')">+</span>
                     </div>
                   </div>
                 </td>
                 <td class="shoping__cart__total" id="item-<%=item.productId.id %>">
-                  <% if(item.offerPrice) {%>
-                  ₹<%= (item.offerPrice * item.quantity).toFixed(2) %>
-                  <% }else {%>
-                  ₹<%= (item.price * item.quantity).toFixed(2) %>
-                  <% } %>
+                  <% if(item.offerPrice) {%> ₹<%= (item.offerPrice *
+                  item.quantity).toFixed(2) %> <% }else {%> ₹<%= (item.price *
+                  item.quantity).toFixed(2) %> <% } %>
                 </td>
                 <td class="shoping__cart__item__close">
                   <span class="icon_close" onclick="deleteItem('<%=item.productId.id %>','<%=item.quantity%>')"></span>
                 </td>
               </tr>
-              <%  }) %>
+              <% }) %>
             </tbody>
           </table>
         </div>
@@ -142,8 +137,8 @@
         <div class="shoping__continue">
           <div class="shoping__discount">
             <h5>Discount Codes</h5>
-            <form action="#">
-              <input type="text" placeholder="Enter your coupon code">
+            <form id="couponForm">
+              <input type="text" placeholder="Enter your coupon code" id="couponCode" />
               <button type="submit" class="site-btn">APPLY COUPON</button>
             </form>
           </div>
@@ -152,11 +147,33 @@
       <div class="col-lg-6">
         <div class="shoping__checkout">
           <h5>Cart Total</h5>
-          <ul>
-            <li>Subtotal <span><del id="cartSubTotal" s>₹<%= findCart.subTotal.toFixed(2) %></del></span></li>
+          <ul id="total-list">
+            <li>
+              Subtotal
+              <span><del id="cartSubTotal" s>₹<%= findCart.subTotal.toFixed(2) %></del></span>
+            </li>
             <% let discount = findCart.subTotal - findCart.total %>
-            <li>Discount <span id="cartDiscount">₹<%=discount.toFixed(2)%></span></li>
-            <li>Total <span id="cartTotal">₹<%= findCart.total.toFixed(2) %></span></li>
+            <% if(couponCode){%>
+            <li id="cartCoupon">
+              Coupon <span class="text-muted"><i class="fa-solid fa-tags"></i> <%=couponCode%> </span>
+            </li>
+            <li>
+              Discount <span id="cartDiscount">₹<%=(discount+couponDiscount).toFixed(2)%></span>
+            </li>
+            <li>
+              Total
+              <span id="cartTotal">₹<%= (findCart.total - couponDiscount).toFixed(2) %></span>
+            </li>
+            <% }else{%>
+            <li hidden id="cartCoupon"></li>
+            <li>
+              Discount <span id="cartDiscount">₹<%=discount.toFixed(2)%></span>
+            </li>
+            <li>
+              Total
+              <span id="cartTotal">₹<%= findCart.total.toFixed(2) %></span>
+            </li>
+            <% } %>
           </ul>
           <a href="/user/checkout" class="primary-btn">PROCEED TO CHECKOUT</a>
         </div>
@@ -168,7 +185,7 @@
 <%} else {%>
 <section class="container">
   <div class="text-center py-5">
-    <img src="/img/emptycart.png" alt="">
+    <img src="/img/emptycart.png" alt="" />
     <div>
       <p class="h4">There is nothing in your bag. Let's add some items.</p>
     </div>
@@ -176,3 +193,60 @@
   </div>
 </section>
 <%}%>
+
+<script>
+ 
+document.forms["couponForm"].addEventListener("submit", async (event) => {
+event.preventDefault();
+const couponCode = document.getElementById("couponCode").value;
+let response;
+try {
+response = await axios.post(`/user/redeem/${couponCode}`)
+
+if (response.status == 200) {
+  $("#cartTotal").html('₹' + response.data.totalPrice.toFixed(2))
+  $("#cartDiscount").html('₹' + response.data.totalDiscount)
+  $("#cartCoupon").removeAttr("hidden").html(`Coupon <span class="text-muted"><i class="fa-solid fa-tags"></i> ${couponCode}</span>`)
+await Swal.fire({
+icon: "success",
+title: `Congrats you have saved ${response.data.couponDiscount}`,
+showConfirmButton: false,
+timer: 1500,
+width: "25em",
+});
+}
+
+
+} catch (err) {
+
+if(err.response.status==400){
+Swal.fire({
+icon: "warning",
+title: `minimum purchase is ${err.response.data.minPurchase}` ,
+showConfirmButton: false,
+timer: 1500,
+width: "25em",
+});
+}
+else if (err.response.status == 403) {
+Swal.fire({
+icon: "warning",
+title: "Coupon already redeemed",
+showConfirmButton: false,
+timer: 1500,
+width: "25em",
+});
+
+
+} else if (err.response.status == 404) {
+Swal.fire({
+icon: "warning",
+title: "Invalid Coupon",
+showConfirmButton: false,
+timer: 1500,
+width: "25em",
+});
+}
+}
+});
+</script>

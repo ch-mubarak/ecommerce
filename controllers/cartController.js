@@ -45,6 +45,7 @@ module.exports = {
         const userId = req.user.id
         try {
 
+            //updating stock
             const findProduct = await Product.findById(productId)
             if (findProduct.quantity >= quantity) {
                 findProduct.quantity -= quantity
@@ -86,6 +87,8 @@ module.exports = {
                     await findProduct.save()
                     itemTotal = offerPrice ? offerPrice * quantity : price * quantity
                 }
+                //removing coupon from session if exist
+                req.session.coupon = null
                 return res.status(201).json({
                     message: "cart updated",
                     cartSubTotal: (cart.subTotal).toFixed(2),
@@ -111,10 +114,14 @@ module.exports = {
                 path: "products.productId",
                 model: "Product"
             })
-
+            const couponCode = req.session.coupon?.code
+            const couponDiscount = Number(req.session.coupon?.discount)
             res.render("master/cart", {
                 findCart: findCart,
-                errorMessage: errorMessage
+                errorMessage: errorMessage,
+                couponCode:couponCode,
+                couponDiscount:couponDiscount
+
             })
         } catch (err) {
             console.log(err)
@@ -154,6 +161,8 @@ module.exports = {
             cart.total = cart.products.reduce((acc, curr) => {
                 return acc + curr.quantity * (curr.offerPrice || curr.price);
             }, 0)
+            //removing coupon from session if exist
+            req.session.coupon = null
             await cart.save()
             await findProduct.save()
             return res.status(200).json({
@@ -169,6 +178,9 @@ module.exports = {
     getCheckout: async (req, res) => {
         try {
             const userId = req.user.id
+            //getting coupon from session
+            const couponDiscount = req.session.coupon?.discount
+            const couponCode = req.session.coupon?.code
             const user = await User.findById(userId, { email: 1, address: 1 })
             const findCart = await Cart.findOne({ userId: userId }).populate({
                 path: "products.productId",
@@ -178,7 +190,9 @@ module.exports = {
                 res.render("master/checkout", {
                     findCart: findCart,
                     states: states,
-                    user: user
+                    user: user,
+                    couponCode: couponCode,
+                    couponDiscount: couponDiscount
                 })
             } else {
                 res.redirect("/user/cart")

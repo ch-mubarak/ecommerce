@@ -44,7 +44,7 @@
               <% if(coupon.isActive){%>
               <span class="badge bg-success">Active</span>
               <% }else {%>
-              <span class="badge bg-danger">Deactivated</span>
+              <span class="badge bg-danger">Inactive</span>
               <%}%>
             </td>
             <td id="couponAction_<%= coupon.id%>">
@@ -84,7 +84,7 @@
     try {
       const response = await axios.put(`/admin/deactivateCoupon/${couponId}`);
       if (response.status == 201) {
-        document.getElementById(`couponStatus_${couponId}`).innerHTML = '<span class="badge bg-danger">Deactivated</span>'
+        document.getElementById(`couponStatus_${couponId}`).innerHTML = '<span class="badge bg-danger">Inactive</span>'
         document.getElementById(`couponAction_${couponId}`).innerHTML = `<button class="btn btn-sm btn-outline-success" onclick="activate('${couponId}')">Activate</button>`
         toastr.success('<i class="fa-solid fa-tags"></i> Coupon deactivated')
       }

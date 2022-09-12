@@ -27,6 +27,9 @@ const orderSchema = new mongoose.Schema({
     total: {
         type: Number
     },
+    coupon: {
+        type: mongoose.Schema.Types.ObjectId
+    },
     subTotal: {
         type: Number
     },

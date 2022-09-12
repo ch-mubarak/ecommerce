@@ -66,8 +66,11 @@ const userSchema = new mongoose.Schema({
     },
     otp: {
         type: Number
-    }
-
+    },
+    redeemedCoupons: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Coupon"
+    }],
 }, { timestamps: true })
 
 userSchema.plugin(passportLocalMongoose, {

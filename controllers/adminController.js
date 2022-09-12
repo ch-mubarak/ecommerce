@@ -1,3 +1,4 @@
+const _ = require("lodash")
 const User = require("../models/users")
 const Category = require("../models/category")
 const Product = require("../models/product")
@@ -105,7 +106,7 @@ module.exports = {
     addCategory: async (req, res) => {
         try {
             const category = new Category({
-                categoryName: req.body.categoryName
+                categoryName: _.startCase(_.toLower(req.body.categoryName))
             })
             await category.save()
             res.redirect("/admin/categories")
@@ -122,7 +123,7 @@ module.exports = {
         try {
             await Category.findByIdAndUpdate(
                 req.params.id,
-                { categoryName: req.body.categoryName })
+                { categoryName: _.startCase(_.toLower(req.body.categoryName)) })
             res.redirect("/admin/categories")
         }
         catch (err) {

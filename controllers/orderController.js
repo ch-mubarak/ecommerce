@@ -10,6 +10,8 @@ module.exports = {
             const userId = req.user.id
             const addressIndex = req.body.addressIndex
             const user = await User.findById(userId)
+            const couponDiscount = req.session.coupon?.discount
+            const couponId = req.session.coupon?.id
             if (!addressIndex) {
                 user.address.unshift({
                     firstName: req.body.firstName,
@@ -42,13 +44,23 @@ module.exports = {
                 newOrder.razorpayOrderId = req.query.orderId
                 newOrder.razorpayPaymentId = req.query.paymentId
             }
-            newOrder.save()
+
+            //adding coupon details if applied
+            if (req.session.coupon) {
+                newOrder.total = cart.total - couponDiscount
+                newOrder.coupon = couponId
+
+                //adding coupon to  user coupon list
+                user.redeemedCoupons.push(couponId)
+                await user.save()
+            }
+
+            await newOrder.save()
             console.log("order success")
-            // res.redirect("/user/myOrders")
+
         } catch (err) {
             console.log(err)
             return res.status(500)
-            // res.redirect("/")
 
         }
     },

@@ -178,11 +178,17 @@
 
                 </ul>
               </div>
+
               <div class="checkout__order__subtotal">Subtotal <span>₹<%= findCart.subTotal.toFixed(2) || findCart.total.toFixed(2) %></span></div>
-              <div class="checkout__order__total">Discount <span>₹<%= (findCart.subTotal - findCart.total).toFixed(2) %></span></div>
+              <% if(couponCode){%>
+              <div class="checkout__order__total">Coupon <span class="text-muted"><i class="fa-solid fa-tags"></i> <%=couponCode %></span></div>
+              <div class="checkout__order__total">Discount <span>₹<%= (findCart.subTotal - findCart.total + Number(couponDiscount)).toFixed(2) %></span></div>
+              <div class="checkout__order__total">Total <span>₹<%= (findCart.total - couponDiscount).toFixed(2) %></span></div>
+              <%}else{ %>
+              <div class="checkout__order__total">Discount <span>₹<%= (findCart.subTotal - findCart.total).toFixed(2) %> </span></div>
               <div class="checkout__order__total">Total <span>₹<%= findCart.total.toFixed(2) %></span></div>
-              <!-- <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                ut labore et dolore magna aliqua.</p> -->
+              <% } %>
+
               <div class="form-check">
                 <label for="cod">
                   <input class="form-check-input" type="radio" id="cod" name="paymentType" checked value="cod">
@@ -196,8 +202,11 @@
                   Online Payment <i class="fa-brands fa-cc-visa"></i> <i class="fa-solid fa-credit-card"></i> <i class="fa-brands fa-cc-mastercard"></i> <i class="fa-brands fa-google-pay"></i>
                 </label>
               </div>
+
+
               <button type="submit" class="site-btn" id="rzp-button1">PLACE ORDER</button>
             </div>
+
           </div>
         </div>
       </form>
@@ -211,8 +220,10 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <!-- <script src="/js/payment.js"></script> -->
 <script>
-  let orderId
-  const amount = Number('<%=findCart.total * 100%>')
+  const couponDiscount = '<%=couponDiscount%>' ? '<%=couponDiscount%>' : null;
+  const couponCode = '<%=couponCode%>' ? '<%=couponCode%>' : null
+  const amount = Number('<%=findCart.total%>' - couponDiscount) * 100
+  console.log(amount)
   $(document).ready(async function() {
     try {
       const settings = await axios({
@@ -239,7 +250,7 @@
   });
 
 
-  async function checkout(data,orderId,paymentId) {
+  async function checkout(data, orderId, paymentId) {
     try {
       const response = await axios({
         url: `/user/checkout?orderId=${orderId}&paymentId=${paymentId}`,

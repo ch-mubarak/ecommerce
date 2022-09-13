@@ -21,18 +21,18 @@ router.get("/cartItemCount",cartControl.cartItemCount)
 router.get("/wishlistItemCount",wishlistControl.wishlistItemCount)
 
 router.post("/payment/orderId",paymentControl.generateOrder)
-router.post("/payment/verify",paymentControl.verifyPayment)
+router.post("/payment/verify/:orderId",paymentControl.verifyPayment)
 router.post("/payment/:id/refund",paymentControl.refund)
 router.post("/checkout", orderControl.checkout)
 router.post("/redeem/:id",couponControl.redeem)
-router.post("/removeCoupon",couponControl.removeCoupon)
 
 router.put("/cancelOrder/:id", orderControl.cancelOrder)
 router.put("/wishlist/:id", wishlistControl.addToWishlist)
 router.put("/addToCart/:id", cartControl.addToCart)
 router.put("/changePassword", userControl.changePassword)
 
+router.delete("/removeCoupon",couponControl.removeCoupon)
 router.delete("/cart/:id", cartControl.deleteItem)
-router.delete("/deleteAddress",userControl.removeAddress)
+router.delete("/deleteAddress/:index",userControl.removeAddress)
 
 module.exports = router

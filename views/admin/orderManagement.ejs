@@ -52,7 +52,7 @@
               <%= product.name %> x<%= product.quantity %>,
               <% }) %>
             </td>
-            <td><%=order.total %></td>
+            <td><%=order.total.toFixed(2) %></td>
             <td><%=order.createdAt.toDateString() %></td>
             <% if(order.paymentType == "cod" ){%>
             <td><span class="badge" style="background-color:rgb(177, 39, 85) ;">COD</span></td>

@@ -39,7 +39,7 @@ async function removeAddress(index) {
             width: '25em'
         })
         if (result.isConfirmed) {
-            const response = await axios.delete(`/user/deleteAddress?path=${index}`)
+            const response = await axios.delete(`/user/deleteAddress/${index}`)
             if (response.status == 204) {
                 document.getElementById(`address-${index}`).remove()
                 toastr.options = {

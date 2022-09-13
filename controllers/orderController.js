@@ -41,8 +41,8 @@ module.exports = {
             await cart.remove()
             res.sendStatus(201)
             if (paymentType == "razorpay") {
-                newOrder.razorpayOrderId = req.query.orderId
-                newOrder.razorpayPaymentId = req.query.paymentId
+                newOrder.razorpayOrderId = req.body.orderId
+                newOrder.razorpayPaymentId = req.body.paymentId
             }
 
             //adding coupon details if applied

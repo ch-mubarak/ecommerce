@@ -224,6 +224,7 @@
   const couponDiscount = '<%=couponDiscount%>' ? '<%=couponDiscount%>' : null;
   const couponCode = '<%=couponCode%>' ? '<%=couponCode%>' : null
   const amount = Number('<%=findCart.total%>' - couponDiscount) * 100
+  let data
   console.log(amount)
   $(document).ready(async function() {
     try {
@@ -242,19 +243,19 @@
   document.forms["checkoutForm"].addEventListener("submit", async (event) => {
     event.preventDefault();
     const paymentType = $('input[name=paymentType]:checked', '#checkoutForm').val()
-    const data = new URLSearchParams(new FormData(event.target))
+    data = new URLSearchParams(new FormData(event.target))
     if (paymentType == "cod") {
       checkout(data)
     } else {
-      razorpay(orderId, amount, data)
+      razorpay(orderId, amount)
     }
   });
 
 
-  async function checkout(data, orderId, paymentId) {
+  async function checkout(data) {
     try {
       const response = await axios({
-        url: `/user/checkout?orderId=${orderId}&paymentId=${paymentId}`,
+        url: '/user/checkout',
         method: "post",
         data: data,
       });
@@ -282,7 +283,7 @@
   }
 
 
-  function razorpay(orderId, amount, data) {
+  function razorpay(orderId, amount) {
     let options = {
       "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard
       "name": "Fashion",
@@ -298,15 +299,22 @@
         try {
           const verification = await axios({
             method: "post",
-            url: "/user/payment/verify",
+            url: `/user/payment/verify/${orderId}`,
             data: {
               response: response,
-              orderId: orderId
             }
           })
           if (verification.data.signatureIsValid) {
             const paymentId = response.razorpay_payment_id
-            checkout(data, orderId, paymentId)
+
+            //appending order Id and payment id to data to update on database
+
+            data.append("orderId", orderId)
+            data.append("paymentId", paymentId)
+
+            //calling checkout after payment verification
+            checkout(data)
+
           } else {
             await Swal.fire({
               icon: 'error',

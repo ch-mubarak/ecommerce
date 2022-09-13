@@ -77,7 +77,7 @@ module.exports = {
 
     removeAddress: async (req, res) => {
         try {
-            const addressIndex = Number(req.query.path)
+            const addressIndex = Number(req.prams.index)
             const user = await User.findById(req.user.id)
             user.address.splice(addressIndex, 1)
             await user.save()

@@ -253,7 +253,7 @@ width: "25em",
 async function removeCoupon(){
   console.log("hi")
   try{
-    const response = await axios.post("/user/removeCoupon")
+    const response = await axios.delete("/user/removeCoupon")
     $("#checkoutBox").load(location.href+" #checkoutBox>*","");
   }catch(err){
     $("#checkoutBox").load(location.href+" #checkoutBox>*","");

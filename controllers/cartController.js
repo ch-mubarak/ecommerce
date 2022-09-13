@@ -91,9 +91,6 @@ module.exports = {
                 req.session.coupon = null
                 return res.status(201).json({
                     message: "cart updated",
-                    cartSubTotal: (cart.subTotal).toFixed(2),
-                    cartDiscount: (cart.subTotal - cart.total).toFixed(2),
-                    cartTotal: (cart.total).toFixed(2),
                     itemTotal: itemTotal.toFixed(2)
                 })
             }
@@ -167,9 +164,6 @@ module.exports = {
             await findProduct.save()
             return res.status(200).json({
                 message: "successfully deleted",
-                cartSubTotal: (cart.subTotal).toFixed(2),
-                cartDiscount: (cart.subTotal - cart.total).toFixed(2),
-                cartTotal: (cart.total).toFixed(2)
             })
         } catch (err) {
             return res.status(400).json({ err })

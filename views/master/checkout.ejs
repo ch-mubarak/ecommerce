@@ -223,7 +223,7 @@
 <script>
   const couponDiscount = '<%=couponDiscount%>' ? '<%=couponDiscount%>' : null;
   const couponCode = '<%=couponCode%>' ? '<%=couponCode%>' : null
-  const amount = Number('<%=findCart.total%>' - couponDiscount) * 100
+  const amount = Number('<%=findCart.total.toFixed(2)%>' - couponDiscount) * 100
   let data
   console.log(amount)
   $(document).ready(async function() {

@@ -4,14 +4,15 @@ const Cart = require("../models/cart")
 
 module.exports = {
     addCoupon: async (req, res) => {
-        const { name, couponCode, discount, maxLimit, minPurchase } = req.body
+        const { name, couponCode, discount, maxLimit, minPurchase, expDate } = req.body
         try {
             await Coupon.create({
                 name: name.toUpperCase(),
                 couponCode: couponCode.toUpperCase(),
                 discount,
                 maxLimit,
-                minPurchase
+                minPurchase,
+                expDate
             })
             res.redirect("/admin/coupons")
         } catch (err) {
@@ -30,7 +31,12 @@ module.exports = {
             const findCoupon = await Coupon.findOne({ couponCode })
             const user = await User.findById(userId)
             const totalPrice = findCart.total
-            if (findCoupon?.isActive) {
+            const expDate = findCoupon?.expDate
+            
+            //checking coupon is expired or not
+            const isExpired = expDate ? new Date() <= expDate : true
+ 
+            if (findCoupon?.isActive &&  isExpired) {
                 const isRedeemed = user.redeemedCoupons.includes(findCoupon.id)
                 if (!isRedeemed) {
                     if (totalPrice >= findCoupon.minPurchase) {
@@ -47,13 +53,14 @@ module.exports = {
                         req.session.coupon = null
                         return res.status(400).json({ message: `minimum purchase is ${findCoupon.minPurchase}`, minPurchase: findCoupon.minPurchase })
                     }
+
                 } else {
                     req.session.coupon = null
                     return res.status(403).json({ message: "coupon already redeemed" })
                 }
             } else {
                 req.session.coupon = null
-                return res.status(404).json({ message: "coupon is not valid" })
+                return res.status(404).json({ message: "coupon is not valid  or expired" })
             }
         } catch (err) {
             console.log(err)

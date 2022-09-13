@@ -8,24 +8,28 @@
       <div class="modal-body">
         <form action="/admin/addCoupon" method="post" id="couponForm">
           <div>
-            <label class="form-label">Name</label>
+            <label class="form-label">Name*</label>
             <input type="text" value="" name="name" required class="form-control">
           </div>
           <div>
-            <label class="form-label">Coupon Code</label>
+            <label class="form-label">Coupon Code*</label>
             <input type="text" value="" name="couponCode" required class="form-control">
           </div>
           <div>
-            <label class="form-label">Discount</label>
+            <label class="form-label">Discount*/label>
             <input type="number" name="discount" min="5" value="" required class="form-control">
           </div>
           <div>
-            <label class="form-label">Coupon Limit</label>
+            <label class="form-label">Coupon Limit*</label>
             <input type="number" name="maxLimit" value="" required class="form-control">
           </div>
           <div>
-            <label class="form-label">Min Purchase</label>
+            <label class="form-label">Min Purchase*</label>
             <input type="number" name="minPurchase" value="" required class="form-control">
+          </div>
+          <div>
+            <label class="form-label">Expiry Date</label>
+            <input type="date" name="expDate" value="" class="form-control">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

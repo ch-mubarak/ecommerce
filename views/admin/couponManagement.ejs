@@ -17,6 +17,7 @@
             <th>Discount %</th>
             <th>Coupon Limit</th>
             <th>Min Purchase</th>
+            <th>Exp Date</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -28,6 +29,7 @@
             <th>Discount %</th>
             <th>Coupon Limit</th>
             <th>Min Purchase</th>
+            <th>Exp Date</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -40,6 +42,7 @@
             <td><%= coupon.discount %></td>
             <td><%= coupon.maxLimit %></td>
             <td><%= coupon.minPurchase %></td>
+            <td><%= coupon.expDate?.toDateString() %></td>
             <td id="couponStatus_<%= coupon.id%>">
               <% if(coupon.isActive){%>
               <span class="badge bg-success">Active</span>
@@ -64,7 +67,6 @@
 
 
 <script>
-
   async function activate(couponId) {
     try {
       const response = await axios.put(`/admin/activateCoupon/${couponId}`);

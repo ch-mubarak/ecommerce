@@ -88,12 +88,33 @@ module.exports = {
                     path: "products.productId",
                     model: "Product"
                 }
-            ]).sort({createdAt:-1}).exec()
+            ]).sort({ createdAt: -1 }).exec()
             res.render("master/myOrders", { myOrders: myOrders })
         } catch (err) {
             console.log(err)
             res.redirect("/")
         }
     },
+
+    orderDetails: async (req, res) => {
+        const orderId = req.params.id
+        const myOrder = await Order.findById(orderId).populate([
+            {
+                path: "userId",
+                model: "User"
+            },
+            {
+                path:"coupon",
+                model:"Coupon"
+            },
+            {
+                path: "products.productId",
+                model: "Product"
+            }
+        ]).exec()
+        res.render("master/orderDetails", {
+            myOrder: myOrder
+        })
+    }
 
 }

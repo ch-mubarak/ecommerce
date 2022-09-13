@@ -7,7 +7,7 @@ module.exports = {
         try {
             const price = parseFloat(req.body.price)
             const discount = req.body.discount ? parseFloat(req.body.discount) : null
-            const offerPrice = req.body.discount ? price - (((price / 100) * discount).toFixed(2)) : null;
+            const offerPrice = req.body.discount ? price - ((price / 100) * discount) : null;
             const productImages = req.files != null ? req.files.map((img) => img.filename) : null
             const product = new Product({
                 name: req.body.name,
@@ -37,7 +37,7 @@ module.exports = {
             product = await Product.findById(req.params.id)
             const price = parseFloat(req.body.price)
             const discount = req.body.discount ? parseFloat(req.body.discount) : null
-            const offerPrice = req.body.discount ? price - (((price / 100) * discount).toFixed(2)) : null;
+            const offerPrice = req.body.discount ? price - ((price / 100) * discount) : null;
             const oldProductImages = product.productImagePath
             const productImages = req.files.length > 0 ? req.files.map((img) => img.filename) : oldProductImages
             await Product.findByIdAndUpdate(req.params.id, {
@@ -72,7 +72,7 @@ module.exports = {
             productImages.forEach(async (image) => {
                 await fs.unlink("./public/files/" + image)
             })
-            
+
             res.redirect("/admin/products")
         } catch (err) {
             console.log(err)

@@ -13,7 +13,11 @@ module.exports = {
             receipt: "order1001"
         };
         instance.orders.create(options, function (err, order) {
-            res.send({ orderId: order.id })
+            if (err) {
+                console.log(err)
+            } else {
+                res.send({ orderId: order.id })
+            }
         });
     },
 

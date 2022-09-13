@@ -28,7 +28,8 @@ const orderSchema = new mongoose.Schema({
         type: Number
     },
     coupon: {
-        type: mongoose.Schema.Types.ObjectId
+        code: String,
+        discount: Number
     },
     subTotal: {
         type: Number

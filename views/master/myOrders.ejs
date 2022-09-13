@@ -1,53 +1,5 @@
-<section class="hero hero-normal">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-3">
-        <div class="hero__categories">
-          <div class="hero__categories__all">
-            <i class="fa fa-bars"></i>
-            <span>All departments</span>
-          </div>
-          <ul>
-            <li><a href="#">Fresh Meat</a></li>
-            <li><a href="#">Vegetables</a></li>
-            <li><a href="#">Fruit & Nut Gifts</a></li>
-            <li><a href="#">Fresh Berries</a></li>
-            <li><a href="#">Ocean Foods</a></li>
-            <li><a href="#">Butter & Eggs</a></li>
-            <li><a href="#">Fastfood</a></li>
-            <li><a href="#">Fresh Onion</a></li>
-            <li><a href="#">Papayaya & Crisps</a></li>
-            <li><a href="#">Oatmeal</a></li>
-            <li><a href="#">Fresh Bananas</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-lg-9">
-        <div class="hero__search">
-          <div class="hero__search__form">
-            <form action="#">
-              <div class="hero__search__categories">
-                All Categories
-                <span class="arrow_carrot-down"></span>
-              </div>
-              <input type="text" placeholder="What do yo u need?">
-              <button type="submit" class="site-btn">SEARCH</button>
-            </form>
-          </div>
-          <div class="hero__search__phone">
-            <div class="hero__search__phone__icon">
-              <i class="fa fa-phone"></i>
-            </div>
-            <div class="hero__search__phone__text">
-              <h5>+65 11.188.888</h5>
-              <span>support 24/7 time</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- Hero Section Begin -->
+<%- include("../partials/heroSection") %>
 <!-- Hero Section End -->
 
 <!-- Breadcrumb Section Begin -->
@@ -81,13 +33,14 @@
               <!-- <span class="lead fw-normal">Your order has been delivered</span> -->
               <span class="text-muted small bold mb-1">orderId: #<%= order.id %></span>
               <% order.products.forEach(product=>{%>
-                <span class="text-muted mb-2"><img src="/files/<%= product.productId.productImagePath[0] %>" alt="" width="60" height="80"> <%= product.productId.name %> x <%= product.quantity %> </span>
+              <span class="text-muted mb-2"><img src="/files/<%= product.productId.productImagePath[0] %>" alt="" width="60" height="80">
+                <a href="/product/<%= product.productId.id %>" class="text-muted"><%= product.productId.name %></a> x <%= product.quantity %> </span>
               <% }) %>
 
               <span class="text-muted small">on <%= order.createdAt.toDateString() %></span>
             </div>
             <div>
-              <button class="btn btn-sm btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" type="button">View order details</button>
+              <a class="btn btn-sm btn-outline-dark" href="/user/myOrders/<%= order.id %>">View order details</a>
               <% if(order.status !== "Delivered" && order.status !== "Cancelled"){ %>
               <button class="btn btn-sm btn-outline-danger" onclick="sweetConfirm('<%=order.id%>')" type="button"><i class="fa-solid fa-ban"></i></button>
               <%  } %>

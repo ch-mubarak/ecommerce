@@ -32,15 +32,15 @@ module.exports = {
             const user = await User.findById(userId)
             const totalPrice = findCart.total
             const expDate = findCoupon?.expDate
-            
+
             //checking coupon is expired or not
-            const isExpired = expDate ? new Date() <= expDate : true
- 
-            if (findCoupon?.isActive &&  isExpired) {
+            const isNotExpired = expDate ? new Date() <= expDate : true
+
+            if (findCoupon?.isActive && isNotExpired) {
                 const isRedeemed = user.redeemedCoupons.includes(findCoupon.id)
                 if (!isRedeemed) {
                     if (totalPrice >= findCoupon.minPurchase) {
-                        const discount = ((totalPrice * findCoupon.discount) / 100).toFixed(2)
+                        const discount = ((totalPrice * findCoupon.discount) / 100)
                         const couponDiscount = discount <= findCoupon.maxLimit ? Number(discount) : Number(findCoupon.maxLimit)
                         //saving coupon details to session
                         req.session.coupon = {

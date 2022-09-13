@@ -221,9 +221,10 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <!-- <script src="/js/payment.js"></script> -->
 <script>
-  const couponDiscount = '<%=couponDiscount%>' ? '<%=couponDiscount%>' : null;
-  const couponCode = '<%=couponCode%>' ? '<%=couponCode%>' : null
-  const amount = Number('<%=findCart.total.toFixed(2)%>' - couponDiscount) * 100
+  const couponDiscount = '<%=couponDiscount%>'
+  const cartTotal = '<%=findCart.total%>'
+  let amount = couponDiscount ? (cartTotal - couponDiscount) * 100 : cartTotal * 100
+  amount = parseInt(amount)
   let data
   console.log(amount)
   $(document).ready(async function() {
@@ -236,6 +237,7 @@
         }
       });
       orderId = settings.data.orderId;
+      console.log(orderId)
     } catch (err) {
       console.error(err)
     }

@@ -11,6 +11,7 @@ module.exports = {
             const addressIndex = req.body.addressIndex
             const user = await User.findById(userId)
             const couponDiscount = req.session.coupon?.discount
+            const couponCode = req.session.coupon?.code
             const couponId = req.session.coupon?.id
             if (!addressIndex) {
                 user.address.unshift({
@@ -38,8 +39,7 @@ module.exports = {
                 total: cart.total,
                 paymentType: paymentType
             })
-            await cart.remove()
-            res.sendStatus(201)
+           
             if (paymentType == "razorpay") {
                 newOrder.razorpayOrderId = req.body.orderId
                 newOrder.razorpayPaymentId = req.body.paymentId
@@ -48,19 +48,21 @@ module.exports = {
             //adding coupon details if applied
             if (req.session.coupon) {
                 newOrder.total = cart.total - couponDiscount
-                newOrder.coupon = couponId
+                newOrder.coupon.code = couponCode
+                newOrder.coupon.discount = couponDiscount
 
                 //adding coupon to  user coupon list
                 user.redeemedCoupons.push(couponId)
                 await user.save()
             }
 
+            await cart.remove()
             await newOrder.save()
-            console.log("order success")
+            res.sendStatus(201)
 
         } catch (err) {
             console.log(err)
-            return res.status(500)
+            res.sendStatus(500)
 
         }
     },

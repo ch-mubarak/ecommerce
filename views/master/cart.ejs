@@ -145,33 +145,32 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <div class="shoping__checkout">
+        <div class="shoping__checkout" id="checkoutBox">
           <h5>Cart Total</h5>
           <ul id="total-list">
             <li>
               Subtotal
-              <span><del id="cartSubTotal" s>₹<%= findCart.subTotal.toFixed(2) %></del></span>
+              <span><del>₹<%= findCart.subTotal.toFixed(2) %></del></span>
             </li>
             <% let discount = findCart.subTotal - findCart.total %>
+            <li>
+              Cart Discount <span class="text-muted">₹<%=discount.toFixed(2)%></span>
+            </li>
             <% if(couponCode){%>
-            <li id="cartCoupon">
-              Coupon <span class="text-muted"><i class="fa-solid fa-tags"></i> <%=couponCode%> </span>
+            <li>
+              Coupon <span class="text-muted"><i class="fa-solid fa-tags"></i> <%=couponCode%> <i class="fa-solid fa-trash-can fa-xs trash" onclick="removeCoupon()"></i> </span>
             </li>
             <li>
-              Discount <span id="cartDiscount">₹<%=(discount+couponDiscount).toFixed(2)%></span>
+              Coupon Discount <span class="text-muted"> <%=couponDiscount%> </span>
             </li>
             <li>
               Total
-              <span id="cartTotal">₹<%= (findCart.total - couponDiscount).toFixed(2) %></span>
+              <span>₹<%= (findCart.total - couponDiscount).toFixed(2) %></span>
             </li>
             <% }else{%>
-            <li hidden id="cartCoupon"></li>
-            <li>
-              Discount <span id="cartDiscount">₹<%=discount.toFixed(2)%></span>
-            </li>
             <li>
               Total
-              <span id="cartTotal">₹<%= findCart.total.toFixed(2) %></span>
+              <span>₹<%= findCart.total.toFixed(2) %></span>
             </li>
             <% } %>
           </ul>
@@ -202,11 +201,8 @@ const couponCode = document.getElementById("couponCode").value;
 let response;
 try {
 response = await axios.post(`/user/redeem/${couponCode}`)
-
 if (response.status == 200) {
-  $("#cartTotal").html('₹' + response.data.totalPrice.toFixed(2))
-  $("#cartDiscount").html('₹' + response.data.totalDiscount)
-  $("#cartCoupon").removeAttr("hidden").html(`Coupon <span class="text-muted"><i class="fa-solid fa-tags"></i> ${couponCode}</span>`)
+$("#checkoutBox").load(location.href+" #checkoutBox>*","");
 await Swal.fire({
 icon: "success",
 title: `Congrats you have saved ${response.data.couponDiscount}`,
@@ -214,12 +210,13 @@ showConfirmButton: false,
 timer: 1500,
 width: "25em",
 });
-}
 
+}
 
 } catch (err) {
 
 if(err.response.status==400){
+$("#checkoutBox").load(location.href+" #checkoutBox>*","");
 Swal.fire({
 icon: "warning",
 title: `minimum purchase is ${err.response.data.minPurchase}` ,
@@ -227,8 +224,10 @@ showConfirmButton: false,
 timer: 1500,
 width: "25em",
 });
+
 }
 else if (err.response.status == 403) {
+$("#checkoutBox").load(location.href+" #checkoutBox>*","");
 Swal.fire({
 icon: "warning",
 title: "Coupon already redeemed",
@@ -239,6 +238,7 @@ width: "25em",
 
 
 } else if (err.response.status == 404) {
+$("#checkoutBox").load(location.href+" #checkoutBox>*","");
 Swal.fire({
 icon: "warning",
 title: "Invalid Coupon",
@@ -249,4 +249,16 @@ width: "25em",
 }
 }
 });
+
+async function removeCoupon(){
+  console.log("hi")
+  try{
+    const response = await axios.post("/user/removeCoupon")
+    $("#checkoutBox").load(location.href+" #checkoutBox>*","");
+  }catch(err){
+    $("#checkoutBox").load(location.href+" #checkoutBox>*","");
+    console.error(err)
+  }
+
+}
 </script>

@@ -23,12 +23,10 @@ async function deleteItem(productId, cartCount) {
         if (itemCount != 0) {
             document.getElementById(`cartItem-${productId}`).remove()
             $(".cart-item-count").html(itemCount)
-            $("#cartSubTotal").html('₹' + response.data.cartSubTotal)
-            $("#cartTotal").html('₹' + response.data.cartTotal)
-            $("#cartDiscount").html('₹' + response.data.cartDiscount)
+            $("#checkoutBox").load(location.href + " #checkoutBox>*", "");
             toastr.options = { "positionClass": "toast-bottom-right" }
             toastr.info('item removed from cart.')
-            $("#cartCoupon").attr("hidden",true)
+
         } else {
             window.location.reload()
         }
@@ -69,11 +67,7 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
                 let itemCount = Number($(".cart-item-count").html())
                 itemCount += Number.parseInt(quantity)
                 $(".cart-item-count").html(itemCount)
-                $(`#item-${productId}`).html('₹' + response.data.itemTotal)
-                $("#cartSubTotal").html('₹' + response.data.cartSubTotal)
-                $("#cartTotal").html('₹' + response.data.cartTotal)
-                $("#cartDiscount").html('₹' + response.data.cartDiscount)
-                $("#cartCoupon").attr("hidden",true)
+                $("#checkoutBox").load(location.href + " #checkoutBox>*", "");
             }
         }
         catch (err) {

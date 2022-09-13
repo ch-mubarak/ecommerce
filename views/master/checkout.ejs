@@ -179,13 +179,14 @@
                 </ul>
               </div>
 
-              <div class="checkout__order__subtotal">Subtotal <span>₹<%= findCart.subTotal.toFixed(2) || findCart.total.toFixed(2) %></span></div>
+              <div class="checkout__order__subtotal">Subtotal <span><del>₹<%= findCart.subTotal.toFixed(2) %></del></span></div>
               <% if(couponCode){%>
+              <div class="checkout__order__total">Cart Discount <span class="text-muted">₹<%= (findCart.subTotal - findCart.total ).toFixed(2)%></span></div>
               <div class="checkout__order__total">Coupon <span class="text-muted"><i class="fa-solid fa-tags"></i> <%=couponCode %></span></div>
-              <div class="checkout__order__total">Discount <span>₹<%= (findCart.subTotal - findCart.total + Number(couponDiscount)).toFixed(2) %></span></div>
+              <div class="checkout__order__total">Coupon Discount <span class="text-muted"><%=couponDiscount %> </span></div>
               <div class="checkout__order__total">Total <span>₹<%= (findCart.total - couponDiscount).toFixed(2) %></span></div>
               <%}else{ %>
-              <div class="checkout__order__total">Discount <span>₹<%= (findCart.subTotal - findCart.total).toFixed(2) %> </span></div>
+              <div class="checkout__order__total">Cart Discount <span class="text-muted">₹<%= (findCart.subTotal - findCart.total).toFixed(2) %> </span></div>
               <div class="checkout__order__total">Total <span>₹<%= findCart.total.toFixed(2) %></span></div>
               <% } %>
 

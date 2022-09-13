@@ -25,6 +25,7 @@ router.post("/payment/verify",paymentControl.verifyPayment)
 router.post("/payment/:id/refund",paymentControl.refund)
 router.post("/checkout", orderControl.checkout)
 router.post("/redeem/:id",couponControl.redeem)
+router.post("/removeCoupon",couponControl.removeCoupon)
 
 router.put("/cancelOrder/:id", orderControl.cancelOrder)
 router.put("/wishlist/:id", wishlistControl.addToWishlist)

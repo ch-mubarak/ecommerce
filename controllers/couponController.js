@@ -29,28 +29,24 @@ module.exports = {
             const findCart = await Cart.findOne({ userId })
             const findCoupon = await Coupon.findOne({ couponCode })
             const user = await User.findById(userId)
-            let totalPrice = findCart.total
+            const totalPrice = findCart.total
             if (findCoupon?.isActive) {
                 const isRedeemed = user.redeemedCoupons.includes(findCoupon.id)
                 if (!isRedeemed) {
                     if (totalPrice >= findCoupon.minPurchase) {
                         const discount = ((totalPrice * findCoupon.discount) / 100).toFixed(2)
-                        const couponDiscount = discount <= findCoupon.maxLimit ? discount : findCoupon.maxLimit
-                        totalPrice -= couponDiscount
-                        const totalDiscount = findCart.subTotal - findCart.total + Number(couponDiscount)
+                        const couponDiscount = discount <= findCoupon.maxLimit ? Number(discount) : Number(findCoupon.maxLimit)
                         //saving coupon details to session
                         req.session.coupon = {
                             id: findCoupon.id,
                             code: findCoupon.couponCode,
                             discount: couponDiscount
                         }
-                        return res.status(200).json({ couponDiscount: couponDiscount,totalDiscount:totalDiscount, totalPrice: totalPrice, message: "coupon is valid" })
+                        return res.status(200).json({ couponDiscount: couponDiscount, totalPrice: totalPrice, message: "coupon is valid" })
                     } else {
                         req.session.coupon = null
                         return res.status(400).json({ message: `minimum purchase is ${findCoupon.minPurchase}`, minPurchase: findCoupon.minPurchase })
                     }
-                    // user.redeemedCoupons.push(findCoupon.id)
-                    // await user.save()
                 } else {
                     req.session.coupon = null
                     return res.status(403).json({ message: "coupon already redeemed" })
@@ -63,6 +59,11 @@ module.exports = {
             console.log(err)
             return res.status(500).json({ err })
         }
+    },
+
+    removeCoupon: (req, res) => {
+        req.session.coupon = null
+        return res.status(201).json({})
     },
 
     activate: async (req, res) => {

@@ -87,3 +87,7 @@
 .card-stepper {
   z-index: 0
 }
+
+.trash:hover{
+  cursor: pointer;
+}

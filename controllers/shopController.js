@@ -104,17 +104,20 @@ module.exports = {
                 model: "User"
             },
             {
-                path:"coupon",
-                model:"Coupon"
+                path: "coupon",
+                model: "Coupon"
             },
             {
                 path: "products.productId",
                 model: "Product"
             }
         ]).exec()
-        res.render("master/orderDetails", {
-            myOrder: myOrder
-        })
+        if (myOrder && myOrder.userId == req.user.id) {
+            res.render("master/orderDetails", {
+                myOrder: myOrder
+            })
+        }
+        res.render("errorPage/error")
     }
 
 }

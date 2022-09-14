@@ -33,7 +33,7 @@
               <!-- <span class="lead fw-normal">Your order has been delivered</span> -->
               <span class="text-muted small bold mb-1">orderId: #<%= order.id %></span>
               <% order.products.forEach(product=>{%>
-              <span class="text-muted mb-2"><img src="/files/<%= product.productId.productImagePath[0] %>" alt="" width="60" height="80">
+              <span class="text-muted mb-2"><img src="/files/<%= product.productId.productImagePath[0] %>" alt="" width="60" class="img-fluid rounded">
                 <a href="/product/<%= product.productId.id %>" class="text-muted"><%= product.productId.name %></a> x <%= product.quantity %> </span>
               <% }) %>
 

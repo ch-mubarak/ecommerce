@@ -3,10 +3,17 @@ const Product = require("../models/product")
 const Category = require("../models/category")
 const Wishlist = require("../models/wishlist")
 const Order = require("../models/order")
+const Banner = require("../models/banner")
 
 module.exports = {
     getHome: async (req, res) => {
         try {
+            const primaryBanner = await Banner
+                .findOne({ $and: [{ viewOrder: "primary" }, { isActive: true }] }).exec()
+            const secondaryBanner = await Banner
+                .find({ $and: [{ viewOrder: "secondary" }, { isActive: true }] })
+                .sort({ createdAt: -1 }).limit(2).exec()
+
             const allCategories = await Category.find();
             const allProducts = await Product.find()
                 .populate("category")
@@ -15,6 +22,8 @@ module.exports = {
             res.render("master/index", {
                 allCategories: allCategories,
                 allProducts: allProducts,
+                primaryBanner: primaryBanner,
+                secondaryBanner: secondaryBanner
             })
         } catch (err) {
             console.log(err)
@@ -26,7 +35,9 @@ module.exports = {
         try {
             const allCategories = await Category.find()
             // console.log(offerProduct)
-            const allProducts = await Product.find().populate("category").sort({ createdAt: -1 }).exec()
+            const allProducts = await Product.find()
+                .populate("category")
+                .sort({ createdAt: -1 }).exec()
             res.render("master/shop", {
                 allCategories: allCategories,
                 allProducts: allProducts
@@ -42,8 +53,10 @@ module.exports = {
         try {
             const allCategories = await Category.find()
             const paramsId = _.upperFirst(req.params.category)
-            const findCategory = await Category.find({ categoryName: paramsId })
-            const findProducts = await Product.find({ category: findCategory[0].id }).sort({ createdAt: -1 })
+            const findCategory = await Category
+                .find({ categoryName: paramsId })
+            const findProducts = await Product
+                .find({ category: findCategory[0].id }).sort({ createdAt: -1 })
             res.render("master/category", {
                 allCategories: allCategories,
                 findProducts: findProducts,
@@ -59,8 +72,13 @@ module.exports = {
     getProductById: async (req, res) => {
         try {
             const relatedProducts = await Product.find().limit(4).exec()
-            const isInMyList = await Wishlist.exists().where("userId").equals(req.user?.id).where("myList.productId").equals(req.params.id)
-            const findProduct = await Product.findById(req.params.id).populate("category").exec()
+            const isInMyList = await Wishlist.exists()
+                .where("userId")
+                .equals(req.user?.id)
+                .where("myList.productId")
+                .equals(req.params.id)
+            const findProduct = await Product.findById(req.params.id)
+                .populate("category").exec()
             if (findProduct) {
                 res.render("master/productDetails", {
                     findProduct: findProduct,

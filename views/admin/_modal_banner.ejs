@@ -1,0 +1,61 @@
+<div class="modal fade" id="bannerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Banner</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/admin/addBanner" method="post" id="bannerForm" enctype="multipart/form-data">
+          <div>
+            <label class="form-label">View Order*</label>
+            <select name="viewOrder" class="form-select" id="viewOrder" onchange="toggleInput(this)">
+              <option value="primary" label="Primary"></option>
+              <option value="secondary" selected label="Secondary"></option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Title*</label>
+            <input type="text" value="" name="title" required class="form-control" id="bannerTitle" disabled>
+          </div>
+          <div>
+            <label class="form-label">Caption*</label>
+            <input type="text" name="caption" value="" required class="form-control" id="bannerCaption" disabled>
+          </div>
+          <div>
+            <label class="form-label">Promo Coupon*</label>
+            <input type="text" name="coupon" value="" class="form-control" id="bannerPromoCoupon" disabled>
+          </div>
+          <div>
+            <label class="form-label">Url*</label>
+            <input type="text" name="url" value="" required class="form-control">
+          </div>
+          <div>
+            <label class="form-label">Banner Image</label>
+            <input type="file" name="bannerImage" value="" required class="form-control">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-dark">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleInput(viewOrder) {
+    let selectedViewOrder = viewOrder.options[viewOrder.selectedIndex].value
+    if (selectedViewOrder == "primary") {
+      $("#bannerTitle").removeAttr("disabled")
+      $("#bannerCaption").removeAttr("disabled")
+      $("#bannerPromoCoupon").removeAttr("disabled")
+      $("#bannerTitle").focus()
+    } else {
+      $("#bannerTitle").attr("disabled", true)
+      $("#bannerCaption").attr("disabled", true)
+      $("#bannerPromoCoupon").attr("disabled", true)
+    }
+  }
+</script>

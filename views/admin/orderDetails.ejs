@@ -4,7 +4,7 @@
   <div class="container" id="invoice">
     <!-- Title -->
     <div class="d-flex justify-content-between align-items-center py-3">
-      <h2 class="h5 mb-0"><a href="#" class="text-muted"></a> Order #<%= myOrder.id %></h2>
+      <h2 class="h5 mb-0"><a class="text-muted"></a> Order #<%= myOrder.id %></h2>
     </div>
 
     <!-- Main content -->
@@ -31,7 +31,7 @@
                   <td>
                     <div class="d-flex mb-2">
                       <div class="flex-shrink-0">
-                        <img src="/files/<%= product.productId.productImagePath[0] %>" alt="" width="50" class="img-fluid mx-2">
+                        <img src="/files/<%= product.productId.productImagePath[0] %>" alt="" width="60" class="img-fluid rounded">
                       </div>
                       <div class="flex-lg-grow-1 ms-3">
                         <h6 class="small mb-0"><a href="/product/<%= product.productId.id %>" class="text-reset"><%= product.name %></a></h6>
@@ -68,7 +68,7 @@
                   <td class="text-danger text-end">-₹<%= myOrder.coupon.discount %></td>
                 </tr>
                 <% } %>
-                <tr class="font-weight-bold">
+                <tr class="fw-bold">
                   <td colspan="2">TOTAL</td>
                   <td class="text-end">₹<%= myOrder.total.toFixed(2) %></td>
                 </tr>
@@ -110,10 +110,7 @@
         <div class="card mb-4">
           <!-- Shipping information -->
           <div class="card-body">
-            <!-- <h3 class="h6">Shipping Information</h3>
-            <strong>FedEx</strong>
-            <span><a href="#" class="text-decoration-underline" target="_blank">FF1234567890</a> <i class="bi bi-box-arrow-up-end"></i> </span>
-            <hr> -->
+
             <h3 class="h6"><i class="fa-solid fa-location-dot"></i> Shipping Address</h3>
             <address class="card-text">
               <%= myOrder.deliveryAddress.firstName +' '+ myOrder.deliveryAddress.lastName %>,<br>

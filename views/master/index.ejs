@@ -45,14 +45,16 @@
             </div>
           </div>
         </div>
-        <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
+        <% if(primaryBanner){%>
+        <div class="hero__item set-bg" data-setbg="/files/<%= primaryBanner.bannerImagePath %>">
           <div class="hero__text">
-            <span>FASHION</span>
-            <h2>Choose Your Style <br />UPTO 40% OFF</h2>
-            <p>Free Delivery on order above 599</p>
-            <a href="#" class="primary-btn">SHOP NOW</a>
+            <span>myStyle</span>
+            <h2><%= primaryBanner.title %> <br><%= primaryBanner.caption %></h2>
+            <p>Use Coupon ONAM100</p>
+            <a href="<%= primaryBanner.url %>" class="primary-btn">SHOP NOW</a>
           </div>
         </div>
+        <% } %>
       </div>
     </div>
   </div>
@@ -125,16 +127,16 @@
             </ul>
           </div>
           <% if(product.discount){ %>
-            <div class="product__discount__item__text">
-              <h5><a href="/product/<%= product.id %>"><%= product.name %> </a></h5>
-              <div class="product__item__price"> ₹<%= product.offerPrice.toFixed(2)%><span>₹<%= product.price %> </span></div>
-            </div>
-            <%  } else{ %>
-            <div class="product__item__text">
-              <h6><a href="/product/<%= product.id %>"><%= product.name %></a></h6>
-              <h5>₹<%= product.price %></h5>
-            </div>
-            <%  } %>
+          <div class="product__discount__item__text">
+            <h5><a href="/product/<%= product.id %>"><%= product.name %> </a></h5>
+            <div class="product__item__price"> ₹<%= product.offerPrice.toFixed(2)%><span>₹<%= product.price %> </span></div>
+          </div>
+          <%  } else{ %>
+          <div class="product__item__text">
+            <h6><a href="/product/<%= product.id %>"><%= product.name %></a></h6>
+            <h5>₹<%= product.price %></h5>
+          </div>
+          <%  } %>
         </div>
       </div>
       <% }) %>
@@ -143,24 +145,23 @@
 </section>
 <!-- Featured Section End -->
 
+<% if(secondaryBanner){%>
 <!-- Banner Begin -->
 <div class="banner">
   <div class="container">
     <div class="row">
+      <% secondaryBanner.forEach(banner=>{ %>
       <div class="col-lg-6 col-md-6 col-sm-6">
         <div class="banner__pic">
-          <img src="/img/banner/banner-1.jpg" alt="">
+          <img src="/files/<%= banner.bannerImagePath %> " alt="">
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-6">
-        <div class="banner__pic">
-          <img src="/img/banner/banner-2.jpg" alt="">
-        </div>
-      </div>
+      <% }) %>
     </div>
   </div>
 </div>
 <!-- Banner End -->
+<%} %>
 
 <!-- Latest Product Section Begin -->
 <section class="latest-product spad">
@@ -177,16 +178,16 @@
                   <img src="/files/<%=product.productImagePath[0]%>" alt="">
                 </div>
                 <% if(product.discount){%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
-                  </div>
-                  <% }else{%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <span>₹<%= product.price %></span>
-                  </div>
-                  <% } %>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
+                </div>
+                <% }else{%>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <span>₹<%= product.price %></span>
+                </div>
+                <% } %>
               </a>
               <% }) %>
             </div>
@@ -197,16 +198,16 @@
                   <img src="/files/<%=product.productImagePath[0]%>" alt="">
                 </div>
                 <% if(product.discount){%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
-                  </div>
-                  <% }else{%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <span>₹<%= product.price %></span>
-                  </div>
-                  <% } %>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
+                </div>
+                <% }else{%>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <span>₹<%= product.price %></span>
+                </div>
+                <% } %>
               </a>
               <% }) %>
             </div>
@@ -226,16 +227,16 @@
                   <img src="/files/<%= product.productImagePath[0]%>" alt="">
                 </div>
                 <% if(product.discount){%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
-                  </div>
-                  <% }else{%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <span>₹<%= product.price %></span>
-                  </div>
-                  <% } %>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
+                </div>
+                <% }else{%>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <span>₹<%= product.price %></span>
+                </div>
+                <% } %>
               </a>
               <% }) %>
             </div>
@@ -247,16 +248,16 @@
                   <img src="/files/<%= product.productImagePath[0]%>" alt="">
                 </div>
                 <% if(product.discount){%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
-                  </div>
-                  <% }else{%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <span>₹<%= product.price %></span>
-                  </div>
-                  <% } %>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
+                </div>
+                <% }else{%>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <span>₹<%= product.price %></span>
+                </div>
+                <% } %>
               </a>
               <% }) %>
             </div>
@@ -276,16 +277,16 @@
                   <img src="/files/<%= product.productImagePath[0]%>" alt="">
                 </div>
                 <% if(product.discount){%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
-                  </div>
-                  <% }else{%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <span>₹<%= product.price %></span>
-                  </div>
-                  <% } %>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
+                </div>
+                <% }else{%>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <span>₹<%= product.price %></span>
+                </div>
+                <% } %>
               </a>
               <% }) %>
             </div>
@@ -298,16 +299,16 @@
                   <img src="/files/<%= product.productImagePath[0]%>" alt="">
                 </div>
                 <% if(product.discount){%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
-                  </div>
-                  <% }else{%>
-                  <div class="latest-product__item__text">
-                    <h6><%= product.name %></h6>
-                    <span>₹<%= product.price %></span>
-                  </div>
-                  <% } %>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <h6><del><%=product.price  %></del></h6> <span>₹<%= product.offerPrice.toFixed(2) %></span>
+                </div>
+                <% }else{%>
+                <div class="latest-product__item__text">
+                  <h6><%= product.name %></h6>
+                  <span>₹<%= product.price %></span>
+                </div>
+                <% } %>
               </a>
               <% }) %>
             </div>

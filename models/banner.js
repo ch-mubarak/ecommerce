@@ -5,17 +5,22 @@ const bannerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isActive: {
-        type: Boolean,
-        default: false
+    title: {
+        type: String,
     },
     viewOrder: {
-        type: Number,
-        unique: true,
+        type: String,
         required: true
     },
     caption: {
         type: String,
+    },
+    promoCoupon: {
+        type: String
+    },
+    isActive: {
+        type: Boolean,
+        default: false
     },
     url: {
         type: String

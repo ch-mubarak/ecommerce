@@ -39,7 +39,7 @@
         <tbody>
           <% allProducts.forEach(product=>{ %>
           <tr>
-            <td><img src="/files/<%= product.productImagePath[0]  %>" alt="<%= product.name %>" width="60" height="75"></td>
+            <td><img src="/files/<%= product.productImagePath[0]%>" alt="<%= product.name %>" width="60" class="img-fluid img-thumbnail"></td>
             <td><%= product.name %></td>
             <td><%= product.brand %></td>
             <td><%= product.category.categoryName %></td>

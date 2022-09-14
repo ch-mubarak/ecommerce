@@ -1,4 +1,3 @@
-const { findById } = require("../models/product")
 const Product = require("../models/product")
 const fs = require("fs").promises
 

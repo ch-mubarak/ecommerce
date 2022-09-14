@@ -17,19 +17,23 @@ router.get("/products", adminControl.products)
 router.get("/orders", adminControl.orders)
 router.get("/coupons", adminControl.coupons)
 router.get("/banners", bannerControl.getBanner)
-router.get("/orders/:id",adminControl.orderDetails)
+router.get("/orders/:id", adminControl.orderDetails)
 
 
 router.post("/addCategory", adminControl.addCategory)
-router.post("/addProduct", multer.send, productControl.addProduct)
+router.post("/addProduct", multer.productImage, productControl.addProduct)
 router.post("/addCoupon", couponControl.addCoupon)
+router.post("/addBanner", multer.bannerImage, bannerControl.addBanner)
 
 router.put("/activateCoupon/:id", couponControl.activate)
 router.put("/deactivateCoupon/:id", couponControl.deactivate)
-router.put("/editProduct/:id", multer.send, productControl.editProduct)
+router.put("/editProduct/:id", multer.productImage, productControl.editProduct)
 router.put("/editCategory/:id", adminControl.editCategory)
 router.put("/blockUser/:id", adminControl.blockUser)
 router.put("/unblockUser/:id", adminControl.unblockUser)
+
+router.put("/activateBanner/:id", bannerControl.activate)
+router.put("/deactivateBanner/:id", bannerControl.deactivate)
 
 router.put("/packOrder/:id", orderControl.packOrder)
 router.put("/shipOrder/:id", orderControl.shipOrder)

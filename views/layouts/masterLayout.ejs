@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ogani | Shopping</title>
+  <title>myStyle | Shopping</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -55,7 +55,7 @@
       <div class="header__top__right__auth">
         <% if(locals.user){ %>
         <form action="/logout?_method=DELETE" method="post" id="logoutForm1">
-          <a href="#" onclick="document.getElementById('logoutForm1').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+          <a onclick="document.getElementById('logoutForm1').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
         </form>
         <% } else {%>
         <a href="/login"><i class="fa fa-user"></i> Login</a>

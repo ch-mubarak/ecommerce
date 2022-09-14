@@ -1,25 +1,3 @@
-<!-- Hero Section Begin -->
-<%- include("../partials/heroSection") %>
-<!-- Hero Section End -->
-
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <div class="breadcrumb__text">
-          <h2>Order Details</h2>
-          <div class="breadcrumb__option">
-            <a href="/">Home</a>
-            <a href="/user/myOrders">My Orders</a>
-            <span>Order Details</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Breadcrumb Section End -->
 
 <div class="container-fluid">
 
@@ -63,9 +41,9 @@
                   </td>
                   <td>x<%= product.quantity %></td>
                   <% if(product.offerPrice){%>
-                  <td class="text-right"> <del class="text-muted mx-1"> ₹<%= product.price %></del> ₹<%= product.offerPrice %></td>
+                  <td class="text-end"> <del class="text-muted mx-1"> ₹<%= product.price %></del> ₹<%= product.offerPrice %></td>
                   <%}else{%>
-                  <td class="text-right">₹<%= product.price %> </td>
+                  <td class="text-end">₹<%= product.price %> </td>
                   <%} %>
                 </tr>
                 <% }) %>
@@ -73,26 +51,26 @@
               <tfoot>
                 <tr>
                   <td colspan="2">Subtotal</td>
-                  <td class="text-right">₹<%= myOrder.subTotal.toFixed(2) %></td>
+                  <td class="text-end">₹<%= myOrder.subTotal.toFixed(2) %></td>
                 </tr>
                 <tr>
                   <td colspan="2">Shipping <i class="fa-solid fa-truck"></i> </td>
-                  <td class="text-right">₹0.0</td>
+                  <td class="text-end">₹0.0</td>
                 </tr>
                 <tr>
                   <td colspan="2">Discount</td>
                   <% let discount = myOrder.coupon.discount ? myOrder.subTotal-myOrder.total-myOrder.coupon.discount: myOrder.subTotal-myOrder.total %>
-                  <td class="text-danger text-right">-₹<%=discount.toFixed(2) %></td>
+                  <td class="text-danger text-end">-₹<%=discount.toFixed(2) %></td>
                 </tr>
                 <% if(myOrder.coupon.discount){%>
                 <tr>
                   <td colspan="2">Coupon (Code: <i class="fa-solid fa-tags"></i> <%= myOrder.coupon.code %>)</td>
-                  <td class="text-danger text-right">-₹<%= myOrder.coupon.discount %></td>
+                  <td class="text-danger text-end">-₹<%= myOrder.coupon.discount %></td>
                 </tr>
                 <% } %>
                 <tr class="font-weight-bold">
                   <td colspan="2">TOTAL</td>
-                  <td class="text-right">₹<%= myOrder.total.toFixed(2) %></td>
+                  <td class="text-end">₹<%= myOrder.total.toFixed(2) %></td>
                 </tr>
               </tfoot>
             </table>
@@ -134,7 +112,7 @@
           <div class="card-body">
             <!-- <h3 class="h6">Shipping Information</h3>
             <strong>FedEx</strong>
-            <span><a href="#" class="text-decoration-underline" target="_blank">FF1234567890</a> <i class="bi bi-box-arrow-up-right"></i> </span>
+            <span><a href="#" class="text-decoration-underline" target="_blank">FF1234567890</a> <i class="bi bi-box-arrow-up-end"></i> </span>
             <hr> -->
             <h3 class="h6"><i class="fa-solid fa-location-dot"></i> Shipping Address</h3>
             <address class="card-text">

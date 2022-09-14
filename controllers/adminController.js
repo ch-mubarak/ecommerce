@@ -103,6 +103,43 @@ module.exports = {
         })
     },
 
+    orderDetails: async (req, res) => {
+        try {
+            const orderId = req.params.id
+            const myOrder = await Order.findById(orderId).populate([
+                {
+                    path: "userId",
+                    model: "User"
+                },
+                {
+                    path: "products.productId",
+                    model: "Product"
+                },
+                {
+                    path: "coupon",
+                    model: "Coupon"
+                }
+            ]).exec()
+            console.log(myOrder)
+            if (myOrder) {
+                res.render("admin/orderDetails",
+                    {
+                        myOrder: myOrder,
+                        layout: "layouts/adminLayout",
+                        extractScripts: true
+                    }
+                )
+            } else {
+                req.flash("message", "Invalid orderId")
+                res.redirect("/admin/orders")
+            }
+        } catch (err) {
+            req.flash("message", "Invalid orderId")
+            res.redirect("/admin/orders")
+            console.log(err)
+        }
+    },
+
     addCategory: async (req, res) => {
         try {
             const category = new Category({

@@ -37,7 +37,7 @@
         <tbody>
           <% allOrders.forEach(order=>{ %>
           <tr>
-            <td><%=order.id%></td>
+            <td><a href="/admin/orders/<%= order.id %>"><%=order.id%></a></td>
             <td><%=order.userId.email %></td>
             <td>
               <%=order.deliveryAddress.firstName%>

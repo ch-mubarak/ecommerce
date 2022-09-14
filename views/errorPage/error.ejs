@@ -26,7 +26,6 @@
       --blue: #0e0620;
       --white: #fff;
       --green: #2ccf6d;
-      --blue: #273952;
     }
 
     html,
@@ -124,7 +123,7 @@
       height: 100%;
       top: 0;
       left: 0;
-      background: var(--blue);
+      background: var(--green);
       color: var(--blue);
       width: 300px;
       z-index: 1;
@@ -196,30 +195,30 @@
       margin: 5px 0px;
     }
 
-    .btn.blue {
-      border: 4px solid var(--blue);
+    .btn.green {
+      border: 4px solid var(--green);
       color: var(--blue);
     }
 
-    .btn.blue:before {
+    .btn.green:before {
       content: "";
       position: absolute;
       left: 0;
       top: 0;
       width: 0%;
       height: 100%;
-      background: var(--blue);
+      background: var(--green);
       z-index: -1;
       transition: 0.2s ease;
     }
 
-    .btn.blue:hover {
+    .btn.green:hover {
       color: var(--white);
-      background: var(--blue);
+      background: var(--green);
       transition: 0.2s ease;
     }
 
-    .btn.blue:hover:before {
+    .btn.green:hover:before {
       width: 100%;
     }
 
@@ -462,7 +461,7 @@
             How you got here is a mystery. But you can click the button below
             to go back to the homepage.
           </p>
-          <a href="/user/home" class="btn blue">HOME</a>
+          <a href="/user/home" class="btn green">HOME</a>
         </div>
       </div>
     </div>

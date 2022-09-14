@@ -97,27 +97,35 @@ module.exports = {
     },
 
     orderDetails: async (req, res) => {
-        const orderId = req.params.id
-        const myOrder = await Order.findById(orderId).populate([
-            {
-                path: "userId",
-                model: "User"
-            },
-            {
-                path: "coupon",
-                model: "Coupon"
-            },
-            {
-                path: "products.productId",
-                model: "Product"
+        try {
+            const orderId = req.params.id
+            const userId = req.user.id
+            const myOrder = await Order.findById(orderId).populate([
+                {
+                    path: "userId",
+                    model: "User"
+                },
+                {
+                    path: "coupon",
+                    model: "Coupon"
+                },
+                {
+                    path: "products.productId",
+                    model: "Product"
+                }
+            ]).exec()
+            if (myOrder && myOrder.userId.id == userId) {
+                res.render("master/orderDetails", {
+                    myOrder: myOrder
+                })
+            } else {
+                res.render("errorPage/error", { layout: false })
             }
-        ]).exec()
-        if (myOrder && myOrder.userId == req.user.id) {
-            res.render("master/orderDetails", {
-                myOrder: myOrder
-            })
+        } catch (err) {
+            console.log(err)
+            res.render("errorPage/error", { layout: false })
         }
-        res.render("errorPage/error")
+
     }
 
 }

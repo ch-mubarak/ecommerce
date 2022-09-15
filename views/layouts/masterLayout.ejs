@@ -71,7 +71,7 @@
             <li><a href="#">Address</a></li>
             <li><a href="/user/cart">Shopping Cart</a></li>
             <li><a href="/checkout">Check Out</a></li>
-            <li><a href="/user/home">Account</a></li>
+            <li><a href="/user/profile">Account</a></li>
           </ul>
         </li>
         <li><a href="/contact">Contact</a></li>
@@ -130,7 +130,7 @@
                   <li class="nav-item dropdown">
                     <a class="nav-link active dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hi <%=locals.userName %> <i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="/user/home">Account</a></li>
+                      <li><a class="dropdown-item" href="/user/profile">Account</a></li>
                       <li><a class="dropdown-item" href="/user/myOrders">My orders</a></li>
                       <li>
                         <form action="/logout?_method=DELETE" method="post" id="logoutForm2">

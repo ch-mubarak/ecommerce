@@ -155,7 +155,7 @@
                           ph:<%= myAddress.phone %>
                         </address>
                         <button class="btn btn-outline-dark">Edit</button>
-                        <button class="float-right btn btn-outline-secondary" onclick="removeAddress('<%=Number(index)%>')"><i class="fa-solid fa-trash-can"></i></button>
+                        <button class="float-right btn btn-outline-secondary" onclick="removeAddress('<%=index%>')"><i class="fa-solid fa-trash-can"></i></button>
                       </div>
                     </div>
                   </div>
@@ -178,16 +178,46 @@
     event.preventDefault()
     const data = new URLSearchParams(new FormData(event.target))
     try {
-        const response = axios({
-            method:"post",
-            url:"/user/createAddress",
-            data:data
-        })
-        $("#addressList").load(location.href + " #addressList>*", "");
-        toastr.success('New address created.')
+      const response = axios({
+        method: "post",
+        url: "/user/createAddress",
+        data: data
+      })
+      $("#addressList").load(location.href + " #addressList>*", "");
+      toastr.success('New address created.')
     } catch (err) {
-        console.error(err)
+      console.error(err)
     }
 
   })
+
+  async function removeAddress(index) {
+    try {
+      let result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#6F7E8B',
+        cancelButtonColor: '#273952',
+        confirmButtonText: 'Yes, Delete it!',
+        cancelButtonText: 'No.',
+        width: '25em'
+      })
+      if (result.isConfirmed) {
+        console.log(index)
+        const response = await axios.delete(`/user/deleteAddress/${index}`)
+        if (response.status == 204) {
+          $("#addressList").load(location.href + " #addressList>*", "");
+          toastr.options = {
+            "positionClass": "toast-bottom-right"
+          }
+          toastr.success('address removed successfully.')
+
+        }
+      }
+    } catch (error) {
+      console.error(err)
+    }
+  }
 </script>

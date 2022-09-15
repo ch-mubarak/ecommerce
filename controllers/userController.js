@@ -77,13 +77,14 @@ module.exports = {
 
     removeAddress: async (req, res) => {
         try {
-            const addressIndex = Number(req.prams.index)
+            const addressIndex = Number(req.params.index)
             const user = await User.findById(req.user.id)
             user.address.splice(addressIndex, 1)
             await user.save()
             return res.status(204).json({ message: "address removed" })
         } catch (err) {
-
+            console.log(err)
+            res.status(500)
         }
     },
 

@@ -94,4 +94,38 @@ module.exports = {
         })
     },
 
+    getProfile: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const user = await User.findById(userId)
+            res.render("master/profile", {
+                user: user
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
+    createAddress: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const myUser = await User.findById(userId)
+            myUser.address.unshift({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                house: req.body.house,
+                address: req.body.address,
+                city: req.body.city,
+                state: req.body.state,
+                pincode: req.body.pincode,
+                phone: req.body.phone
+            })
+            await myUser.save()
+            res.status(201).json({ message: "new address created" })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ err })
+        }
+    }
+
 }

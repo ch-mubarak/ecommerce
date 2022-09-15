@@ -1,0 +1,193 @@
+<!-- Hero Section Begin -->
+<%- include("../partials/heroSection") %>
+<!-- Hero Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg mb-3" data-setbg="/img/breadcrumb.jpg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb__text">
+          <h2>My Profile</h2>
+          <div class="breadcrumb__option">
+            <a href="/">Home</a>
+            <span>Profile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
+<style>
+  .me-2 {
+    margin-right: .5rem !important;
+  }
+
+  .user-panel:hover {
+    cursor: pointer;
+  }
+</style>
+
+<div class="container">
+  <div class="main-body">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <div class="mt-3">
+                <h4>Hi <%= user.name %> </h4>
+                <p class="text-secondary mb-1"><%= user.email %> </p>
+              </div>
+            </div>
+            <hr class="my-4">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item user-panel">
+                <h6>Account</h6>
+              </li>
+              <li class="list-group-item user-panel">
+                <h6>My Orders</h6>
+              </li>
+              <li class="list-group-item user-panel">
+                <h6>Change Password</h6>
+              </li>
+              <li class="list-group-item user-panel">
+                <h6>Logout</h6>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card">
+          <form action="" method="post" id="addressForm">
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">First Name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" name="firstName" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Last Name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" name="lastName" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Address</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" placeholder="Street Address" name="address" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" name="house" placeholder="Apartment,suit,unite ect(optional)">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">City</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" name="city" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">State</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <div class="autocomplete text-dark">
+                    <input type="text" id="state" class="form-control" name="state" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Pincode</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="tel" minlength="6" maxlength="6" class="form-control" name="pincode" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Phone</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="tel" minlength="10" maxlength="10" class="form-control" name="phone" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="submit" class="btn btn-outline-dark" value="Create new address">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="row mt-2 mb-2">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="d-flex align-items-center">My address</h5>
+                <div class="row" id="addressList">
+                  <% user.address.forEach((myAddress,index)=>{%>
+                  <div class="col-md-6 mb-2" id="address-<%= index %>">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title"><i class="fa-solid fa-location-dot"></i> <%= myAddress.firstName %></h5>
+                        <address class="card-text">
+                          <%= myAddress.firstName +' '+ myAddress.lastName %>, <%= myAddress.house %>, <%= myAddress.address %>,
+                          <%=myAddress.city  %>, <%=myAddress.state %>, <br>
+                          pincode: <%= myAddress.pincode %><br>
+                          ph:<%= myAddress.phone %>
+                        </address>
+                        <button class="btn btn-outline-dark">Edit</button>
+                        <button class="float-right btn btn-outline-secondary" onclick="removeAddress('<%=Number(index)%>')"><i class="fa-solid fa-trash-can"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                  <%}) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/address-auto-complete.js"></script>
+<script>
+  autocomplete(document.getElementById("state"), allStates);
+
+  document.forms["addressForm"].addEventListener("submit", async (event) => {
+    event.preventDefault()
+    const data = new URLSearchParams(new FormData(event.target))
+    try {
+        const response = axios({
+            method:"post",
+            url:"/user/createAddress",
+            data:data
+        })
+        $("#addressList").load(location.href + " #addressList>*", "");
+        toastr.success('New address created.')
+    } catch (err) {
+        console.error(err)
+    }
+
+  })
+</script>

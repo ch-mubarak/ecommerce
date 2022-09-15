@@ -148,7 +148,6 @@ module.exports = {
             if (findCart?.products.length > 0) {
                 res.render("master/checkout", {
                     findCart: findCart,
-                    states: states,
                     user: user,
                     couponCode: couponCode,
                     couponDiscount: couponDiscount

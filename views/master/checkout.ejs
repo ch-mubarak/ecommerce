@@ -124,9 +124,9 @@
               <p>Town/City<span>*</span></p>
               <input type="text" name="city" required>
             </div>
-            <div class="checkout__input">
+            <div class="checkout__input autocomplete">
               <p>State<span>*</span></p>
-              <input type="text" name="state" required>
+              <input type="text" name="state" id="state" required>
             </div>
             <div class="checkout__input">
               <p>Postcode<span>*</span></p>
@@ -183,7 +183,7 @@
               <% if(couponCode){%>
               <div class="checkout__order__total">Cart Discount <span class="text-muted">₹<%= (findCart.subTotal - findCart.total ).toFixed(2)%></span></div>
               <div class="checkout__order__total">Coupon <span class="text-muted"><i class="fa-solid fa-tags"></i> <%=couponCode %></span></div>
-              <div class="checkout__order__total">Coupon Discount <span class="text-muted"><%=couponDiscount %> </span></div>
+              <div class="checkout__order__total">Coupon Discount <span class="text-muted">₹<%=couponDiscount %> </span></div>
               <div class="checkout__order__total">Total <span>₹<%= (findCart.total - couponDiscount).toFixed(2) %></span></div>
               <%}else{ %>
               <div class="checkout__order__total">Cart Discount <span class="text-muted">₹<%= (findCart.subTotal - findCart.total).toFixed(2) %> </span></div>
@@ -204,7 +204,6 @@
                 </label>
               </div>
 
-
               <button type="submit" class="site-btn" id="rzp-button1">PLACE ORDER</button>
             </div>
 
@@ -217,10 +216,11 @@
 
 <!-- Checkout Section End -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="/js/checkout.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<!-- <script src="/js/payment.js"></script> -->
+<script src="/js/checkout.js"></script>
 <script>
+ 
+// generating orderId for razorpay 
   const couponDiscount = '<%=couponDiscount%>'
   const cartTotal = '<%=findCart.total%>'
   let amount = couponDiscount ? (cartTotal - couponDiscount) * 100 : cartTotal * 100
@@ -242,110 +242,7 @@
       console.error(err)
     }
   });
-  document.forms["checkoutForm"].addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const paymentType = $('input[name=paymentType]:checked', '#checkoutForm').val()
-    data = new URLSearchParams(new FormData(event.target))
-    if (paymentType == "cod") {
-      checkout(data)
-    } else {
-      razorpay(orderId, amount)
-    }
-  });
 
-
-  async function checkout(data) {
-    try {
-      const response = await axios({
-        url: '/user/checkout',
-        method: "post",
-        data: data,
-      });
-      if (response.status == 201) {
-        await Swal.fire({
-          title: 'Congrats!',
-          text: 'Order Successful',
-          icon: 'success',
-          width: "25em",
-          timer: 3000
-        })
-        window.location = "/user/myOrders"
-      }
-    } catch (err) {
-      console.error(err)
-      await Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!',
-        width: "25em",
-        timer: 3000
-      })
-      window.location = "/user/checkout"
-    }
-  }
-
-
-  function razorpay(orderId, amount) {
-    let options = {
-      "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard
-      "name": "Fashion",
-      "amount": amount,
-      "order_id": orderId, // For one time payment
-      "retry": false,
-      "theme": {
-        "color": "#273952"
-      },
-      // This handler function will handle the success payment
-      "handler": async function(response) {
-        // alert(response.razorpay_payment_id);
-        try {
-          const verification = await axios({
-            method: "post",
-            url: `/user/payment/verify/${orderId}`,
-            data: {
-              response: response,
-            }
-          })
-          if (verification.data.signatureIsValid) {
-            const paymentId = response.razorpay_payment_id
-
-            //appending order Id and payment id to data to update on database
-
-            data.append("orderId", orderId)
-            data.append("paymentId", paymentId)
-
-            //calling checkout after payment verification
-            checkout(data)
-
-          } else {
-            await Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'Payment Failed!',
-              width: "25em",
-              timer: 2000,
-            })
-            window.location = "/user/checkout"
-          }
-        } catch (err) {
-          console.log(err)
-          window.location = "/user/myOrders"
-        }
-
-      },
-    };
-    const rzp1 = new Razorpay(options);
-    rzp1.open();
-    rzp1.on('payment.failed', async function(response) {
-      await Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Payment Failed!',
-        width: "25em",
-        timer: 2000,
-      })
-      window.location = "/user/checkout"
-    });
-
-  }
+  // autocomplete states
+  autocomplete(document.getElementById("state"), allStates);
 </script>

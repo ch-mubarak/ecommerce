@@ -32,7 +32,8 @@
           </div>
           <div>
             <label class="form-label">Banner Image</label>
-            <input type="file" name="bannerImage" value="" required class="form-control">
+            <input type="file" onchange="preview()" name="bannerImage" value="" required class="form-control">
+            <img src="" id="bannerImage" alt="" class="img-fluid rounded m-2">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -57,5 +58,9 @@
       $("#bannerCaption").attr("disabled", true)
       $("#bannerPromoCoupon").attr("disabled", true)
     }
+  }
+
+  function preview() {
+    bannerImage.src = URL.createObjectURL(event.target.files[0]);
   }
 </script>

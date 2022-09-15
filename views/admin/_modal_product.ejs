@@ -40,8 +40,11 @@
           <div><label class="form-label">Description</label></div>
           <div><textarea name="description" rows="5" placeholder="Add description" class="form-control" required></textarea></div>
           <div>
-            <input type="file" multiple name="productImages" required class="form-control">
             <label class="form-label">Upload Product Image</label>
+            <input type="file" multiple name="productImages" required class="form-control" onchange="preview()">
+            <div class="mt-2" id="previewProductImages">
+              <!-- preview images while uploading images -->
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -52,3 +55,20 @@
     </div>
   </div>
 </div>
+
+<script>
+  //removing cache file of modal when closing
+  $("#addProduct").on("hidden.bs.modal", function() {
+    $(this).find('form').trigger('reset');
+    $("#previewProductImages").html("")
+  });
+
+  //shows uploaded images on form
+  function preview() {
+    const selectedFiles = event.target.files
+    for (const file of selectedFiles) {
+      let src = URL.createObjectURL(file);
+      $("#previewProductImages").append(`<img src='${src}' alt='' width='60' class='rounded mx-1 img-fluid'>`)
+    }
+  }
+</script>

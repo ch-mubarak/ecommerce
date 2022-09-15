@@ -54,15 +54,15 @@
       </div>
       <div class="header__top__right__auth">
         <% if(locals.user){ %>
-        <form action="/logout?_method=DELETE" method="post" id="logoutForm1">
-          <a onclick="document.getElementById('logoutForm1').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+        <form action="/logout?_method=DELETE" method="post" id="logoutForm">
+          <a onclick="document.getElementById('logoutForm').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
         </form>
         <% } else {%>
         <a href="/login"><i class="fa fa-user"></i> Login</a>
         <% } %>
       </div>
     </div>
-      <nav class="humberger__menu__nav mobile-menu">
+    <nav class="humberger__menu__nav mobile-menu">
       <ul class="nav">
         <li><a href="/">Home</a></li>
         <li><a href="/shop">Shop</a></li>
@@ -133,9 +133,7 @@
                       <li><a class="dropdown-item" href="/user/profile">Account</a></li>
                       <li><a class="dropdown-item" href="/user/myOrders">My orders</a></li>
                       <li>
-                        <form action="/logout?_method=DELETE" method="post" id="logoutForm2">
-                          <a href="#" class="dropdown-item" onclick="document.getElementById('logoutForm2').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-                        </form>
+                        <a href="#" class="dropdown-item" onclick="document.getElementById('logoutForm').submit();"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
                       </li>
                     </ul>
                   </li>

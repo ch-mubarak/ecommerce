@@ -23,14 +23,10 @@
   .me-2 {
     margin-right: .5rem !important;
   }
-
-  .user-panel:hover {
-    cursor: pointer;
-  }
 </style>
 
 <div class="container">
-  <div class="main-body">
+  <div class="main-body mb-3">
     <div class="row">
       <div class="col-lg-4">
         <div class="card">
@@ -43,17 +39,17 @@
             </div>
             <hr class="my-4">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item user-panel">
-                <h6>Account</h6>
+              <li class="list-group-item">
+                <a href="#" id="userProfile" class="text-dark h6"><i class="fa-solid fa-user"></i> My Account</a>
               </li>
-              <li class="list-group-item user-panel">
-                <h6>My Orders</h6>
+              <li class="list-group-item">
+                <a href="/user/myOrders" class="text-dark h6"><i class="fa-solid fa-clipboard-list"></i> My Orders</a>
               </li>
-              <li class="list-group-item user-panel">
-                <h6>Change Password</h6>
+              <li class="list-group-item">
+                <a href="#" id="userPassword" class="text-dark h6"><i class="fa-solid fa-key"></i> Change Password</a>
               </li>
-              <li class="list-group-item user-panel">
-                <h6>Logout</h6>
+              <li class="list-group-item">
+                <a href="#" class="text-dark h6" onclick="document.getElementById('logoutForm').submit();"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
               </li>
             </ul>
           </div>
@@ -136,8 +132,27 @@
               </div>
             </div>
           </form>
+          <!-- form for changing password -->
+          <form action="/user/changePassword?_method=put" method="post" id="changePassword" class="p-3" style="display:none ;">
+            <div class="mb-3">
+              <label class="form-label">Current password</label>
+              <input type="password" name="oldPassword" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">New password</label>
+              <input type="password" name="password" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Repeat Password</label>
+              <input type="password" name="confirmedPassword" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-warning mt-2">change</button>
+            <div class="mt-3" id="errorMessage">
+
+            </div>
+          </form>
         </div>
-        <div class="row mt-2 mb-2">
+        <div class="row mt-2 mb-2" id="myAddress">
           <div class="col-sm-12">
             <div class="card">
               <div class="card-body">
@@ -220,4 +235,41 @@
       console.error(err)
     }
   }
+
+  document.forms["changePassword"].addEventListener("submit", async (event) => {
+    event.preventDefault()
+    const data = new URLSearchParams(new FormData(event.target))
+    try {
+      const response = await axios({
+        method: "put",
+        url: "/user/changePassword",
+        data: data
+      })
+      if (response.status == 201) {
+        await Swal.fire({
+          title: 'Congrats!',
+          text: 'your password has been updated!',
+          icon: 'success',
+          width: '25em',
+          timer: 2000
+        })
+      }
+    } catch (err) {
+      document.getElementById("errorMessage").innerHTML = `<div class="alert alert-danger text-center" role="alert">${err.response.data.message}</div>`
+    }
+  })
+
+  document.getElementById("userProfile").addEventListener("click", (event) => {
+    event.preventDefault()
+    document.getElementById("changePassword").style.display = "none"
+    document.getElementById("addressForm").style.display = ""
+    document.getElementById("myAddress").style.display = ""
+  })
+
+  document.getElementById("userPassword").addEventListener("click", (event) => {
+    event.preventDefault()
+    document.getElementById("changePassword").style.display = ""
+    document.getElementById("addressForm").style.display = "none"
+    document.getElementById("myAddress").style.display = "none"
+  })
 </script>

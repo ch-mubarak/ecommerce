@@ -51,18 +51,15 @@ module.exports = {
         if (newPassword === confirmedPassword) {
             user.changePassword(oldPassword, newPassword, function (err) {
                 if (err) {
-                    console.log(err)
-                    req.flash("message", "wrong credentials")
-                    res.redirect("changePassword")
+                    res.status(401).json({ message: "wrong credential" })
                 }
                 else {
-                    res.redirect("/user/home")
+                    res.status(201).json({ message: "password changed" })
                 }
             })
         }
         else {
-            req.flash("message", "password doesn't match")
-            res.redirect("changePassword")
+            res.status(403).json({ message: "password doesn't match" })
         }
     },
 

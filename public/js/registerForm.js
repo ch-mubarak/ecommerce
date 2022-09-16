@@ -48,7 +48,7 @@ $('#myForm input').on('keyup blur', function () { // fires on every keyup & blur
 
 
 $('#registerButton').click(function () {
-  $('#registerButton').html(`<span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+  $('#registerButton').html(`<span class="spinner-border" role="status" aria-hidden="true"></span>
     Loading...`).attr("disabled", 'disabled')
   $("#myForm").submit()
 

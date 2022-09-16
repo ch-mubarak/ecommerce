@@ -60,6 +60,12 @@
     }
   }
 
+    //removing cache file of modal when closing
+    $("#bannerModal").on("hidden.bs.modal", function() {
+    $(this).find('form').trigger('reset');
+    $("#bannerImage").attr("src","")
+  });
+
   function preview() {
     bannerImage.src = URL.createObjectURL(event.target.files[0]);
   }

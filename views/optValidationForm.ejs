@@ -6,7 +6,7 @@
   .card {
     width: 400px;
     border: none;
-    height: 300px;
+    height: 400px;
     box-shadow: 0px 5px 20px 0px #d2dae3;
     z-index: 1;
     display: flex;
@@ -32,25 +32,6 @@
     margin: 0
   }
 
-  .card-2 {
-    background-color: #fff;
-    padding: 10px;
-    width: 350px;
-    height: 100px;
-    bottom: -50px;
-    left: 20px;
-    position: absolute;
-    border-radius: 5px
-  }
-
-  .card-2 .content {
-    margin-top: 50px
-  }
-
-  .card-2 .content a {
-    color: red
-  }
-
   .form-control:focus {
     box-shadow: none;
     border: 2px solid red
@@ -59,27 +40,49 @@
   .validate {
     border-radius: 20px;
     height: 40px;
-    background-color: red;
-    border: 1px solid red;
+    background-color: rgb(39, 57, 82);
+    border: 1px solid rgb(39, 57, 82);
     width: 140px
   }
 </style>
 
-<div class="container height-100 d-flex justify-content-center align-items-center">
+<!-- Hero Section Begin -->
+<%- include("./partials/heroSection") %>
+<!-- Hero Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="breadcrumb__text">
+          <h2>Verify your account</h2>
+          <div class="breadcrumb__option">
+            <!-- <a href="/">Home</a>
+            <span>verify</span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<div class="container p-5 d-flex justify-content-center align-items-center">
   <div class="position-relative">
+    <%- include("./partials/errorMessage") %> 
     <div class="card p-2 text-center mb-3">
       <h6>Please enter the one time password <br> to verify your account</h6>
       <div> <span>A code has been sent to</span> <small><%= email %></small> </div>
       <form action="/validateOtp" method="post">
-        <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2"> <input class="m-2 text-center form-control rounded" type="text" id="first" name ="a" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="second" name ="b" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="third" name="c" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="fourth" name ="d" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="fifth" name ="e" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="sixth" name ="f" maxlength="1" /> </div>
-        <div class="mt-4"> <button class="btn btn-danger px-4 validate">Validate</button> </div>
+        <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2"> <input class="m-2 text-center form-control rounded" type="text" id="first" name="a" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="second" name="b" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="third" name="c" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="fourth" name="d" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="fifth" name="e" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="sixth" name="f" maxlength="1" /> </div>
+        <div class="mt-4"> <button class="btn btn-dark px-4 validate">Validate</button> </div>
       </form>
       <form action="/resendOtp" method="post">
         <div class="mt-2">Didn't receive code ?</small></div>
         <div class="mt-1"><button class="btn btn-outline-dark px-4" type="submit">Resend</button></div>
       </form>
     </div>
-    <%-include("./partials/errorMessage") %>
   </div>
 </div>
 
@@ -111,4 +114,10 @@
     }
     OTPInput();
   });
+
+  setTimeout(() => {
+        $(".alert").fadeTo(600, 0).slideUp(500, function() {
+          // document.getElementById("errorMessage").innerHTML = ""
+        })
+      },4000)
 </script>

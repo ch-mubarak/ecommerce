@@ -71,7 +71,7 @@ app.use("/admin", adminRouter)
 app.use(function (req, res, next) {
   res.status(404);
   if (req.accepts('html')) {
-    res.render('errorPage/error', { url: req.url, layout: false });
+    res.render('errorPage/error', { layout: false });
     return;
   }
 

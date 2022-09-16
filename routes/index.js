@@ -5,14 +5,15 @@ const shopControl = require("../controllers/shopController")
 const authentication = require("../middleware/authentication")
 const {
     otpVerification,
+    getOtpForm,
     sendOtp
 } = require("../middleware/otp");
 
-router.get("/", shopControl.getHome)
-router.get("/shop", shopControl.getAllProducts)
-router.get("/shop/:category", shopControl.getShopByCategory)
-router.get("/product/:id", shopControl.getProductById)
-router.get("/contact", (req, res) => res.render("master/contact"))
+router.get("/", authentication.checkAccountVerifiedInIndex, shopControl.getHome)
+router.get("/shop", authentication.checkAccountVerifiedInIndex, shopControl.getAllProducts)
+router.get("/shop/:category", authentication.checkAccountVerifiedInIndex, shopControl.getShopByCategory)
+router.get("/product/:id", authentication.checkAccountVerifiedInIndex, shopControl.getProductById)
+router.get("/contact", authentication.checkAccountVerifiedInIndex, (req, res) => res.render("master/contact"))
 
 router.get("/login", authentication.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")
@@ -32,9 +33,11 @@ router.get("/error", (req, res) => {
 })
 
 router.post("/validateOtp", otpVerification)
-router.post("/resendOtp", (req, res) => {
+
+router.post("/resendOtp", async (req, res) => {
+    getOtpForm(req, res)
+    await sendOtp(req, res)
     req.flash("message", "Otp resend successful")
-    sendOtp(req, res)
 })
 router.post("/login", userControl.userLogin, (req, res) => {
     if (req.user.isAdmin === true) {

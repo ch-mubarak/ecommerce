@@ -11,9 +11,7 @@ const router = express.Router()
 
 router.use(authentication.checkLoggedIn, authentication.checkAccountVerified)
 
-router.get("/home", userControl.getHome)
 router.get("/profile",userControl.getProfile)
-router.get("/changePassword", userControl.getChangePassword)
 router.get("/wishlist", wishlistControl.wishlist)
 router.get("/cart", cartControl.getCart)
 router.get("/checkout", cartControl.getCheckout)

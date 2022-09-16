@@ -1,8 +1,9 @@
 const User = require("../models/users")
 const passport = require("passport")
+const { sendOtp, getOtpForm } = require("../middleware/otp")
 
 module.exports = {
-    userRegister: (req, res) => {
+    userRegister: (req, res, next) => {
         if (req.body.password === req.body.confirmedPassword) {
             User.register({
                 name: req.body.name,
@@ -15,7 +16,10 @@ module.exports = {
                 }
                 else {
                     passport.authenticate("local")(req, res, function () {
-                        res.redirect("/user/home")
+                        process.nextTick(async () => {
+                            await sendOtp(req, res)
+                        })
+                        res.redirect("/")
                     })
 
                 }
@@ -63,14 +67,6 @@ module.exports = {
         }
     },
 
-    getChangePassword: (req, res) => {
-        const errorMessage = req.flash("message")
-        res.render("user/changePassword", {
-            errorMessage: errorMessage,
-            layout: "layouts/layouts",
-        })
-    },
-
     removeAddress: async (req, res) => {
         try {
             const addressIndex = Number(req.params.index)
@@ -82,12 +78,6 @@ module.exports = {
             console.log(err)
             res.status(500)
         }
-    },
-
-    getHome: (req, res) => {
-        res.render("user/home", {
-            layout: "layouts/layouts",
-        })
     },
 
     getProfile: async (req, res) => {

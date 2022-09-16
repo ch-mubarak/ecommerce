@@ -37,13 +37,12 @@ const otpVerification = async (req, res) => {
     try {
         if (req.user.otp === enteredOtp) {
             await User.findByIdAndUpdate(req.user.id, { isVerified: true })
-            res.redirect("/user/home")
+            res.redirect("/")
         } else {
             const hiddenEmail = hideEmail(req.user.email)
             res.render("optValidationForm", {
                 email: hiddenEmail,
                 errorMessage: "invalid otp",
-                layout: "layouts/layouts",
             })
         }
     } catch (err) {
@@ -54,16 +53,23 @@ const otpVerification = async (req, res) => {
 
 }
 
-const sendOtp = async (req, res) => {
-    let otp = generateOtp()
-    const successMessage = req.flash("message")
-    try {
+const getOtpForm = (req, res) => {
+    try{
+        const successMessage = req.flash("message")
         const hiddenEmail = hideEmail(req.user.email)
         res.render("optValidationForm", {
-            layout: "layouts/layouts",
             successMessage: successMessage,
             email: hiddenEmail,
         })
+    }catch(err){
+        console.log(err)
+        res.redirect("/")
+    }
+}
+
+const sendOtp = async (req, res) => {
+    let otp = generateOtp()
+    try {
         await User.findByIdAndUpdate(req.user.id, { otp: otp })
         let info = await transporter.sendMail({
             to: req.user.email,
@@ -83,4 +89,5 @@ const sendOtp = async (req, res) => {
 module.exports = {
     sendOtp,
     otpVerification,
+    getOtpForm
 }

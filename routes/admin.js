@@ -9,7 +9,7 @@ const orderControl = require("../controllers/orderController")
 const bannerControl = require("../controllers/bannerController")
 const couponControl = require("../controllers/couponController")
 
-// router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
+router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
 router.get("/", adminControl.home)
 router.get("/categories", adminControl.categories)

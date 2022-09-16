@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
   <!-- Css Styles -->
+  <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon">
   <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
@@ -78,12 +79,12 @@
       </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
-    <div class="header__top__right__social">
+    <!-- <div class="header__top__right__social">
       <a href="#"><i class="fa fa-facebook"></i></a>
       <a href="#"><i class="fa fa-twitter"></i></a>
       <a href="#"><i class="fa fa-linkedin"></i></a>
       <a href="#"><i class="fa fa-pinterest-p"></i></a>
-    </div>
+    </div> -->
     <div class="humberger__menu__contact">
       <ul>
         <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
@@ -108,21 +109,15 @@
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="header__top__right">
-              <div class="header__top__right__social">
+              <!-- <div class="header__top__right__social">
                 <a href="#"><i class="fa fa-facebook"></i></a>
                 <a href="#"><i class="fa fa-twitter"></i></a>
                 <a href="#"><i class="fa fa-linkedin"></i></a>
                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
-              </div>
+              </div> -->
               <div class="header__top__right__language">
                 <img src="/img/language.png" alt="">
                 <div>English</div>
-                <span class="arrow_carrot-down"></span>
-                <ul>
-                  <li><a href="#">English</a></li>
-                  <li><a href="#">Hindi</a></li>
-                  <li><a href="#">Malayalam</a></li>
-                </ul>
               </div>
               <div class="header__top__right__auth">
                 <% if(locals.user){ %>
@@ -260,7 +255,9 @@
     </div>
   </footer>
   <!-- Footer Section End -->
-  <!-- Js Plugins -->
+  <!-- Js Plugins -->  
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="/js/jquery-3.3.1.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/jquery.nice-select.min.js"></script>
@@ -277,6 +274,8 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
+
   <script>
     const currentLocation = (location.href).toLowerCase()
     const navItem = document.querySelectorAll(".nav-item")
@@ -288,6 +287,7 @@
     }
   </script>
 
+  <%- script %>
 </body>
 
 </html>

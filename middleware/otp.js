@@ -44,7 +44,6 @@ const otpVerification = async (req, res) => {
                 email: hiddenEmail,
                 errorMessage: "invalid otp",
                 layout: "layouts/layouts",
-                extractScripts: true
             })
         }
     } catch (err) {
@@ -64,7 +63,6 @@ const sendOtp = async (req, res) => {
             layout: "layouts/layouts",
             successMessage: successMessage,
             email: hiddenEmail,
-            extractScripts: true
         })
         await User.findByIdAndUpdate(req.user.id, { otp: otp })
         let info = await transporter.sendMail({

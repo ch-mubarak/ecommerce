@@ -20,7 +20,6 @@ module.exports = {
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
                 orderStatusCount: orderStatusCount,
-                extractScripts: true
             })
         } catch (err) {
             console.log(err.message)
@@ -37,7 +36,6 @@ module.exports = {
                 allCategories: allCategories,
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
-                extractScripts: true
             })
         } catch (err) {
             console.log(err.message)
@@ -56,7 +54,7 @@ module.exports = {
                 allProducts: allProducts,
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
-                extractScripts: true
+
             })
         } catch (err) {
             console.log(err.message)
@@ -82,7 +80,7 @@ module.exports = {
                 allOrders: allOrders,
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
-                extractScripts: true
+
             })
         } catch (err) {
             console.log(err)
@@ -99,7 +97,6 @@ module.exports = {
             allCoupons: allCoupons,
             errorMessage: errorMessage,
             layout: "layouts/adminLayout",
-            extractScripts: true
         })
     },
 
@@ -126,7 +123,6 @@ module.exports = {
                     {
                         myOrder: myOrder,
                         layout: "layouts/adminLayout",
-                        extractScripts: true
                     }
                 )
             } else {

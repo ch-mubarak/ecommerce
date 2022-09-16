@@ -72,7 +72,7 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
             }
         }
         catch (err) {
-            window.location ="/login"
+            // window.location ="/login"
             console.error(err)
         }
     }

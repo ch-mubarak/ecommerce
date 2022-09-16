@@ -23,6 +23,7 @@ db.once("open", () => console.log("mongoose is connected"))
 
 app.set("view engine", "ejs")
 app.set("layout", "layouts/masterLayout")
+app.set("layout extractScripts", true)
 
 app.use(cors())
 app.use(express.static("public"))
@@ -67,14 +68,14 @@ app.use("/user", userRouter)
 app.use("/admin", adminRouter)
 
 
-app.use(function(req, res, next){
-    res.status(404);
-    if (req.accepts('html')) {
-      res.render('errorPage/error', { url: req.url,layout:false });
-      return;
-    }
+app.use(function (req, res, next) {
+  res.status(404);
+  if (req.accepts('html')) {
+    res.render('errorPage/error', { url: req.url, layout: false });
+    return;
+  }
 
-  });
+});
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log("server is up and running on port" + PORT))

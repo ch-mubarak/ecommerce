@@ -99,6 +99,11 @@
   color: inherit !important;
 }
 
+/* radio color */
+input[type='radio'] {
+  accent-color: #232323;
+}
+
 .autocomplete {
   /*the container must be positioned relative:*/
   position: relative;

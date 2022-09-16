@@ -23,6 +23,14 @@
   .me-2 {
     margin-right: .5rem !important;
   }
+
+  .user-profile {
+    background-color: #edebeb;
+  }
+
+  .list-group-item:hover {
+    background-color: #edebeb;
+  }
 </style>
 
 <div class="container">
@@ -256,6 +264,11 @@
       }
     } catch (err) {
       document.getElementById("errorMessage").innerHTML = `<div class="alert alert-danger text-center" role="alert">${err.response.data.message}</div>`
+      setTimeout(() => {
+        $("#errorMessage").fadeTo(600, 0).slideUp(500, function() {
+          document.getElementById("errorMessage").innerHTML = ""
+        })
+      }, 1500)
     }
   })
 
@@ -264,6 +277,7 @@
     document.getElementById("changePassword").style.display = "none"
     document.getElementById("addressForm").style.display = ""
     document.getElementById("myAddress").style.display = ""
+
   })
 
   document.getElementById("userPassword").addEventListener("click", (event) => {
@@ -271,5 +285,6 @@
     document.getElementById("changePassword").style.display = ""
     document.getElementById("addressForm").style.display = "none"
     document.getElementById("myAddress").style.display = "none"
+
   })
 </script>

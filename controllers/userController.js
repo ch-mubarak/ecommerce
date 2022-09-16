@@ -68,7 +68,6 @@ module.exports = {
         res.render("user/changePassword", {
             errorMessage: errorMessage,
             layout: "layouts/layouts",
-            extractScripts: true
         })
     },
 
@@ -88,7 +87,6 @@ module.exports = {
     getHome: (req, res) => {
         res.render("user/home", {
             layout: "layouts/layouts",
-            extractScripts: true
         })
     },
 
@@ -124,6 +122,6 @@ module.exports = {
             console.log(err)
             res.status(500).json({ err })
         }
-    }
+    },
 
 }

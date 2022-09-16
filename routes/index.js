@@ -16,20 +16,17 @@ router.get("/contact", (req, res) => res.render("master/contact"))
 
 router.get("/login", authentication.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")
-    res.render("user/login", {
+    res.render("master/login", {
         errorMessage: errorMessage,
-        layout: "layouts/layouts",
-        extractScripts: true
     })
 })
 router.get("/register", authentication.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("message")
-    res.render("user/register", {
+    res.render("master/register", {
         errorMessage: errorMessage,
-        layout: "layouts/layouts",
-        extractScripts: true
     })
 })
+
 router.get("/error", (req, res) => {
     res.render("errorPage/error", { layout: false })
 })

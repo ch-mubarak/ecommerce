@@ -12,7 +12,6 @@ module.exports = {
                 allBanners: allBanners,
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
-                extractScripts: true
             })
         } catch (err) {
             console.log(err)
@@ -48,7 +47,6 @@ module.exports = {
             if (myBanner.viewOrder == "primary") {
                 const isExist = await Banner.findOne({ $and: [{ viewOrder: "primary" }, { isActive: true }] })
                 if (isExist) {
-                    console.log(isExist)
                     return res.status(403).json({ message: "cant activate multiple primary banners at same time" })
                 }
             }

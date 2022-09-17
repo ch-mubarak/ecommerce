@@ -28,7 +28,7 @@ async function packOrder(orderId) {
             myOrderStatus.classList.replace("bg-warning", "bg-info")
             myOrderStatus.innerHTML = "Packed"
             myOrderAction.innerHTML = `<button class="btn btn-outline-dark" onclick="shipOrder('${orderId}')"><i class="fa-solid fa-truck-fast"></i> Ship Order</button>`
-            toastr.options = { "positionClass": "toast-bottom-right" }
+            toastr.options = { "positionClass": "toast-bottom-left" }
             toastr.success('<i class="fa-solid fa-boxes-packing"></i> orderId:' + orderId + ' ' + 'status updated to Packed.')
         } else {
             toastr.error('Error updating order status')
@@ -51,7 +51,7 @@ async function shipOrder(orderId) {
             myOrderStatus.classList.replace("bg-info", "bg-primary")
             myOrderStatus.innerHTML = "Shipped"
             myOrderAction.innerHTML = `<button class="btn btn-outline-dark" onclick="outForDelivery('${orderId}')"><i class="fa-solid fa-house-chimney"></i> Out For Delivery</button>`
-            toastr.options = { "positionClass": "toast-bottom-right" }
+            toastr.options = { "positionClass": "toast-bottom-left" }
             toastr.success('orderId:' + orderId + ' ' + 'status updated to Shipped.')
         } else {
             toastr.error('Error updating order status')
@@ -75,7 +75,7 @@ async function outForDelivery(orderId) {
             myOrderStatus.classList.replace("bg-primary", "bg-dark")
             myOrderStatus.innerHTML = "Out for delivery"
             myOrderAction.innerHTML = `<button class="btn btn-outline-dark" onclick="deliverPackage('${orderId}')"><i class="fa-solid fa-thumbs-up"></i> Deliver Package</button>`
-            toastr.options = { "positionClass": "toast-bottom-right" }
+            toastr.options = { "positionClass": "toast-bottom-left" }
             toastr.success('<i class="fa-solid fa-truck-fast"></i> orderId:' + orderId + ' ' + 'is out for delivery.')
         } else {
             toastr.error('Error updating order status')
@@ -97,8 +97,8 @@ async function deliverPackage(orderId) {
             let myOrderAction = document.getElementById("action-" + orderId)
             myOrderStatus.classList.replace("bg-dark", "bg-success")
             myOrderStatus.innerHTML = "Delivered"
-            myOrderAction.innerHTML = `<button class="btn btn-lg btn-outline-dark" disabled ><i class="fa-solid fa-thumbs-up"></i></button>`
-            toastr.options = { "positionClass": "toast-bottom-right" }
+            myOrderAction.innerHTML = `<button class="btn btn-outline-dark" disabled ><i class="fa-solid fa-thumbs-up"></i></button>`
+            toastr.options = { "positionClass": "toast-bottom-left" }
             toastr.success('Order id' + orderId + 'status updated to delivered.')
         } else {
             toastr.error('Error updating status')
@@ -131,8 +131,8 @@ async function cancelOrder(orderId) {
                 let myOrderAction = document.getElementById("action-" + orderId)
                 myOrderStatus.classList.replace("bg-warning", "bg-danger")
                 myOrderStatus.innerHTML = "Cancelled"
-                myOrderAction.innerHTML = `<button class="btn btn-lg btn-outline-dark" disabled ><i class="fa-solid fa-thumbs-down"></i></button>`
-                toastr.options = { "positionClass": "toast-bottom-right" }
+                myOrderAction.innerHTML = `<button class="btn btn-outline-dark" disabled ><i class="fa-solid fa-ban"></i></button>`
+                toastr.options = { "positionClass": "toast-bottom-left" }
                 toastr.success('Order cancelled successfully.')
             } else {
                 toastr.error('Error updating order status')

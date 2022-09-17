@@ -36,7 +36,7 @@
         </tfoot>
         <tbody>
           <% allOrders.forEach(order=>{ %>
-          <tr>
+          <tr id="order-<%= order.id %>">
             <td><a href="/admin/orders/<%= order.id %>" class="link-dark"><%=order.id%></a></td>
             <td><%=order.userId.email %></td>
             <td>
@@ -60,7 +60,7 @@
             <td><span class="badge bg-success">Online</span></td>
             <% } %>
             <td><span class="badge order-status" id="status-<%= order.id%>"><%=order.status %></span></td>
-            <td id="action-<%= order.id %>">
+            <td id="action-<%= order.id %>" class="text-center">
               <% if(order.status==="Pending"){%>
               <div class="btn-group" role="group" aria-label="Basic example">
                 <button class="btn btn-sm btn-outline-dark" onclick="packOrder('<%=order.id%>')"><i class="fa-solid fa-boxes-packing"></i> Pack</button>
@@ -72,9 +72,11 @@
               <button class="btn btn-outline-dark" onclick="outForDelivery('<%=order.id%>')"><i class="fa-solid fa-house-chimney"></i> Out For Delivery</button>
               <% }else if(order.status==="Out for delivery"){ %>
               <button class="btn btn-outline-dark" onclick="deliverPackage('<%=order.id%>')"><i class="fa-solid fa-thumbs-up"></i> Deliver Package</button>
-              <% }else{%>
-              <button class="btn btn-lg btn-outline-dark" disabled><i class="fa-solid fa-thumbs-up"></i></button>
-              <%} %>
+              <% }else if(order.status==="Delivered"){%>
+              <button class="btn btn-outline-dark" disabled><i class="fa-solid fa-thumbs-up"></i></button>
+              <%}else{%>
+              <button class="btn btn-outline-dark" disabled><i class="fa-solid fa-ban"></i></button>
+              <% } %>
             </td>
           </tr>
           <% }) %>

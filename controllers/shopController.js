@@ -1,4 +1,5 @@
 const _ = require("lodash")
+const url = require("url")
 const Product = require("../models/product")
 const Category = require("../models/category")
 const Wishlist = require("../models/wishlist")
@@ -91,6 +92,29 @@ module.exports = {
         } catch (err) {
             console.log(err)
             res.render("errorPage/error", { layout: false })
+        }
+    },
+
+    getProductByKeyword: async (req, res) => {
+        try {
+            const keyword = req.query.name
+            const newProducts = await Product.find().limit(3)
+            const allCategories = await Category.find()
+            const findProducts = await Product.find({
+                "$or": [
+                    { name: { $regex: keyword, $options: 'i' } },
+                    { brand: { $regex: keyword, $options: 'i' } },
+                ]
+            }).populate("category").exec()
+
+            res.render("master/search", {
+                allCategories: allCategories,
+                newProducts: newProducts,
+                findProducts: findProducts
+            })
+        } catch (err) {
+            console.log(err)
+            res.redirect("/")
         }
     },
 

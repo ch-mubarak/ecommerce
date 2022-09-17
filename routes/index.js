@@ -14,6 +14,7 @@ router.get("/shop", authentication.checkAccountVerifiedInIndex, shopControl.getA
 router.get("/shop/:category", authentication.checkAccountVerifiedInIndex, shopControl.getShopByCategory)
 router.get("/product/:id", authentication.checkAccountVerifiedInIndex, shopControl.getProductById)
 router.get("/contact", authentication.checkAccountVerifiedInIndex, (req, res) => res.render("master/contact"))
+router.get("/search", authentication.checkAccountVerifiedInIndex, shopControl.getProductByKeyword)
 
 router.get("/login", authentication.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")

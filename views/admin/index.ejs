@@ -7,30 +7,36 @@
   <div class="row">
     <div class="col-xl-3 col-md-6">
       <div class="card bg-primary text-white mb-4">
-        <div class="card-body">Total users</div>
+        <div class="card-body"><i class="fa-solid fa-users"></i> Total users</div>
         <div class="card-footer d-flex align-items-center justify-content-between">
           <!-- <a class="small text-white stretched-link" href="#">View Details</a> -->
-          <%= users.length %>
+          <h3>
+            <%= userCount %>
+          </h3>
           <div class="small text-white"><i class="fas fa-angle-right"></i></div>
         </div>
       </div>
     </div>
     <div class="col-xl-3 col-md-6">
       <div class="card bg-warning text-white mb-4">
-        <div class="card-body">Pending Order</div>
+        <div class="card-body"><i class="fa-solid fa-chart-simple"></i> Pending Order</div>
         <div class="card-footer d-flex align-items-center justify-content-between">
           <!-- <a class="small text-white stretched-link" href="#">View Details</a> -->
-          <%= orderStatusCount[0] %> 
+          <h3>
+            <%= orderStatusCount[0] %>
+          </h3>
           <div class="small text-white"><i class="fas fa-angle-right"></i></div>
         </div>
       </div>
     </div>
     <div class="col-xl-3 col-md-6">
       <div class="card bg-success text-white mb-4">
-        <div class="card-body">Completed Orders</div>
+        <div class="card-body"><i class="fa-solid fa-clipboard-check"></i> Completed Orders</div>
         <div class="card-footer d-flex align-items-center justify-content-between">
           <!-- <a class="small text-white stretched-link" href="#">View Details</a> -->
-          <%= orderStatusCount[1] %>
+          <h3>
+            <%= orderStatusCount[1] %>
+          </h3>
           <div class="small text-white"><i class="fas fa-angle-right"></i></div>
         </div>
       </div>
@@ -38,10 +44,12 @@
 
     <div class="col-xl-3 col-md-6">
       <div class="card bg-danger text-white mb-4">
-        <div class="card-body">Canceled Orders</div>
+        <div class="card-body"><i class="fa-solid fa-ban"></i> Canceled Orders</div>
         <div class="card-footer d-flex align-items-center justify-content-between">
           <!-- <a class="small text-white stretched-link" href="#">View Details</a> -->
-          <%= orderStatusCount[2] %>
+          <h3>
+            <%= orderStatusCount[2] %>
+          </h3>
           <div class="small text-white"><i class="fas fa-angle-right"></i></div>
         </div>
       </div>
@@ -65,85 +73,6 @@
         </div>
         <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
       </div>
-    </div>
-  </div>
-  <div class="card mb-4">
-    <div class="card-header">
-      <i class="fas fa-table me-1"></i>
-      User Data
-    </div>
-    <div class="card-body">
-      <table id="datatablesSimple">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Account Created</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Account Created</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </tfoot>
-        <tbody>
-          <% users.forEach(user=>{  %>
-          <tr>
-            <td><%= user.name %></td>
-            <td><%= user.email %></td>
-            <td><%= user.createdAt?.toDateString() %> </td>
-            <% if(user.isActive){%>
-            <% if(user.isAdmin){ %>
-            <td><span class="badge bg-primary">Admin</span></td>
-            <% } else{ %>
-            <td><span class="badge bg-success">Active</span></td>
-            <% }}else{  %>
-            <td><span class="badge bg-danger">Blocked</span></td>
-            <% } %>
-            <td>
-
-              <% if(!user.isAdmin){%>
-              <% if(user.isActive){ %>
-              <form action="/admin/blockUser/<%= user.id %>?_method=PUT" method="post">
-                <button type="button" data-bs-target="#modalBlock<%= user.id %>" data-bs-toggle="modal" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-lock-open"></i></button>
-
-                <!-- block modal start -->
-                <div class="modal modal-alert" tabindex="-1" role="dialog" id="modalBlock<%= user.id %>">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content rounded-3 shadow">
-                      <div class="modal-body p-4 text-center">
-                        <h5 class="mb-2">Waring! Are you sure</h5> 
-                        <p class="mb-0">This user cant login if blocked.</p>
-                      </div>
-                      <div class="modal-footer flex-nowrap p-0">
-                        <button type="submit" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"><strong>Yes</strong></button>
-                        <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- block modal end -->
-
-              </form>
-              <% } else { %>
-              <form action="/admin/unblockUser/<%= user.id %>?_method=PUT" method="post">
-                <button type="submit" class="btn btn-sm btn-outline-dark"><i class="fa-solid fa-lock"></i></button>
-              </form>
-              <% } } else{%>
-              <button type="button" disabled class="btn btn-sm btn-outline-dark"><i class="fa-solid fa-lock-open"></i></button>
-              <% } %>
-
-            </td>
-          </tr>
-          <% })  %>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>

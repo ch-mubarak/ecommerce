@@ -12,6 +12,7 @@ const couponControl = require("../controllers/couponController")
 // router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
 router.get("/", adminControl.home)
+router.get("/users", adminControl.users)
 router.get("/categories", adminControl.categories)
 router.get("/products", adminControl.products)
 router.get("/orders", adminControl.orders)

@@ -10,20 +10,36 @@ module.exports = {
     home: async (req, res) => {
         try {
             const errorMessage = req.flash("message")
+            const userCount = await User.find({ isAdmin: false }).countDocuments()
             const orderStatusPending = await Order.find({ status: "Pending" }).countDocuments()
             const orderStatusDelivered = await Order.find({ status: "Delivered" }).countDocuments()
             const orderStatusCancelled = await Order.find({ status: "Cancelled" }).countDocuments()
             const orderStatusCount = [orderStatusPending, orderStatusDelivered, orderStatusCancelled]
-            const users = await User.find({}).sort({ createdAt: -1 }).exec()
             res.render("admin/index", {
-                users: users,
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
                 orderStatusCount: orderStatusCount,
+                userCount: userCount
             })
         } catch (err) {
             console.log(err.message)
-            res.redirect("/")
+            res.redirect("/admin")
+
+        }
+    },
+
+    users: async (req, res) => {
+        try {
+            const errorMessage = req.flash("message")
+            const users = await User.find({}).sort({ createdAt: -1 }).exec()
+            res.render("admin/userManagement", {
+                users: users,
+                errorMessage: errorMessage,
+                layout: "layouts/adminLayout",
+            })
+        } catch (err) {
+            console.log(err.message)
+            res.redirect("/admin")
 
         }
     },
@@ -39,7 +55,7 @@ module.exports = {
             })
         } catch (err) {
             console.log(err.message)
-            res.redirect("/")
+            res.redirect("/admin")
 
         }
     },
@@ -58,7 +74,7 @@ module.exports = {
             })
         } catch (err) {
             console.log(err.message)
-            res.redirect("/")
+            res.redirect("/admin")
 
         }
     },
@@ -75,7 +91,7 @@ module.exports = {
                     path: "products.productId",
                     model: "Product"
                 }
-            ]).sort({createdAt:-1}).exec()
+            ]).sort({ createdAt: -1 }).exec()
             res.render("admin/orderManagement", {
                 allOrders: allOrders,
                 errorMessage: errorMessage,
@@ -189,22 +205,22 @@ module.exports = {
             await User.findByIdAndUpdate(
                 req.params.id,
                 { isActive: false })
-            res.redirect("/admin")
+            res.redirect("/admin/users")
         } catch (err) {
             console.log(err.message)
             req.flash("message", "Error blocking User")
-            res.redirect("/admin")
+            res.redirect("/admin/users")
         }
     },
 
     unblockUser: async (req, res) => {
         try {
             await User.findByIdAndUpdate(req.params.id, { isActive: true })
-            res.redirect("/admin")
+            res.redirect("/admin/users")
         } catch (error) {
             console.log(err.message)
             req.flash("message", "Error un blocking User")
-            res.redirect("/admin")
+            res.redirect("/admin/users")
         }
     }
 

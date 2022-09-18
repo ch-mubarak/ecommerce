@@ -100,7 +100,7 @@ module.exports = {
             const keyword = req.query.name || ""
             let minPrice = req.query?.minPrice?.split("₹").join("") || 100
             let maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
-            const priceRange ={$gt:minPrice,$lt:maxPrice}
+            const priceRange = { $gt: minPrice, $lt: maxPrice }
             const newProducts = await Product.find().limit(3)
             const allCategories = await Category.find()
             const findProducts = await Product.find({
@@ -109,15 +109,17 @@ module.exports = {
                     { brand: { $regex: keyword, $options: 'i' } },
                 ]
             })
-            .populate("category")
-            .where("price")
-            .equals(priceRange)
-            .exec()
+                .populate("category")
+                .where("price")
+                .equals(priceRange)
+                .exec()
 
             res.render("master/search", {
                 allCategories: allCategories,
                 newProducts: newProducts,
-                findProducts: findProducts
+                findProducts: findProducts,
+                minPrice: minPrice,
+                maxPrice: maxPrice
             })
         } catch (err) {
             console.log(err)

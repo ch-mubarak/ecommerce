@@ -33,6 +33,7 @@ router.get("/error", (req, res) => {
     res.render("errorPage/error", { layout: false })
 })
 
+router.post("/autoFill",shopControl.autoFill)
 router.post("/validateOtp", otpVerification)
 
 router.post("/resendOtp", async (req, res) => {

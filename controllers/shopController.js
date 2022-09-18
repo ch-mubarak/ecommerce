@@ -118,6 +118,18 @@ module.exports = {
         }
     },
 
+    autoFill: async (req, res) => {
+        let searchKey = req.body.searchKey.trim()
+        try {
+            let searchResult = await Product.find({ name: { $regex: searchKey, $options: "i" } }).exec()
+            searchResult = searchResult.slice(0, 5)
+            res.send({ searchResult: searchResult })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ err })
+        }
+    },
+
     myOrders: async (req, res) => {
         try {
             const userId = req.user.id

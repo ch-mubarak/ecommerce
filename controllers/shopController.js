@@ -97,7 +97,10 @@ module.exports = {
 
     getProductByKeyword: async (req, res) => {
         try {
-            const keyword = req.query.name
+            const keyword = req.query.name || ""
+            let minPrice = req.query?.minPrice?.split("₹").join("") || 100
+            let maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
+            const priceRange ={$gt:minPrice,$lt:maxPrice}
             const newProducts = await Product.find().limit(3)
             const allCategories = await Category.find()
             const findProducts = await Product.find({
@@ -105,7 +108,11 @@ module.exports = {
                     { name: { $regex: keyword, $options: 'i' } },
                     { brand: { $regex: keyword, $options: 'i' } },
                 ]
-            }).populate("category").exec()
+            })
+            .populate("category")
+            .where("price")
+            .equals(priceRange)
+            .exec()
 
             res.render("master/search", {
                 allCategories: allCategories,

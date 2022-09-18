@@ -47,13 +47,14 @@
               </div>
               <div class="range-slider">
                 <div class="price-input">
-                  <input type="text" id="minamount">
-                  <input type="text" id="maxamount">
+                  <input type="text" name="minPrice" form="searchForm" id="minamount">
+                  <input type="text" name="maxPrice" form="searchForm" id="maxamount">
+                  <button class="btn btn-small" form="searchForm" type="submit"><i class="fa-solid fa-filter fa"></i></button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="sidebar__item sidebar__item__color--option">
+          <!-- <div class="sidebar__item sidebar__item__color--option">
             <h4>Colors</h4>
             <div class="sidebar__item__color sidebar__item__color--white">
               <label for="white">
@@ -118,7 +119,7 @@
                 <input type="radio" id="tiny">
               </label>
             </div>
-          </div>
+          </div> -->
           <div class="sidebar__item">
             <div class="latest-product__text">
               <h4>Latest Products</h4>
@@ -210,7 +211,7 @@
         <div>
           <img src="/img/no_result.gif" alt="" width="600">
         </div>
-        <a  href="/" class="primary-btn">Go Home</a>
+        <a href="/" class="primary-btn">Go Home</a>
       </div>
       <%}%>
     </div>

@@ -27,7 +27,7 @@ async function packOrder(orderId) {
             let myOrderAction = document.getElementById("action-" + orderId)
             myOrderStatus.classList.replace("bg-warning", "bg-info")
             myOrderStatus.innerHTML = "Packed"
-            myOrderAction.innerHTML = `<button class="btn btn-outline-dark" onclick="shipOrder('${orderId}')"><i class="fa-solid fa-truck-fast"></i> Ship Order</button>`
+            myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="shipOrder('${orderId}')"><i class="fa-solid fa-truck-fast"></i> Ship Order</button>`
             toastr.options = { "positionClass": "toast-bottom-left" }
             toastr.success('<i class="fa-solid fa-boxes-packing"></i> orderId:' + orderId + ' ' + 'status updated to Packed.')
         } else {
@@ -50,7 +50,7 @@ async function shipOrder(orderId) {
             let myOrderAction = document.getElementById("action-" + orderId)
             myOrderStatus.classList.replace("bg-info", "bg-primary")
             myOrderStatus.innerHTML = "Shipped"
-            myOrderAction.innerHTML = `<button class="btn btn-outline-dark" onclick="outForDelivery('${orderId}')"><i class="fa-solid fa-house-chimney"></i> Out For Delivery</button>`
+            myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="outForDelivery('${orderId}')"><i class="fa-solid fa-house-chimney"></i> Out For Delivery</button>`
             toastr.options = { "positionClass": "toast-bottom-left" }
             toastr.success('orderId:' + orderId + ' ' + 'status updated to Shipped.')
         } else {
@@ -74,7 +74,7 @@ async function outForDelivery(orderId) {
             let myOrderAction = document.getElementById("action-" + orderId)
             myOrderStatus.classList.replace("bg-primary", "bg-dark")
             myOrderStatus.innerHTML = "Out for delivery"
-            myOrderAction.innerHTML = `<button class="btn btn-outline-dark" onclick="deliverPackage('${orderId}')"><i class="fa-solid fa-thumbs-up"></i> Deliver Package</button>`
+            myOrderAction.innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="deliverPackage('${orderId}')"><i class="fa-solid fa-thumbs-up"></i> Deliver Package</button>`
             toastr.options = { "positionClass": "toast-bottom-left" }
             toastr.success('<i class="fa-solid fa-truck-fast"></i> orderId:' + orderId + ' ' + 'is out for delivery.')
         } else {

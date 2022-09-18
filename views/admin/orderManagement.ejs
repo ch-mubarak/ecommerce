@@ -5,6 +5,7 @@
     <div class="card-header">
       <i class="fas fa-table me-1"></i>
       All Orders
+      <button class="btn btn-dark btn-sm float-end" onclick="exportCsv()">Export <i class="fa-solid fa-download"></i></button>
     </div>
     <div class="card-body">
       <table id="datatablesSimple">
@@ -67,11 +68,11 @@
                 <button class="btn btn-sm btn-outline-danger" onclick="cancelOrder('<%=order.id%>')"><i class="fa-solid fa-ban"></i> Cancel</button>
               </div>
               <% }else if(order.status==="Packed"){ %>
-              <button class="btn btn-outline-dark" onclick="shipOrder('<%=order.id%>')"><i class="fa-solid fa-truck-fast"></i> Ship Order</button>
+              <button class="btn btn-sm btn-outline-dark" onclick="shipOrder('<%=order.id%>')"><i class="fa-solid fa-truck-fast"></i> Ship Order</button>
               <% }else if(order.status==="Shipped"){ %>
-              <button class="btn btn-outline-dark" onclick="outForDelivery('<%=order.id%>')"><i class="fa-solid fa-house-chimney"></i> Out For Delivery</button>
+              <button class="btn btn-sm btn-outline-dark" onclick="outForDelivery('<%=order.id%>')"><i class="fa-solid fa-house-chimney"></i> Out For Delivery</button>
               <% }else if(order.status==="Out for delivery"){ %>
-              <button class="btn btn-outline-dark" onclick="deliverPackage('<%=order.id%>')"><i class="fa-solid fa-thumbs-up"></i> Deliver Package</button>
+              <button class="btn btn-sm btn-outline-dark" onclick="deliverPackage('<%=order.id%>')"><i class="fa-solid fa-thumbs-up"></i> Deliver Package</button>
               <% }else if(order.status==="Delivered"){%>
               <button class="btn btn-outline-dark" disabled><i class="fa-solid fa-thumbs-up"></i></button>
               <%}else{%>
@@ -86,3 +87,19 @@
   </div>
 
   <script src="/js/order-management.js"></script>
+
+  <SCript>
+    let date = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+
+    function exportCsv() {
+      myTable.export({
+        type: "csv",
+        skipColumn:[8],
+        filename: "order_report" + " " + date
+      });
+    }
+  </SCript>

@@ -5,7 +5,10 @@
     <div class="card-header">
       <i class="fas fa-table me-1"></i>
       Coupons
-      <button class="btn btn-dark btn-sm float-end" data-bs-toggle="modal" data-bs-target="#couponModal">New Coupon <i class="fa-solid fa-circle-plus"></i></button>
+      <div class="float-end">
+        <button class="btn btn-dark btn-sm" onclick="exportCsv()">Export <i class="fa-solid fa-download"></i></button>
+        <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#couponModal">New Coupon <i class="fa-solid fa-circle-plus"></i></button>
+      </div>
       <%-include("_modal_coupon") %>
     </div>
     <div class="card-body">
@@ -94,5 +97,15 @@
       console.error(err)
       toastr.error("something went wrong")
     }
+  }
+</script>
+
+<script>
+  function exportCsv() {
+    myTable.export({
+      type: "csv",
+      skipColumn: [7],
+      filename: "Coupon_Details",
+    });
   }
 </script>

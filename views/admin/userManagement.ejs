@@ -5,6 +5,7 @@
     <div class="card-header">
       <i class="fas fa-table me-1"></i>
       User Data
+      <button class="btn btn-dark btn-sm float-end" onclick="exportCsv()">Export <i class="fa-solid fa-download"></i></button>
     </div>
     <div class="card-body">
       <table id="datatablesSimple">
@@ -81,3 +82,13 @@
     </div>
   </div>
 </div>
+
+<SCript>
+  function exportCsv() {
+    myTable.export({
+      type: "csv",
+      skipColumn: [4],
+      filename: "use_report",
+    });
+  }
+</SCript>

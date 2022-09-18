@@ -1,5 +1,5 @@
 <!-- Hero Section Begin -->
-<%- include("../partials/heroSection") %> 
+<%- include("../partials/heroSection") %>
 <!-- Hero Section End -->
 
 <!-- Breadcrumb Section Begin -->
@@ -83,6 +83,8 @@
           <% } %>
           <ul>
             <% if(findProduct.quantity>5 ){%>
+            <li><b>Brand</b> <span> <%= findProduct.brand %></span></li>
+            <li><b>Category</b> <span> <%= findProduct.category.categoryName %></span></li>
             <li><b>Availability</b> <span> In Stock</span></li>
             <li><b>Shipping</b> <span>01 day shipping.</span></li>
             <%}else if(findProduct.quantity>0 && findProduct.quantity <=5) {%>

@@ -15,7 +15,7 @@ async function sendData(event) {
         }
         let searchResults = []
         result.forEach(item => {
-            searchResults.push(item.name)
+            searchResults.push(item.name, item.brand)
         })
         // console.log(searchResults)
         autoFill(document.getElementById("searchKey"), searchResults);

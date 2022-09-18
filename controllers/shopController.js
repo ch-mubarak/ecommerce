@@ -100,6 +100,7 @@ module.exports = {
             const keyword = req.query.name || ""
             let minPrice = req.query?.minPrice?.split("₹").join("") || 100
             let maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
+
             const priceRange = { $gt: minPrice, $lt: maxPrice }
             const newProducts = await Product.find().limit(3)
             const allCategories = await Category.find()
@@ -130,7 +131,12 @@ module.exports = {
     autoFill: async (req, res) => {
         let searchKey = req.body.searchKey.trim()
         try {
-            let searchResult = await Product.find({ name: { $regex: searchKey, $options: "i" } }).exec()
+            let searchResult = await Product.find({
+                "$or": [
+                    { name: { $regex: searchKey, $options: 'i' } },
+                    { brand: { $regex: searchKey, $options: 'i' } },
+                ]
+            }).exec()
             searchResult = searchResult.slice(0, 5)
             res.send({ searchResult: searchResult })
         } catch (err) {

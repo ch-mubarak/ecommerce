@@ -13,8 +13,19 @@ module.exports = {
             const userCount = await User.find({ isAdmin: false }).countDocuments()
             const orderStatusPending = await Order.find({ status: "Pending" }).countDocuments()
             const orderStatusDelivered = await Order.find({ status: "Delivered" }).countDocuments()
-            const orderStatusCancelled = await Order.find({ status: "Cancelled" }).countDocuments()
-            const orderStatusCount = [orderStatusPending, orderStatusDelivered, orderStatusCancelled]
+            const totalSale = await Order.aggregate([{
+                $group: {
+                    _id: "",
+                    "totalSale": { $sum: "$total" },
+                },
+            }, {
+                $project: {
+                    _id: 0,
+                    "totalAmount": "$totalSale"
+                }
+            }
+            ])
+            const orderStatusCount = [orderStatusPending, orderStatusDelivered, totalSale[0].totalAmount]
             res.render("admin/index", {
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",

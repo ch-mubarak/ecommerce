@@ -9,8 +9,9 @@ $(document).ready(async () => {
     }
 })
 
-async function deleteItem(productId, cartCount) {
+async function deleteItem(productId) {
     try {
+        const cartCount =document.getElementById(`currentQuantity-${productId}`)?.value
         const response = await axios({
             method: "delete",
             url: `/user/cart/${productId}`,
@@ -19,13 +20,13 @@ async function deleteItem(productId, cartCount) {
             }
         })
         let itemCount = Number($(".cart-item-count").html())
-        itemCount -= cartCount
+        itemCount -= Number(cartCount)
         if (itemCount != 0) {
             document.getElementById(`cartItem-${productId}`).remove()
             $(".cart-item-count").html(itemCount)
             $("#checkoutBox").load(location.href + " #checkoutBox>*", "");
             toastr.options = { "positionClass": "toast-bottom-right" }
-            toastr.info('item removed from cart.')
+            toastr.warning('item removed from cart.')
 
         } else {
             window.location.reload()
@@ -39,7 +40,7 @@ async function deleteItem(productId, cartCount) {
 async function addToCart(productId, productName, productPrice, quantity, offerPrice) {
     let currentQuantity = document.getElementById(`currentQuantity-${productId}`)?.value
     if (quantity == -1 && currentQuantity == 1) {
-        deleteItem(productId, 1);
+        deleteItem(productId);
     }
     else {
         try {
@@ -55,11 +56,19 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
             })
             if (response.status == 200) {
                 toastr.options = { "positionClass": "toast-bottom-right" }
-                toastr.error('This product is Out of stock.')
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'This product is out of stock',
+                    confirmButtonColor: '#273952',
+                    width: "25em",
+                    timer: 2000
+                })
+                window.location.reload()
             } else {
                 if (quantity == -1) {
                     toastr.options = { "positionClass": "toast-bottom-right" }
-                    toastr.info('item removed from cart.')
+                    toastr.warning('item removed from cart.')
                 } else {
                     toastr.options = { "positionClass": "toast-bottom-right" }
                     toastr.success('item added to cart.')
@@ -72,7 +81,15 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
             }
         }
         catch (err) {
-            // window.location ="/login"
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Please login to add items to cart',
+                confirmButtonColor: '#273952',
+                width: "25em",
+                timer: 3000
+            })
+            window.location ="/login"
             console.error(err)
         }
     }

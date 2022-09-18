@@ -23,6 +23,7 @@ async function checkout(data) {
                 title: 'Congrats!',
                 text: 'Order Successful',
                 icon: 'success',
+                confirmButtonColor: '#273952',
                 width: "25em",
                 timer: 3000
             })
@@ -34,6 +35,7 @@ async function checkout(data) {
             icon: 'error',
             title: 'Oops...',
             text: 'Something went wrong!',
+            confirmButtonColor: '#273952',
             width: "25em",
             timer: 3000
         })
@@ -79,6 +81,7 @@ function razorpay(orderId, amount) {
                         icon: 'error',
                         title: 'Oops...',
                         text: 'Payment Failed!',
+                        confirmButtonColor: '#273952',
                         width: "25em",
                         timer: 2000,
                     })
@@ -98,6 +101,7 @@ function razorpay(orderId, amount) {
             icon: 'error',
             title: 'Oops...',
             text: 'Payment Failed!',
+            confirmButtonColor: '#273952',
             width: "25em",
             timer: 2000,
         })

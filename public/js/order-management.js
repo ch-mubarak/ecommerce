@@ -17,11 +17,13 @@ for (let i = 0; i < orderStatus.length; i++) {
 }
 
 async function packOrder(orderId) {
+    document.getElementById("waiter").innerHTML =`<div class="waiting"></div>`
     try {
         const response = await axios({
             method: "put",
             url: `/admin/packOrder/${orderId}`
         })
+        document.getElementById("waiter").innerHTML =""
         if (response.status == 201) {
             let myOrderStatus = document.getElementById("status-" + orderId)
             let myOrderAction = document.getElementById("action-" + orderId)
@@ -40,11 +42,13 @@ async function packOrder(orderId) {
 }
 
 async function shipOrder(orderId) {
+    document.getElementById("waiter").innerHTML =`<div class="waiting"></div>`
     try {
         const response = await axios({
             method: "put",
             url: `/admin/shipOrder/${orderId}`
         })
+        document.getElementById("waiter").innerHTML =""
         if (response.status == 201) {
             let myOrderStatus = document.getElementById("status-" + orderId)
             let myOrderAction = document.getElementById("action-" + orderId)
@@ -64,11 +68,13 @@ async function shipOrder(orderId) {
 }
 
 async function outForDelivery(orderId) {
+    document.getElementById("waiter").innerHTML =`<div class="waiting"></div>`
     try {
         const response = await axios({
             method: "put",
             url: `/admin/outForDelivery/${orderId}`
         })
+        document.getElementById("waiter").innerHTML =""
         if (response.status == 201) {
             let myOrderStatus = document.getElementById("status-" + orderId)
             let myOrderAction = document.getElementById("action-" + orderId)
@@ -87,11 +93,13 @@ async function outForDelivery(orderId) {
 }
 
 async function deliverPackage(orderId) {
+    document.getElementById("waiter").innerHTML =`<div class="waiting"></div>`
     try {
         const response = await axios({
             method: "put",
             url: `/admin/deliverPackage/${orderId}`
         })
+        document.getElementById("waiter").innerHTML =""
         if (response.status == 201) {
             let myOrderStatus = document.getElementById("status-" + orderId)
             let myOrderAction = document.getElementById("action-" + orderId)
@@ -122,10 +130,12 @@ async function cancelOrder(orderId) {
             width: '25em'
         })
         if (result.isConfirmed) {
+            document.getElementById("waiter").innerHTML =`<div class="waiting"></div>`
             const response = await axios({
                 method: "put",
                 url: `/admin/cancelOrder/${orderId}`
             })
+            document.getElementById("waiter").innerHTML =""
             if (response.status == 201) {
                 let myOrderStatus = document.getElementById("status-" + orderId)
                 let myOrderAction = document.getElementById("action-" + orderId)

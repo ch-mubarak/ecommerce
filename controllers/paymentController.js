@@ -29,8 +29,8 @@ module.exports = {
         const expectedSignature = crypto.createHmac('sha256', process.env.key_secret)
             .update(body.toString())
             .digest('hex');
-        console.log("sig received ", req.body.response.razorpay_signature);
-        console.log("sig generated ", expectedSignature);
+        // console.log("sig received ", req.body.response.razorpay_signature);
+        // console.log("sig generated ", expectedSignature);
         let response = { "signatureIsValid": false }
         if (expectedSignature === req.body.response.razorpay_signature) {
             response = { "signatureIsValid": true }

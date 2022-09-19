@@ -557,6 +557,14 @@ progress {
     font-size: 2.5rem;
   }
 }
+.card-body-icon {
+  position: absolute;
+  z-index: 0;
+  top: -1.25rem;
+  right: 1rem;
+  opacity: 0.4;
+  font-size: 6rem;
+}
 
 .list-unstyled {
   padding-left: 0;

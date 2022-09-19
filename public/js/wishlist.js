@@ -11,6 +11,7 @@ $(document).ready(async () => {
 
 async function wishlist(name, id) {
   try {
+    document.getElementById("waiter").innerHTML =`<div class="waiting"></div>`
     const response = await axios({
       method: 'put',
       url: `/user/wishlist/${id}`,
@@ -18,6 +19,7 @@ async function wishlist(name, id) {
         name: name,
       }
     });
+    document.getElementById("waiter").innerHTML =""
     if (response.status == 204) {
       let itemCount = Number($(".wishlist-item-count").html())
       itemCount -= 1

@@ -98,11 +98,18 @@ module.exports = {
     getProductByKeyword: async (req, res) => {
         try {
             const keyword = req.query.name || ""
-            let minPrice = req.query?.minPrice?.split("₹").join("") || 100
-            let maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
-
+            const minPrice = req.query?.minPrice?.split("₹").join("") || 100
+            const maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
+            let sortOrder = req.query.sort || "latest"
             const priceRange = { $gt: minPrice, $lt: maxPrice }
             const newProducts = await Product.find().limit(3)
+            if (sortOrder == "asc") {
+                sortOrder = { price: 1 }
+            } else if (sortOrder == "dsc") {
+                sortOrder = { price: -1 }
+            } else {
+                sortOrder = { createdAt: -1 }
+            }
             const allCategories = await Category.find()
             const findProducts = await Product.find({
                 "$or": [
@@ -113,6 +120,7 @@ module.exports = {
                 .populate("category")
                 .where("price")
                 .equals(priceRange)
+                .sort(sortOrder)
                 .exec()
 
             res.render("master/search", {

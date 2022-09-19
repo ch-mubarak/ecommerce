@@ -11,6 +11,7 @@ $(document).ready(async () => {
 
 async function deleteItem(productId) {
     try {
+        document.getElementById("waiter").innerHTML =`<div class="waiting"></div>`
         const cartCount =document.getElementById(`currentQuantity-${productId}`)?.value
         const response = await axios({
             method: "delete",
@@ -19,6 +20,7 @@ async function deleteItem(productId) {
                 cartCount: parseInt(cartCount)
             }
         })
+        document.getElementById("waiter").innerHTML =""
         let itemCount = Number($(".cart-item-count").html())
         itemCount -= Number(cartCount)
         if (itemCount != 0) {
@@ -38,12 +40,14 @@ async function deleteItem(productId) {
 }
 
 async function addToCart(productId, productName, productPrice, quantity, offerPrice) {
+    
     let currentQuantity = document.getElementById(`currentQuantity-${productId}`)?.value
     if (quantity == -1 && currentQuantity == 1) {
         deleteItem(productId);
     }
     else {
         try {
+            document.getElementById("waiter").innerHTML =`<div class="waiting"></div>`
             const response = await axios({
                 method: "put",
                 url: `/user/addToCart/${productId}`,
@@ -54,6 +58,7 @@ async function addToCart(productId, productName, productPrice, quantity, offerPr
                     offerPrice: Number.parseFloat(offerPrice),
                 }
             })
+            document.getElementById("waiter").innerHTML =""
             if (response.status == 200) {
                 toastr.options = { "positionClass": "toast-bottom-right" }
                 await Swal.fire({

@@ -155,10 +155,12 @@
             <div class="col-lg-4 col-md-5">
               <div class="filter__sort">
                 <span>Sort By</span>
-                <select>
-                  <option value="0">Default</option>
-                  <option value="0">Default</option>
+                <select form="searchForm">
+                  <option value="latest">Latest</option>
+                  <option value="asc">Price asc</option>
+                  <option value="dsc">Price dsc</option>
                 </select>
+                <button class="btn btn-sm" form="searchForm" type="submit"><i class="fa-solid fa-filter fa"></i></button>
               </div>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -174,7 +176,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" id="myAllProducts">
           <% findProducts.forEach((product)=>{%>
           <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="product__item">
@@ -220,22 +222,23 @@
 <!-- Product Section End -->
 
 <script>
-
 var rangeSlider = $(".price-range"),
-        minamount = $("#minamount"),
-        maxamount = $("#maxamount"),
-        minPrice = rangeSlider.data('min'),
-        maxPrice = rangeSlider.data('max');
-    rangeSlider.slider({
-        range: true,
-        min: minPrice,
-        max: maxPrice,
-        values: ['<%=minPrice%>', '<%=maxPrice%>'],
-      slide: function (event, ui) {
-      minamount.val('₹' + ui.values[0]);
-      maxamount.val('₹' + ui.values[1]);
-      }
-      });
-      minamount.val('₹' + rangeSlider.slider("values", 0));
-      maxamount.val('₹' + rangeSlider.slider("values", 1));
-      </script>
+minamount = $("#minamount"),
+maxamount = $("#maxamount"),
+minPrice = rangeSlider.data('min'),
+maxPrice = rangeSlider.data('max');
+rangeSlider.slider({
+range: true,
+min: minPrice,
+max: maxPrice,
+values: ['<%=minPrice%>', '<%=maxPrice%>'],
+slide: function (event, ui) {
+minamount.val('₹' + ui.values[0]);
+maxamount.val('₹' + ui.values[1]);
+}
+});
+minamount.val('₹' + rangeSlider.slider("values", 0));
+maxamount.val('₹' + rangeSlider.slider("values", 1));
+</script>
+
+

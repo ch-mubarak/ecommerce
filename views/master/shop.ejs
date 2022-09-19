@@ -118,7 +118,7 @@
               </label>
             </div>
           </div> -->
-          <div class="sidebar__item">
+          <div class="sidebar__item" id="latestProducts">
             <div class="latest-product__text">
               <h4>Latest Products</h4>
               <div class="latest-product__slider owl-carousel">
@@ -168,7 +168,7 @@
         </div>
       </div>
       <div class="col-lg-9 col-md-7">
-        <div class="product__discount">
+        <div class="product__discount" id="offerProducts">
           <div class="section-title product__discount__title">
             <h2>Sale Off</h2>
           </div>
@@ -228,7 +228,7 @@
         <div class="row">
 
           <% allProducts.forEach((product)=>{%>
-          <div class="col-lg-4 col-md-6 col-sm-6">
+          <div class="col-lg-4 col-md-6">
             <div class="product__item">
               <div class="product__item__pic set-bg" data-setbg="/files/<%= product.productImagePath[0] %>">
                 <ul class="product__item__pic__hover">

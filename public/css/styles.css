@@ -149,3 +149,17 @@ input[type='radio'] {
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+
+@media (max-width: 420px) {
+  #latestProducts {
+    display: none;
+  }
+
+  #offerProducts {
+    display: none;
+  } 
+
+  .hero_all_category {
+    display: none;
+  }
+}

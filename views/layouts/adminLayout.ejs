@@ -10,12 +10,14 @@
   <title>myStyle Admin panel</title>
 
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" type="text/css">
   <link href="/css/admin-styles.css" rel="stylesheet" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="sb-nav-fixed">
+ 
   <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="/admin">Admin Panel</a>
@@ -92,6 +94,9 @@
     </div>
     <div id="layoutSidenav_content">
       <main>
+        <div id="waiter">
+          <!-- <div class="waiting"></div> -->
+        </div>
 
         <%- body %>
 

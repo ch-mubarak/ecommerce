@@ -1,5 +1,4 @@
 const _ = require("lodash")
-const url = require("url")
 const Product = require("../models/product")
 const Category = require("../models/category")
 const Wishlist = require("../models/wishlist")

@@ -47,9 +47,9 @@
               </div>
               <div class="range-slider">
                 <div class="price-input">
-                  <input type="text" name="minPrice" form="searchForm" id="minamount">
-                  <input type="text" name="maxPrice" form="searchForm" id="maxamount">
-                  <button class="btn btn-small" form="searchForm" type="submit"><i class="fa-solid fa-filter fa"></i></button>
+                  <input type="text" name="minPrice" id="minamount">
+                  <input type="text" name="maxPrice" id="maxamount">
+                  <button class="btn btn-sm" onclick="filterItems()" type="button"><i class="fa-solid fa-filter fa"></i></button>
                 </div>
               </div>
             </div>
@@ -155,12 +155,11 @@
             <div class="col-lg-4 col-md-5">
               <div class="filter__sort">
                 <span>Sort By</span>
-                <select form="searchForm" name="sort">
+                <select onchange="sortItems(this)">
                   <option value="latest">Latest</option>
                   <option value="asc">Price asc</option>
                   <option value="dsc">Price dsc</option>
                 </select>
-                <button class="btn btn-sm" form="searchForm" type="submit"><i class="fa-solid fa-filter fa"></i></button>
               </div>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -222,6 +221,31 @@
 <!-- Product Section End -->
 
 <script>
+  function sortItems(sort){
+    const sortOrder = sort.value
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const keyword = urlParams.get("name");
+    const minPrice = urlParams.get("minPrice")
+    const maxPrice = urlParams.get("maxPrice")
+    window.location =`/search?name=${keyword}&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+
+  }
+  function filterItems(filter){
+    const minPrice = document.getElementById("minamount").value
+    const maxPrice = document.getElementById("maxamount").value
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const keyword = urlParams.get("name");
+    const sortOrder =urlParams.get("sort") || ""
+
+    window.location =`/search?name=${keyword}&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+    
+  }
+
+</script>
+
+<script>
 var rangeSlider = $(".price-range"),
 minamount = $("#minamount"),
 maxamount = $("#maxamount"),
@@ -240,5 +264,3 @@ maxamount.val('₹' + ui.values[1]);
 minamount.val('₹' + rangeSlider.slider("values", 0));
 maxamount.val('₹' + rangeSlider.slider("values", 1));
 </script>
-
-

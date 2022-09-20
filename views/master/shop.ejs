@@ -24,6 +24,7 @@
 <!-- Product Section Begin -->
 <section class="product spad">
   <div class="container">
+    <%if(allProducts.length>0){%>
     <div class="row">
       <div class="col-lg-3 col-md-5">
         <div class="sidebar">
@@ -45,9 +46,9 @@
               </div>
               <div class="range-slider">
                   <div class="price-input">
-                    <input type="text" name="minPrice" form="searchForm" id="minamount">
-                    <input type="text" name="maxPrice" form="searchForm" id="maxamount">
-                    <button class="btn btn-small" form="searchForm" type="submit"><i class="fa-solid fa-filter fa"></i></button>
+                    <input type="text" name="minPrice" id="minamount">
+                    <input type="text" name="maxPrice" id="maxamount">
+                    <button class="btn btn-sm" onclick="filterItems()" type="button"><i class="fa-solid fa-filter fa"></i></button>
                   </div>
               </div>
             </div>
@@ -204,12 +205,11 @@
             <div class="col-lg-4 col-md-5">
               <div class="filter__sort">
                 <span>Sort By</span>
-                <select form="searchForm" name="sort">
+                <select onchange="sortItems(this)">
                   <option value="latest">Latest</option>
                   <option value="asc">Price asc</option>
                   <option value="dsc">Price dsc</option>
                 </select>
-                <button class="btn btn-sm" form="searchForm" type="submit"><i class="fa-solid fa-filter fa"></i></button>
               </div>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -259,8 +259,59 @@
           <a href="#!"><i class="fa fa-long-arrow-right"></i></a>
         </div>
       </div>
+      <%}else{%>
+        <div class="col text-center">
+          <div>
+            <img src="/img/no_result.gif" alt="" width="600">
+          </div>
+          <a href="/" class="primary-btn">Go Home</a>
+        </div>
+        <%}%>
     </div>
   </div>
 </section>
+
+<script>
+  function sortItems(sort){
+    const sortOrder = sort.value
+    const queryString = window.location.shop;
+    const urlParams = new URLSearchParams(queryString);
+    const minPrice = urlParams.get("minPrice") || '₹100'
+    const maxPrice = urlParams.get("maxPrice") || '₹5000'
+    window.location =`/shop?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+
+  }
+  function filterItems(filter){
+    const minPrice = document.getElementById("minamount").value
+    const maxPrice = document.getElementById("maxamount").value
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const sortOrder =urlParams.get("sort") || ""
+
+    window.location =`/shop?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+    
+  }
+
+</script>
+
+<script>
+  var rangeSlider = $(".price-range"),
+  minamount = $("#minamount"),
+  maxamount = $("#maxamount"),
+  minPrice = rangeSlider.data('min'),
+  maxPrice = rangeSlider.data('max');
+  rangeSlider.slider({
+  range: true,
+  min: minPrice,
+  max: maxPrice,
+  values: ['<%=minPrice%>', '<%=maxPrice%>'],
+  slide: function (event, ui) {
+  minamount.val('₹' + ui.values[0]);
+  maxamount.val('₹' + ui.values[1]);
+  }
+  });
+  minamount.val('₹' + rangeSlider.slider("values", 0));
+  maxamount.val('₹' + rangeSlider.slider("values", 1));
+  </script>
 
 <!-- Product Section End -->

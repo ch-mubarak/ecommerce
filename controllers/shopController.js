@@ -33,14 +33,31 @@ module.exports = {
 
     getAllProducts: async (req, res) => {
         try {
+            const minPrice = req.query?.minPrice?.split("₹").join("") || 100
+            const maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
+            let sortOrder = req.query.sort || "latest"
+            const priceRange = { $gt: minPrice, $lt: maxPrice }
+            if (sortOrder == "asc") {
+                sortOrder = { price: 1 }
+            } else if (sortOrder == "dsc") {
+                sortOrder = { price: -1 }
+            } else {
+                sortOrder = { createdAt: -1 }
+            }
+
             const allCategories = await Category.find()
             // console.log(offerProduct)
             const allProducts = await Product.find()
                 .populate("category")
-                .sort({ createdAt: -1 }).exec()
+                .where("price")
+                .equals(priceRange)
+                .sort(sortOrder)
+                .exec()
             res.render("master/shop", {
                 allCategories: allCategories,
-                allProducts: allProducts
+                allProducts: allProducts,
+                minPrice: minPrice,
+                maxPrice: maxPrice
             })
         } catch (err) {
             console.log(err)
@@ -51,16 +68,33 @@ module.exports = {
 
     getShopByCategory: async (req, res) => {
         try {
+            const minPrice = req.query?.minPrice?.split("₹").join("") || 100
+            const maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
+            let sortOrder = req.query.sort || "latest"
+            const priceRange = { $gt: minPrice, $lt: maxPrice }
+            if (sortOrder == "asc") {
+                sortOrder = { price: 1 }
+            } else if (sortOrder == "dsc") {
+                sortOrder = { price: -1 }
+            } else {
+                sortOrder = { createdAt: -1 }
+            }
             const allCategories = await Category.find()
             const paramsId = _.upperFirst(req.params.category)
             const findCategory = await Category
                 .find({ categoryName: paramsId })
             const findProducts = await Product
-                .find({ category: findCategory[0].id }).sort({ createdAt: -1 })
+                .find({ category: findCategory[0].id })
+                .where("price")
+                .equals(priceRange)
+                .sort(sortOrder)
+                .exec()
             res.render("master/category", {
                 allCategories: allCategories,
                 findProducts: findProducts,
                 findCategory: findCategory,
+                minPrice: minPrice,
+                maxPrice: maxPrice
             })
         } catch (err) {
             console.log(err)
@@ -97,7 +131,7 @@ module.exports = {
     getProductByKeyword: async (req, res) => {
         try {
             const keyword = req.query.name || ""
-            const minPrice = req.query?.minPrice?.split("₹").join("") || 100
+            const minPrice = req.query?.minPrice?.split("₹").join("") || 10
             const maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
             let sortOrder = req.query.sort || "latest"
             const priceRange = { $gt: minPrice, $lt: maxPrice }
@@ -129,6 +163,7 @@ module.exports = {
                 minPrice: minPrice,
                 maxPrice: maxPrice
             })
+
         } catch (err) {
             console.log(err)
             res.redirect("/")

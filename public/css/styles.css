@@ -150,7 +150,7 @@ input[type='radio'] {
   color: #ffffff;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 700px) {
   #latestProducts {
     display: none;
   }
@@ -161,5 +161,12 @@ input[type='radio'] {
 
   .hero_all_category {
     display: none;
+  }
+
+  .hero__search__phone{
+    display: none;
+  }
+  .primary-banner{
+    margin-top: 4rem;
   }
 }

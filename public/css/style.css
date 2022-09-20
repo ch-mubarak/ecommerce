@@ -634,8 +634,8 @@ ol {
 }
 
 .hero__search {
-	overflow: hidden;
-	margin-bottom: 30px;
+	/* overflow: hidden; */
+	margin-bottom: 4rem;
 }
 
 .hero__search__form {

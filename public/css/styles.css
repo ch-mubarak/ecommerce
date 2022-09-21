@@ -150,6 +150,21 @@ input[type='radio'] {
   color: #ffffff;
 }
 
+.pagination-block {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  background: rgb(39, 57, 82);
+  border-color: rgb(39, 57, 82);
+  color: #ffffff;
+}
+
+.pagination-active {
+  background: rgb(39, 57, 82);
+  border-color: rgb(39, 57, 82);
+  color: #ffffff;
+}
+
 @media (max-width: 700px) {
   #latestProducts {
     display: none;
@@ -157,16 +172,17 @@ input[type='radio'] {
 
   #offerProducts {
     display: none;
-  } 
+  }
 
   .hero_all_category {
     display: none;
   }
 
-  .hero__search__phone{
+  .hero__search__phone {
     display: none;
   }
-  .primary-banner{
+
+  .primary-banner {
     margin-top: 4rem;
   }
 }

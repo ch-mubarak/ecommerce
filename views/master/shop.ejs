@@ -32,7 +32,7 @@
             <h4>Department</h4>
             <ul>
               <% allCategories.forEach((category)=>{ %>
-              <li><a href="/shop/<%= category.categoryName %>"><%= category.categoryName %></a></li>
+              <li><a href="/shop/category/<%= category.categoryName %>/1"><%= category.categoryName %></a></li>
               <% }) %>
             </ul>
           </div>
@@ -45,11 +45,11 @@
                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
               </div>
               <div class="range-slider">
-                  <div class="price-input">
-                    <input type="text" name="minPrice" id="minamount">
-                    <input type="text" name="maxPrice" id="maxamount">
-                    <button class="btn btn-sm" onclick="filterItems()" type="button"><i class="fa-solid fa-filter fa"></i></button>
-                  </div>
+                <div class="price-input">
+                  <input type="text" name="minPrice" id="minamount">
+                  <input type="text" name="maxPrice" id="maxamount">
+                  <button class="btn btn-sm" onclick="filterItems()" type="button"><i class="fa-solid fa-filter fa"></i></button>
+                </div>
               </div>
             </div>
           </div>
@@ -124,7 +124,7 @@
               <h4>Latest Products</h4>
               <div class="latest-product__slider owl-carousel">
                 <div class="latest-prdouct__slider__item">
-                  <% allProducts.slice(0,3).forEach((product)=> { %>
+                  <% latestProducts.slice(0,3).forEach((product)=> { %>
                   <a href="/product/<%= product.id %>" class="latest-product__item">
                     <div class="latest-product__item__pic">
                       <img src="/files/<%=product.productImagePath[0]%>" alt="">
@@ -144,7 +144,7 @@
                   <% }) %>
                 </div>
                 <div class="latest-prdouct__slider__item">
-                  <% allProducts.slice(3,6).forEach((product)=> { %>
+                  <% latestProducts.slice(3,6).forEach((product)=> { %>
                   <a href="/product/<%= product.id %>" class="latest-product__item">
                     <div class="latest-product__item__pic">
                       <img src="/files/<%=product.productImagePath[0]%>" alt="">
@@ -176,7 +176,7 @@
           <div class="row">
             <div class="product__discount__slider owl-carousel">
               <% let flag =0 %>
-              <% allProducts.every(product=>{ %>
+              <% offerProducts.every(product=>{ %>
               <% if(product.category.categoryName=="On Sale"){ flag++ %>
               <div class="col-lg-4">
                 <div class="product__discount__item">
@@ -205,16 +205,16 @@
             <div class="col-lg-4 col-md-5">
               <div class="filter__sort">
                 <span>Sort By</span>
-                <select onchange="sortItems(this)">
+                <select onchange="sortItems(this)"> 
                   <option value="latest">Latest</option>
-                  <option value="asc">Price asc</option>
+                  <option id="sortMyItems" value="asc">Price asc</option>
                   <option value="dsc">Price dsc</option>
                 </select>
               </div>
             </div>
             <div class="col-lg-4 col-md-4">
               <div class="filter__found">
-                <h6><span><%= allProducts.length %></span> Products found</h6>
+                <h6><span><%= count %></span> Products found</h6>
               </div>
             </div>
             <div class="col-lg-4 col-md-3">
@@ -250,68 +250,84 @@
             </div>
           </div>
           <% }) %>
-
         </div>
+      <!-- Product Section End -->
+        <% if (limit > 0) { %>
         <div class="product__pagination">
-          <a href="#!">1</a>
-          <a href="#!">2</a>
-          <a href="#!">3</a>
-          <a href="#!"><i class="fa fa-long-arrow-right"></i></a>
+          <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+          <% if (i !== 1) { %>
+          <a class="pagination-block">...</a>
+          <% } %>
+          <% for (; i <= (Number(current) + 4) && i <= limit; i++) { %>
+          <% if (i == current) { %>
+          <a class="pagination-active"><%= i %></a>
+          <% } else { %>
+          <a href="/shop/<%= i %>?minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sortOrder %>"><%= i %></a>
+          <% } %>
+          <% if (i == Number(current) + 4 && i < limit) { %>
+          <a class="pagination-block">...</a>
+          <% } %>
+          <% } %>
         </div>
+        <% } %>
       </div>
       <%}else{%>
-        <div class="col text-center">
-          <div>
-            <img src="/img/no_result.gif" alt="" width="600">
-          </div>
-          <a href="/" class="primary-btn">Go Home</a>
+      <div class="col text-center">
+        <div>
+          <img src="/img/no_result.gif" alt="" width="600">
         </div>
-        <%}%>
+        <a href="/" class="primary-btn">Go Home</a>
+      </div>
+      <%}%>
     </div>
   </div>
 </section>
 
 <script>
-  function sortItems(sort){
+
+    function sortItems(sort){
     const sortOrder = sort.value
-    const queryString = window.location.shop;
+    const queryString = window.location.href;
+    const currentLocation = window.location.pathname
     const urlParams = new URLSearchParams(queryString);
-    const minPrice = urlParams.get("minPrice") || '₹100'
-    const maxPrice = urlParams.get("maxPrice") || '₹5000'
-    window.location =`/shop?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+    const minPrice = urlParams.get("minPrice")?.split("₹").join("") || 100
+    const maxPrice = urlParams.get("maxPrice")?.split("₹").join("") || 5000
+    window.location =`/shop/1?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
 
   }
   function filterItems(filter){
-    const minPrice = document.getElementById("minamount").value
-    const maxPrice = document.getElementById("maxamount").value
+    const minPrice = document.getElementById("minamount").value.split("₹").join("")
+    const maxPrice = document.getElementById("maxamount").value.split("₹").join("")
+    const currentLocation = window.location.pathname
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const sortOrder =urlParams.get("sort") || ""
 
-    window.location =`/shop?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+    window.location =`/shop/1?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+
     
   }
 
 </script>
 
 <script>
-  var rangeSlider = $(".price-range"),
-  minamount = $("#minamount"),
-  maxamount = $("#maxamount"),
-  minPrice = rangeSlider.data('min'),
-  maxPrice = rangeSlider.data('max');
-  rangeSlider.slider({
-  range: true,
-  min: minPrice,
-  max: maxPrice,
-  values: ['<%=minPrice%>', '<%=maxPrice%>'],
-  slide: function (event, ui) {
-  minamount.val('₹' + ui.values[0]);
-  maxamount.val('₹' + ui.values[1]);
-  }
-  });
-  minamount.val('₹' + rangeSlider.slider("values", 0));
-  maxamount.val('₹' + rangeSlider.slider("values", 1));
-  </script>
 
-<!-- Product Section End -->
+var rangeSlider = $(".price-range"),
+minamount = $("#minamount"),
+maxamount = $("#maxamount"),
+minPrice = rangeSlider.data('min'),
+maxPrice = rangeSlider.data('max');
+rangeSlider.slider({
+range: true,
+min: minPrice,
+max: maxPrice,
+values: ['<%=minPrice%>', '<%=maxPrice%>'],
+slide: function (event, ui) {
+minamount.val('₹' + ui.values[0]);
+maxamount.val('₹' + ui.values[1]);
+}
+});
+minamount.val('₹' + rangeSlider.slider("values", 0));
+maxamount.val('₹' + rangeSlider.slider("values", 1));
+</script>
+

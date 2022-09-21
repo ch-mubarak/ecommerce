@@ -11,7 +11,7 @@
           <h2>myStyle Shop</h2>
           <div class="breadcrumb__option">
             <a href="/">Home</a>
-            <a href="/shop">Shop</a>
+            <a href="/shop/1">Shop</a>
             <span><%= findCategory[0].categoryName %></span>
           </div>
         </div>
@@ -32,7 +32,7 @@
             <h4>Department</h4>
             <ul>
               <% allCategories.forEach((category)=>{ %>
-              <li><a href="/shop/<%= category.categoryName %>"><%= category.categoryName %></a></li>
+              <li><a href="/shop/category/<%= category.categoryName %>/1"><%= category.categoryName %></a></li>
               <% }) %>
             </ul>
           </div>
@@ -124,7 +124,7 @@
               <h4>Latest Products</h4>
               <div class="latest-product__slider owl-carousel">
                 <div class="latest-prdouct__slider__item">
-                  <% findProducts.slice(0,3).forEach((product)=> { %>
+                  <% latestProducts.slice(0,3).forEach((product)=> { %>
                   <a href="/product/<%= product.id %>" class="latest-product__item">
                     <div class="latest-product__item__pic">
                       <img src="/files/<%=product.productImagePath[0]%>" alt="">
@@ -144,7 +144,7 @@
                   <% }) %>
                 </div>
                 <div class="latest-prdouct__slider__item">
-                  <% findProducts.slice(3,6).forEach((product)=> { %>
+                  <% latestProducts.slice(3,6).forEach((product)=> { %>
                   <a href="/product/<%= product.id %>" class="latest-product__item">
                     <div class="latest-product__item__pic">
                       <img src="/files/<%=product.productImagePath[0]%>" alt="">
@@ -183,7 +183,7 @@
             </div>
             <div class="col-lg-4 col-md-4">
               <div class="filter__found">
-                <h6><span><%= findProducts.length %></span> Products found</h6>
+                <h6><span><%= count %></span> Products found</h6>
               </div>
             </div>
             <div class="col-lg-4 col-md-3">
@@ -221,12 +221,25 @@
           <% }) %>
 
         </div>
-        <div class="product__pagination">
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+        <% if (limit > 0) { %>
+          <div class="product__pagination">
+            <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+            <% if (i !== 1) { %>
+            <a class="pagination-block">...</a>
+            <% } %>
+            <% for (; i <= (Number(current) + 4) && i <= limit; i++) { %>
+            <% if (i == current) { %>
+            <a class="pagination-active"><%= i %></a>
+            <% } else { %>
+            <a href="/shop/category/<%= category %>/<%= i %>?minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sortOrder %>"><%= i %></a>
+            <% } %>
+            <% if (i == Number(current) + 4 && i < limit) { %>
+            <a class="pagination-block">...</a>
+            <% } %>
+            <% } %>
           </div>
+          <% } %>
+        </div>
       </div>
       <%}else{%>
         <div class="col text-center">
@@ -245,22 +258,20 @@
   function sortItems(sort){
     const sortOrder = sort.value
     const queryString = window.location.href;
-    const currentLocation = window.location.pathname
     const urlParams = new URLSearchParams(queryString);
-    const minPrice = urlParams.get("minPrice") || '₹100'
-    const maxPrice = urlParams.get("maxPrice") || '₹5000'
-    window.location =`${currentLocation}?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+    const minPrice = urlParams.get("minPrice")?.split("₹").join("") || 100
+    const maxPrice = urlParams.get("maxPrice")?.split("₹").join("") || 5000
+    window.location =`/shop/category/<%=category%>/1?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
 
   }
   function filterItems(filter){
-    const minPrice = document.getElementById("minamount").value
-    const maxPrice = document.getElementById("maxamount").value
-    const currentLocation = window.location.pathname
+    const minPrice = document.getElementById("minamount").value.split("₹").join("")
+    const maxPrice = document.getElementById("maxamount").value.split("₹").join("")
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const sortOrder =urlParams.get("sort") || ""
 
-    window.location =`${currentLocation}?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
+    window.location =`/shop/category/<%=category%>/1?minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sortOrder}`
     
   }
 

@@ -9,11 +9,13 @@ module.exports = {
     getHome: async (req, res) => {
         try {
             const primaryBanner = await Banner
-                .findOne({ $and: [{ viewOrder: "primary" }, { isActive: true }] }).exec()
+                .findOne({ $and: [{ viewOrder: "primary" }, { isActive: true }] })
+                .exec()
             const secondaryBanner = await Banner
                 .find({ $and: [{ viewOrder: "secondary" }, { isActive: true }] })
-                .sort({ createdAt: -1 }).limit(2).exec()
-
+                .sort({ createdAt: -1 })
+                .limit(2)
+                .exec()
             const allCategories = await Category.find();
             const allProducts = await Product.find()
                 .populate("category")
@@ -33,31 +35,50 @@ module.exports = {
 
     getAllProducts: async (req, res) => {
         try {
-            const minPrice = req.query?.minPrice?.split("₹").join("") || 100
-            const maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
-            let sortOrder = req.query.sort || "latest"
+            const limit = 9
+            const page = req.params.page || 1
+            const minPrice = req.query.minPrice || 100
+            const maxPrice = req.query.maxPrice || 5000
+            const sortOrder = req.query.sort || "latest"
+            let sort
             const priceRange = { $gt: minPrice, $lt: maxPrice }
             if (sortOrder == "asc") {
-                sortOrder = { price: 1 }
+                sort = { price: 1 }
             } else if (sortOrder == "dsc") {
-                sortOrder = { price: -1 }
+                sort = { price: -1 }
             } else {
-                sortOrder = { createdAt: -1 }
+                sort = { createdAt: -1 }
             }
 
             const allCategories = await Category.find()
-            // console.log(offerProduct)
+            const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(6)
+            const offerProducts = await Product.find().populate("category")
             const allProducts = await Product.find()
                 .populate("category")
                 .where("price")
                 .equals(priceRange)
-                .sort(sortOrder)
+                .sort(sort)
+                .skip((limit * page) - limit)
+                .limit(limit)
                 .exec()
+
+            const count = await Product.find()
+                .where("price")
+                .equals(priceRange)
+                .sort(sort)
+                .countDocuments()
+
             res.render("master/shop", {
                 allCategories: allCategories,
                 allProducts: allProducts,
+                offerProducts: offerProducts,
+                latestProducts: latestProducts,
                 minPrice: minPrice,
-                maxPrice: maxPrice
+                maxPrice: maxPrice,
+                sortOrder: sortOrder,
+                current: page,
+                limit: Math.ceil(count / limit),
+                count: count
             })
         } catch (err) {
             console.log(err)
@@ -68,33 +89,62 @@ module.exports = {
 
     getShopByCategory: async (req, res) => {
         try {
-            const minPrice = req.query?.minPrice?.split("₹").join("") || 100
-            const maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
-            let sortOrder = req.query.sort || "latest"
+            const limit = 9
+            const page = req.params.page || 1
+            const minPrice = req.query.minPrice || 100
+            const maxPrice = req.query.maxPrice || 5000
+            const sortOrder = req.query.sort || "latest"
+            let sort
             const priceRange = { $gt: minPrice, $lt: maxPrice }
             if (sortOrder == "asc") {
-                sortOrder = { price: 1 }
+                sort = { price: 1 }
             } else if (sortOrder == "dsc") {
-                sortOrder = { price: -1 }
+                sort = { price: -1 }
             } else {
-                sortOrder = { createdAt: -1 }
+                sort = { createdAt: -1 }
             }
             const allCategories = await Category.find()
             const paramsId = _.upperFirst(req.params.category)
             const findCategory = await Category
                 .find({ categoryName: paramsId })
+
+            const latestProducts = await Product
+                .find({ category: findCategory[0].id })
+                .sort({ createdAt: -1 })
+                .limit(6)
+
             const findProducts = await Product
                 .find({ category: findCategory[0].id })
                 .where("price")
                 .equals(priceRange)
-                .sort(sortOrder)
+                .sort(sort)
+                .skip((limit * page) - limit)
+                .limit(limit)
                 .exec()
+
+
+            //getting count of products for pagination
+
+            const count = await Product
+                .find({ category: findCategory[0].id })
+                .where("price")
+                .equals(priceRange)
+                .sort(sort)
+                .countDocuments()
+
+
             res.render("master/category", {
                 allCategories: allCategories,
                 findProducts: findProducts,
+                latestProducts: latestProducts,
                 findCategory: findCategory,
                 minPrice: minPrice,
-                maxPrice: maxPrice
+                maxPrice: maxPrice,
+                sortOrder: sortOrder,
+                category: paramsId,
+                current: page,
+                limit: Math.ceil(count / limit),
+                count: count
             })
         } catch (err) {
             console.log(err)
@@ -130,20 +180,24 @@ module.exports = {
 
     getProductByKeyword: async (req, res) => {
         try {
+            const limit = 9
+            const page = req.params.page || 1
             const keyword = req.query.name || ""
-            const minPrice = req.query?.minPrice?.split("₹").join("") || 10
-            const maxPrice = req.query?.maxPrice?.split("₹").join("") || 5000
-            let sortOrder = req.query.sort || "latest"
+            const minPrice = req.query.minPrice || 100
+            const maxPrice = req.query.maxPrice || 5000
+            const sortOrder = req.query.sort || "latest"
+            let sort
             const priceRange = { $gt: minPrice, $lt: maxPrice }
             const newProducts = await Product.find().limit(3)
             if (sortOrder == "asc") {
-                sortOrder = { price: 1 }
+                sort = { price: 1 }
             } else if (sortOrder == "dsc") {
-                sortOrder = { price: -1 }
+                sort = { price: -1 }
             } else {
-                sortOrder = { createdAt: -1 }
+                sort = { createdAt: -1 }
             }
             const allCategories = await Category.find()
+
             const findProducts = await Product.find({
                 "$or": [
                     { name: { $regex: keyword, $options: 'i' } },
@@ -153,15 +207,33 @@ module.exports = {
                 .populate("category")
                 .where("price")
                 .equals(priceRange)
-                .sort(sortOrder)
+                .sort(sort)
+                .skip((limit * page) - limit)
+                .limit(limit)
                 .exec()
+
+            const count = await Product.find({
+                "$or": [
+                    { name: { $regex: keyword, $options: 'i' } },
+                    { brand: { $regex: keyword, $options: 'i' } },
+                ]
+            })
+                .where("price")
+                .equals(priceRange)
+                .sort(sort)
+                .countDocuments()
 
             res.render("master/search", {
                 allCategories: allCategories,
                 newProducts: newProducts,
                 findProducts: findProducts,
+                keyword: keyword,
+                sortOrder: sortOrder,
                 minPrice: minPrice,
-                maxPrice: maxPrice
+                maxPrice: maxPrice,
+                count: count,
+                current: page,
+                limit: Math.ceil(count / limit),
             })
 
         } catch (err) {

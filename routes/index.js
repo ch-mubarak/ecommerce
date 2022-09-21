@@ -10,11 +10,11 @@ const {
 } = require("../middleware/otp");
 
 router.get("/", authentication.checkAccountVerifiedInIndex, shopControl.getHome)
-router.get("/shop", authentication.checkAccountVerifiedInIndex, shopControl.getAllProducts)
-router.get("/shop/:category", authentication.checkAccountVerifiedInIndex, shopControl.getShopByCategory)
+router.get("/shop/category/:category/:page", authentication.checkAccountVerifiedInIndex, shopControl.getShopByCategory)
+router.get("/shop/:page", authentication.checkAccountVerifiedInIndex, shopControl.getAllProducts)
 router.get("/product/:id", authentication.checkAccountVerifiedInIndex, shopControl.getProductById)
 router.get("/contact", authentication.checkAccountVerifiedInIndex, (req, res) => res.render("master/contact"))
-router.get("/search", authentication.checkAccountVerifiedInIndex, shopControl.getProductByKeyword)
+router.get("/search/:page", authentication.checkAccountVerifiedInIndex, shopControl.getProductByKeyword)
 
 router.get("/login", authentication.checkLoggedOut, (req, res) => {
     const errorMessage = req.flash("error")

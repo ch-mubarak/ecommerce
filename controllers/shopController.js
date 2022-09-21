@@ -52,7 +52,8 @@ module.exports = {
 
             const allCategories = await Category.find()
             const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(6)
-            const offerProducts = await Product.find().populate("category")
+            // const offerProducts = await Product.find().populate("category")
+            const offerProducts = await Product.find({ "offerPrice": { $ne: null } }).limit(6)
             const allProducts = await Product.find()
                 .populate("category")
                 .where("price")

@@ -175,9 +175,7 @@
           </div>
           <div class="row">
             <div class="product__discount__slider owl-carousel">
-              <% let flag =0 %>
-              <% offerProducts.every(product=>{ %>
-              <% if(product.category.categoryName=="On Sale"){ flag++ %>
+              <% offerProducts.forEach(product=>{ %>
               <div class="col-lg-4">
                 <div class="product__discount__item">
                   <div class="product__discount__item__pic set-bg" data-setbg="/files/<%=product.productImagePath[0]  %>">
@@ -194,9 +192,7 @@
                   </div>
                 </div>
               </div>
-              <% if(flag >4) return false } %>
-              <% return true }) %>
-
+              <%  }) %>
             </div>
           </div>
         </div>
@@ -205,7 +201,7 @@
             <div class="col-lg-4 col-md-5">
               <div class="filter__sort">
                 <span>Sort By</span>
-                <select onchange="sortItems(this)"> 
+                <select onchange="sortItems(this)">
                   <option value="latest">Latest</option>
                   <option id="sortMyItems" value="asc">Price asc</option>
                   <option value="dsc">Price dsc</option>
@@ -251,7 +247,7 @@
           </div>
           <% }) %>
         </div>
-      <!-- Product Section End -->
+        <!-- Product Section End -->
         <% if (limit > 0) { %>
         <div class="product__pagination">
           <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
@@ -322,12 +318,11 @@ range: true,
 min: minPrice,
 max: maxPrice,
 values: ['<%=minPrice%>', '<%=maxPrice%>'],
-slide: function (event, ui) {
-minamount.val('₹' + ui.values[0]);
-maxamount.val('₹' + ui.values[1]);
-}
-});
-minamount.val('₹' + rangeSlider.slider("values", 0));
-maxamount.val('₹' + rangeSlider.slider("values", 1));
-</script>
-
+      slide: function (event, ui) {
+      minamount.val('₹' + ui.values[0]);
+      maxamount.val('₹' + ui.values[1]);
+      }
+      });
+      minamount.val('₹' + rangeSlider.slider("values", 0));
+      maxamount.val('₹' + rangeSlider.slider("values", 1));
+      </script>

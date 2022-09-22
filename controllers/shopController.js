@@ -52,7 +52,7 @@ module.exports = {
 
             const allCategories = await Category.find()
             const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(6)
-            // const offerProducts = await Product.find().populate("category")
+
             const offerProducts = await Product.find({ "offerPrice": { $ne: null } }).limit(6)
             const allProducts = await Product.find()
                 .populate("category")
@@ -198,11 +198,12 @@ module.exports = {
                 sort = { createdAt: -1 }
             }
             const allCategories = await Category.find()
-
+            const category = await Category.find({ categoryName: { $regex: keyword, $options: 'i' } })
             const findProducts = await Product.find({
                 "$or": [
                     { name: { $regex: keyword, $options: 'i' } },
                     { brand: { $regex: keyword, $options: 'i' } },
+                    { category: category[0].id }
                 ]
             })
                 .populate("category")
@@ -251,8 +252,8 @@ module.exports = {
                     { name: { $regex: searchKey, $options: 'i' } },
                     { brand: { $regex: searchKey, $options: 'i' } },
                 ]
-            }).exec()
-            searchResult = searchResult.slice(0, 5)
+            }, { name: 1, brand: 1 }).exec()
+            searchResult = searchResult.slice(0, 10)
             res.send({ searchResult: searchResult })
         } catch (err) {
             console.log(err)

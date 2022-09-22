@@ -9,9 +9,10 @@ const orderControl = require("../controllers/orderController")
 const bannerControl = require("../controllers/bannerController")
 const couponControl = require("../controllers/couponController")
 
-router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
+// router.use(authentication.checkLoggedIn, authentication.checkAdminPrivilege)
 
 router.get("/", adminControl.home)
+router.get("/getGraphDetails",adminControl.getGraphDetails)
 router.get("/users", adminControl.users)
 router.get("/categories", adminControl.categories)
 router.get("/products", adminControl.products)

@@ -15,8 +15,8 @@ module.exports = {
             const orderStatusDelivered = await Order.find({ status: "Delivered" }).countDocuments()
             const totalSale = await Order.aggregate([
                 {
-                    $match:{
-                        status:{$ne:"Cancelled"}
+                    $match: {
+                        status: { $ne: "Cancelled" }
                     }
                 },
                 {
@@ -31,17 +31,85 @@ module.exports = {
                     }
                 }
             ])
+
             const orderStatusCount = [orderStatusPending, orderStatusDelivered, totalSale[0].totalAmount]
             res.render("admin/index", {
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",
                 orderStatusCount: orderStatusCount,
-                userCount: userCount
+                userCount: userCount,
             })
         } catch (err) {
             console.log(err.message)
             res.redirect("/admin")
 
+        }
+    },
+
+    getGraphDetails: async (req, res) => {
+        try {
+            const totalRegister = await User.aggregate([
+                {
+                    $match: {
+                        createdAt: { $ne: null }
+                    }
+                },
+                {
+                    $project:
+                    {
+                        month: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    }
+                },
+                {
+                    $group: {
+                        _id: { createdAt: "$month" },
+                        count: { $sum: 1 }
+                    }
+                },
+
+                {
+                    $addFields: {
+                        createdAt: "$_id.createdAt"
+                    }
+                },
+                {
+                    $sort: {
+                        createdAt: -1
+                    }
+                },
+                {
+                    $project: {
+                        _id: false
+                    }
+                }
+            ]).limit(7);
+
+            const totalSale = await Order.aggregate([
+
+                // First Stage
+                {
+                    $match: { "createdAt": { $ne: null } }
+                },
+                {
+                    $match: { "status": { $ne: "Cancelled" } }
+                },
+                // Second Stage
+                {
+                    $group: {
+                        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                        sales: { $sum: "$total" },
+                    }
+                },
+                // Third Stage
+                {
+                    $sort: { _id: -1 }
+                }
+            ])
+
+            res.status(201).json({ totalRegister: totalRegister, totalSale: totalSale })
+
+        } catch (err) {
+            res.status(500).json({ err })
         }
     },
 

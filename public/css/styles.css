@@ -165,6 +165,77 @@ input[type='radio'] {
   color: #ffffff;
 }
 
+.comment-box {
+
+  margin-top: 12px;
+  padding: 2px;
+}
+
+.comment-area textarea {
+  resize: none;
+  border: 1px solid #ad9f9f;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #ffffff;
+  outline: 0;
+  box-shadow: 0 0 0 1px rgb(39, 57, 82) !important;
+}
+
+.send {
+  background-color: rgb(39, 57, 82);
+  ;
+  border-color: rgb(39, 57, 82);
+}
+
+.send:hover {
+  /* color: #fff; */
+  background-color: rgb(30, 46, 68);
+  border-color: rgb(30, 46, 68);
+}
+
+
+.rating {
+  display: flex;
+  margin-top: -10px;
+  flex-direction: row-reverse;
+  margin-left: -4px;
+  float: left;
+}
+
+.rating>input {
+  display: none
+}
+
+.rating>label {
+  position: relative;
+  width: 19px;
+  font-size: 25px;
+  color: #EDBB0E;
+  cursor: pointer;
+}
+
+.rating>label::before {
+  content: "\2605";
+  position: absolute;
+  opacity: 0
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before {
+  opacity: 1 !important
+}
+
+.rating>input:checked~label:before {
+  opacity: 1
+}
+
+.rating:hover>input:checked~label:before {
+  opacity: 0.4
+}
+
 @media (max-width: 700px) {
   #latestProducts {
     display: none;

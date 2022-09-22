@@ -1,6 +1,8 @@
 const User = require("../models/users")
+const Product = require("../models/product")
 const passport = require("passport")
 const { sendOtp, getOtpForm } = require("../middleware/otp")
+
 
 module.exports = {
     userRegister: (req, res, next) => {
@@ -113,5 +115,34 @@ module.exports = {
             res.status(500).json({ err })
         }
     },
+
+    addRating: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const { rating, review } = req.body
+            const product = await Product.findById(req.params.id)
+            const newReview = {
+                name: req.user.name,
+                userId: req.user.id,
+                rating: Number(rating),
+                review
+            }
+            const foundIndex = product.reviews.findIndex(review => review.userId.toString() == userId)
+
+            if (foundIndex > -1) {
+                product.reviews[foundIndex] = newReview
+            } else {
+                product.reviews.push(newReview)   
+            }
+            product.totalReviews = product.reviews.length
+            product.avgRating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.totalReviews
+            await product.save()
+            res.status(201).json({ message: "review updated" })
+
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ err })
+        }
+    }
 
 }

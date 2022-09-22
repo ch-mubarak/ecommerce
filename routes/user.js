@@ -20,6 +20,8 @@ router.get("/myOrders/:id", shopControl.orderDetails)
 router.get("/cartItemCount",cartControl.cartItemCount)
 router.get("/wishlistItemCount",wishlistControl.wishlistItemCount)
 
+
+router.post("/addRating/:id",userControl.addRating)
 router.post("/createAddress",userControl.createAddress)
 router.post("/payment/orderId",paymentControl.generateOrder)
 router.post("/payment/verify/:orderId",paymentControl.verifyPayment)

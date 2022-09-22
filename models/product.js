@@ -1,5 +1,26 @@
 const mongoose = require("mongoose")
 const Order = require("./order")
+
+const reviewSchema = mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    rating: {
+        type: Number,
+        required: true
+    },
+    review: {
+        type: String,
+
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User"
+    }
+}, { timeStamps: true })
+
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -31,6 +52,20 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     brand: String,
+    rating: {
+        type: [Number]
+    },
+    reviews: [reviewSchema],
+    avgRating: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    totalReviews: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
 }, { timestamps: true })
 
 

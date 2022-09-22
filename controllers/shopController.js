@@ -156,19 +156,31 @@ module.exports = {
 
     getProductById: async (req, res) => {
         try {
+            const productId = req.params.id
             const relatedProducts = await Product.find().limit(4).exec()
-            const isInMyList = await Wishlist.exists()
+            const isPurchased = await Order
+                .exists({products: { $elemMatch: { productId: new Object(productId) } }} )
+                .where("userId")
+                .equals(req.user?.id);
+
+            const isInMyList = await Wishlist
+                .exists()
                 .where("userId")
                 .equals(req.user?.id)
                 .where("myList.productId")
-                .equals(req.params.id)
-            const findProduct = await Product.findById(req.params.id)
-                .populate("category").exec()
+                .equals(productId);
+
+            const findProduct = await Product
+                .findById(productId)
+                .populate("category")
+                .exec();
+
             if (findProduct) {
                 res.render("master/productDetails", {
                     findProduct: findProduct,
                     relatedProducts: relatedProducts,
                     isInMyList: isInMyList,
+                    isPurchased
                 })
             } else {
                 res.render("errorPage/error", { layout: false })
@@ -199,20 +211,21 @@ module.exports = {
             }
             const allCategories = await Category.find()
             const category = await Category.find({ categoryName: { $regex: keyword, $options: 'i' } })
-            const findProducts = await Product.find({
-                "$or": [
-                    { name: { $regex: keyword, $options: 'i' } },
-                    { brand: { $regex: keyword, $options: 'i' } },
-                    { category: category[0].id }
-                ]
-            })
+            const findProducts = await Product
+                .find({
+                    "$or": [
+                        { name: { $regex: keyword, $options: 'i' } },
+                        { brand: { $regex: keyword, $options: 'i' } },
+                        { category: category[0].id }
+                    ]
+                })
                 .populate("category")
                 .where("price")
                 .equals(priceRange)
                 .sort(sort)
                 .skip((limit * page) - limit)
                 .limit(limit)
-                .exec()
+                .exec();
 
             const count = await Product.find({
                 "$or": [
@@ -223,7 +236,7 @@ module.exports = {
                 .where("price")
                 .equals(priceRange)
                 .sort(sort)
-                .countDocuments()
+                .countDocuments();
 
             res.render("master/search", {
                 allCategories: allCategories,
@@ -247,12 +260,14 @@ module.exports = {
     autoFill: async (req, res) => {
         let searchKey = req.body.searchKey.trim()
         try {
-            let searchResult = await Product.find({
-                "$or": [
-                    { name: { $regex: searchKey, $options: 'i' } },
-                    { brand: { $regex: searchKey, $options: 'i' } },
-                ]
-            }, { name: 1, brand: 1 }).exec()
+            let searchResult = await Product
+                .find({
+                    "$or": [
+                        { name: { $regex: searchKey, $options: 'i' } },
+                        { brand: { $regex: searchKey, $options: 'i' } },
+                    ]
+                }, { name: 1, brand: 1 })
+                .exec();
             searchResult = searchResult.slice(0, 10)
             res.send({ searchResult: searchResult })
         } catch (err) {
@@ -264,16 +279,20 @@ module.exports = {
     myOrders: async (req, res) => {
         try {
             const userId = req.user.id
-            const myOrders = await Order.find({ userId }).populate([
-                {
-                    path: "userId",
-                    model: "User"
-                },
-                {
-                    path: "products.productId",
-                    model: "Product"
-                }
-            ]).sort({ createdAt: -1 }).exec()
+            const myOrders = await Order
+                .find({ userId })
+                .populate([
+                    {
+                        path: "userId",
+                        model: "User"
+                    },
+                    {
+                        path: "products.productId",
+                        model: "Product"
+                    }
+                ])
+                .sort({ createdAt: -1 })
+                .exec();
             res.render("master/myOrders", { myOrders: myOrders })
         } catch (err) {
             console.log(err)
@@ -285,20 +304,23 @@ module.exports = {
         try {
             const orderId = req.params.id
             const userId = req.user.id
-            const myOrder = await Order.findById(orderId).populate([
-                {
-                    path: "userId",
-                    model: "User"
-                },
-                {
-                    path: "coupon",
-                    model: "Coupon"
-                },
-                {
-                    path: "products.productId",
-                    model: "Product"
-                }
-            ]).exec()
+            const myOrder = await Order
+                .findById(orderId)
+                .populate([
+                    {
+                        path: "userId",
+                        model: "User"
+                    },
+                    {
+                        path: "coupon",
+                        model: "Coupon"
+                    },
+                    {
+                        path: "products.productId",
+                        model: "Product"
+                    }
+                ])
+                .exec();
             if (myOrder && myOrder.userId.id == userId) {
                 res.render("master/orderDetails", {
                     myOrder: myOrder

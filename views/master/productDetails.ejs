@@ -42,13 +42,14 @@
       <div class="col-lg-6 col-md-6">
         <div class="product__details__text">
           <h3><%= findProduct.name %></h3>
-          <div class="product__details__rating">
+          <div class="product__details__rating" id="avgRating">
+            <% for(let i=1;i<=findProduct.avgRating;i++){%>
             <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star-half-o"></i>
-            <span>(18 reviews)</span>
+            <% } %>
+            <% for(let i=findProduct.avgRating;i<5;i++){%>
+            <i class="fa fa-star-o"></i>
+            <% } %>
+            <span>(<%= findProduct.totalReviews %> reviews)</span>
           </div>
           <% if(findProduct.discount){ %>
           <div class="product__details__price">
@@ -102,20 +103,46 @@
                 <a href="#"><i class="fa fa-pinterest"></i></a>
               </div>
             </li>
+            <% if(isPurchased){%>
+
+            <li>
+                <div class="row">
+                  <div class="col">
+                    <div class="comment-box">
+                      <form action="/user/addRating" method="post" id="formRating">
+                      <!-- <h4>Add a comment</h4> -->
+                      <div class="rating">
+                        <input type="radio" checked name="rating" value="5" id="5"><label for="5">☆</label>
+                        <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                        <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                        <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                        <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                      </div>
+                      <div class="comment-area">
+                        <textarea class="form-control" name="review" placeholder="what is your view?" required rows="4"></textarea>
+                      </div>
+                      <div class="comment-btns mt-2">
+                            <div class="text-right">
+                              <button class="btn btn-dark send btn-sm" type="submit">Submit</button>
+                            </div>
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+            </li>
+            <% } %> 
           </ul>
         </div>
       </div>
       <div class="col-lg-12">
-        <div class="product__details__tab">
+        <div class="product__details__tab" id="detailsTab">
           <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">Description</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="false">Information</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" aria-selected="false">Reviews <span>(1)</span></a>
+              <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="false">Reviews <span>(<%=findProduct.totalReviews%>)</span></a>
             </li>
           </ul>
           <div class="tab-content">
@@ -123,49 +150,27 @@
               <div class="product__details__tab__desc">
                 <h6>Products Description</h6>
                 <p><%= findProduct.description %></p>
-        </div>
-      </div>
-      <div class="tab-pane" id="tabs-2" role="tabpanel">
-        <div class="product__details__tab__desc">
-          <h6>Products Infomation</h6>
-          <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-            Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
-            Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
-            sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
-            eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
-            Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-            sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
-            diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-            ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-            Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
-            Proin eget tortor risus.</p>
-          <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
-            ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
-            elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
-            porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
-            nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>
-        </div>
-      </div>
-      <div class="tab-pane" id="tabs-3" role="tabpanel">
-        <div class="product__details__tab__desc">
-          <h6>Products Infomation</h6>
-          <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-            Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
-            Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
-            sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
-            eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
-            Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-            sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
-            diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-            ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-            Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
-            Proin eget tortor risus.</p>
+              </div>
+            </div>
+            <div class="tab-pane" id="tabs-2" role="tabpanel">
+              <div class="product__details__tab__desc">
+                <% findProduct.reviews.forEach((review)=>{ %>
+                <h6><%=review.name%> <span>
+                    <% for(let i=1;i<=review.rating;i++){%>
+                    <i class="fa fa-star"></i>
+                    <% } %>
+                    <% for(let i=review.rating;i<5;i++){%>
+                    <i class="fa fa-star-o"></i>
+                    <% } %>
+                  </span></h6>
+                <p><%=review.review%></p>
+                <% }) %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  </div>
-  </div>
   </div>
 </section>
 <!-- Product Details Section End -->
@@ -202,3 +207,45 @@
 </section>
 
 <!-- Related Product Section End -->
+
+<script>
+  document.forms["formRating"].addEventListener("submit", async (event) => {
+    event.preventDefault()
+    const data = new URLSearchParams(new FormData(event.target))
+    console.log(data.rating)
+    try {
+      const response = await axios({
+        method: "post",
+        url: '/user/addRating/<%=findProduct.id%>',
+        data: data
+      })
+      if (response.status == 201) {
+        $("#detailsTab").load(location.href + " #detailsTab>*", "");
+        $("#avgRating").load(location.href + " #avgRating>*", "");
+      } else {
+        await Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Please login to add review',
+          confirmButtonColor: '#273952',
+          width: "25em",
+          timer: 3000
+        })
+        window.location = "/login"
+      }
+
+    } catch (err) {
+      // if(err.data.status)
+      await Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'you have already reviewed this item',
+          confirmButtonColor: '#273952',
+          width: "25em",
+          timer: 3000
+        })
+      console.error(err)
+    }
+
+  })
+</script>

@@ -60,7 +60,7 @@ passport.deserializeUser(User.deserializeUser());
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/auth/google/myStyle",
+  callbackURL: "https://mystyle.codestreak.in/auth/google/myStyle",
   scope: ['email', 'profile']
 },
   function (accessToken, refreshToken, profile, done) {
@@ -108,7 +108,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL: "http://localhost:3000/auth/facebook/myStyle",
+  callbackURL: "https://mystyle.codestreak.in/auth/facebook/myStyle",
   profileFields: ['id', 'displayName', 'email']
 },
   function (accessToken, refreshToken, profile, done) {

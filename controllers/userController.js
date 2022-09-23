@@ -104,8 +104,6 @@ module.exports = {
             const userId = req.user.id
             const allCategories = await Category.find();
             const user = await User.findById(userId)
-            const updated = await User.updateMany({}, { $set: { havePassword: true } },{upsert:true})
-            console.log(updated)
             res.render("master/profile", {
                 allCategories: allCategories,
                 havePassword: user.havePassword,

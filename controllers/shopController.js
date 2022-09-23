@@ -10,20 +10,37 @@ module.exports = {
         try {
             const primaryBanner = await Banner
                 .findOne({ $and: [{ viewOrder: "primary" }, { isActive: true }] })
-                .exec()
+                .exec();
             const secondaryBanner = await Banner
                 .find({ $and: [{ viewOrder: "secondary" }, { isActive: true }] })
                 .sort({ createdAt: -1 })
                 .limit(2)
-                .exec()
+                .exec();
             const allCategories = await Category.find();
+
+            const topRatedProducts = await Product
+                .find({ avgRating: { $ne: null } })
+                .sort({ avgRating: -1 })
+                .limit(6)
+                .exec();
+
+            const topReviewedProducts = await Product
+                .find({ totalReviews: { $ne: null } })
+                .sort({ totalReviews: -1 })
+                .limit(6)
+                .exec();
+
             const allProducts = await Product.find()
                 .populate("category")
                 .sort({ createdAt: -1 })
-                .limit(12).exec();
+                .limit(12)
+                .exec();
+
             res.render("master/index", {
                 allCategories: allCategories,
                 allProducts: allProducts,
+                topRatedProducts: topRatedProducts,
+                topReviewedProducts: topReviewedProducts,
                 primaryBanner: primaryBanner,
                 secondaryBanner: secondaryBanner
             })
@@ -159,7 +176,7 @@ module.exports = {
             const productId = req.params.id
             const relatedProducts = await Product.find().limit(4).exec()
             const isPurchased = await Order
-                .exists({products: { $elemMatch: { productId: new Object(productId) } }} )
+                .exists({ products: { $elemMatch: { productId: new Object(productId) } } })
                 .where("userId")
                 .equals(req.user?.id);
 

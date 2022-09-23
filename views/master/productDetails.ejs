@@ -106,10 +106,10 @@
             <% if(isPurchased){%>
 
             <li>
-                <div class="row">
-                  <div class="col">
-                    <div class="comment-box">
-                      <form action="/user/addRating" method="post" id="formRating">
+              <div class="row">
+                <div class="col">
+                  <div class="comment-box">
+                    <form action="/user/addRating" method="post" id="formRating">
                       <!-- <h4>Add a comment</h4> -->
                       <div class="rating">
                         <input type="radio" checked name="rating" value="5" id="5"><label for="5">☆</label>
@@ -122,16 +122,16 @@
                         <textarea class="form-control" name="review" placeholder="what is your view?" required rows="4"></textarea>
                       </div>
                       <div class="comment-btns mt-2">
-                            <div class="text-right">
-                              <button class="btn btn-dark send btn-sm" type="submit">Submit</button>
-                            </div>
+                        <div class="text-right">
+                          <button class="btn btn-dark send btn-sm" type="submit">Submit</button>
+                        </div>
                       </div>
                     </form>
-                    </div>
                   </div>
                 </div>
+              </div>
             </li>
-            <% } %> 
+            <% } %>
           </ul>
         </div>
       </div>
@@ -220,30 +220,27 @@
         data: data
       })
       if (response.status == 201) {
-        $("#detailsTab").load(location.href + " #detailsTab>*", "");
-        $("#avgRating").load(location.href + " #avgRating>*", "");
-      } else {
         await Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'Please login to add review',
+          icon: 'success',
+          title: 'Congrats',
+          text: 'Your review has been submitted',
           confirmButtonColor: '#273952',
           width: "25em",
           timer: 3000
         })
-        window.location = "/login"
+        $("#detailsTab").load(location.href + " #detailsTab>*", "");
+        $("#avgRating").load(location.href + " #avgRating>*", "");
       }
-
     } catch (err) {
       // if(err.data.status)
       await Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'you have already reviewed this item',
-          confirmButtonColor: '#273952',
-          width: "25em",
-          timer: 3000
-        })
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Something went wrong',
+        confirmButtonColor: '#273952',
+        width: "25em",
+        timer: 3000
+      })
       console.error(err)
     }
 

@@ -221,7 +221,7 @@
           <div class="latest-product__slider owl-carousel">
 
             <div class="latest-prdouct__slider__item">
-              <% allProducts.slice(8,11).forEach((product)=>{ %>
+              <% topRatedProducts.slice(0,3).forEach((product)=>{ %>
               <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="/files/<%= product.productImagePath[0]%>" alt="">
@@ -242,7 +242,7 @@
             </div>
 
             <div class="latest-prdouct__slider__item">
-              <% allProducts.slice(-3).forEach((product)=>{ %>
+              <% topRatedProducts.slice(3,6).forEach((product)=>{ %>
               <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="/files/<%= product.productImagePath[0]%>" alt="">
@@ -271,7 +271,7 @@
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
 
-              <% allProducts.slice(5,8).forEach((product)=>{ %>
+              <% topReviewedProducts.slice(0,3).forEach((product)=>{ %>
               <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="/files/<%= product.productImagePath[0]%>" alt="">
@@ -293,7 +293,7 @@
 
             <div class="latest-prdouct__slider__item">
 
-              <% allProducts.slice(2,5).forEach((product)=>{ %>
+              <% topReviewedProducts.slice(3,6).forEach((product)=>{ %>
               <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="/files/<%= product.productImagePath[0]%>" alt="">

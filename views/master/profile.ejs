@@ -141,6 +141,21 @@
             </div>
           </form>
           <!-- form for changing password -->
+          <% if(havePassword){%>
+
+          <form action="/user/setPassword?_method=put" method="post" id="changePassword" class="p-3" style="display:none ;">
+            <div class="mb-3">
+              <label class="form-label">New password</label>
+              <input type="password" name="password" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Repeat Password</label>
+              <input type="password" name="confirmedPassword" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-warning mt-2">change</button>
+            <div class="mt-3" id="errorMessage"></div>
+          </form>
+          <% } else{%>
           <form action="/user/changePassword?_method=put" method="post" id="changePassword" class="p-3" style="display:none ;">
             <div class="mb-3">
               <label class="form-label">Current password</label>
@@ -155,10 +170,9 @@
               <input type="password" name="confirmedPassword" class="form-control">
             </div>
             <button type="submit" class="btn btn-warning mt-2">change</button>
-            <div class="mt-3" id="errorMessage">
-
-            </div>
+            <div class="mt-3" id="errorMessage"></div>
           </form>
+          <% } %>
         </div>
         <div class="row mt-2 mb-2" id="myAddress">
           <div class="col-sm-12">
@@ -248,9 +262,7 @@
     event.preventDefault()
     const data = new URLSearchParams(new FormData(event.target))
     try {
-      const response = await axios({
-        method: "put",
-        url: "/user/changePassword",
+      const response = await axios.put(event.target.action, {
         data: data
       })
       if (response.status == 201) {

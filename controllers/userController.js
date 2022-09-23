@@ -1,6 +1,7 @@
 const User = require("../models/users")
 const Product = require("../models/product")
 const passport = require("passport")
+const Category = require("../models/category")
 const { sendOtp, getOtpForm } = require("../middleware/otp")
 
 
@@ -69,6 +70,22 @@ module.exports = {
         }
     },
 
+    setPassword: async (req, res) => {
+        const { newPassword, confirmedPassword } = req.body
+        const user = req.user
+        try {
+            if (newPassword === confirmedPassword) {
+                await user.setPassword(req.body.password)
+                await user.save()
+                res.status(201).json({ message: "password changed" })
+            } else {
+                res.status(403).json({ message: "password doesn't match" })
+            }
+        } catch (err) {
+            res.status(401).json({ message: "Error setting Password" })
+        }
+    },
+
     removeAddress: async (req, res) => {
         try {
             const addressIndex = Number(req.params.index)
@@ -87,8 +104,11 @@ module.exports = {
             const userId = req.user.id
             const allCategories = await Category.find();
             const user = await User.findById(userId)
+            const updated = await User.updateMany({}, { $set: { havePassword: true } },{upsert:true})
+            console.log(updated)
             res.render("master/profile", {
-                allCategories:allCategories,
+                allCategories: allCategories,
+                havePassword: user.havePassword,
                 user: user
             })
         } catch (err) {
@@ -134,7 +154,7 @@ module.exports = {
             if (foundIndex > -1) {
                 product.reviews[foundIndex] = newReview
             } else {
-                product.reviews.push(newReview)   
+                product.reviews.push(newReview)
             }
             product.totalReviews = product.reviews.length
             product.avgRating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.totalReviews

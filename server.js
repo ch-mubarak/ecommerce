@@ -89,6 +89,7 @@ passport.use(new GoogleStrategy({
         newUser.name = profile.displayName
         newUser.email = profile.emails[0].value
         newUser.isVerified = true
+        newUser.havePassword = false
         newUser.google.id = profile.id
         newUser.google.token = accessToken
         newUser.google.email = profile.emails[0].value
@@ -138,6 +139,7 @@ passport.use(new FacebookStrategy({
         newUser.name = profile.displayName
         newUser.email = profile.emails[0].value
         newUser.isVerified = true
+        newUser.havePassword = false
         newUser.facebook.id = profile.id
         newUser.facebook.token = accessToken
         newUser.facebook.email = profile.emails[0].value

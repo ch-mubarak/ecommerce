@@ -88,6 +88,7 @@ passport.use(new GoogleStrategy({
         let newUser = new User()
         newUser.name = profile.displayName
         newUser.email = profile.emails[0].value
+        newUser.isVerified = true
         newUser.google.id = profile.id
         newUser.google.token = accessToken
         newUser.google.email = profile.emails[0].value

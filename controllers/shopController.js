@@ -8,6 +8,8 @@ const Banner = require("../models/banner")
 module.exports = {
     getHome: async (req, res) => {
         try {
+
+            const allCategories = await Category.find();
             const primaryBanner = await Banner
                 .findOne({ $and: [{ viewOrder: "primary" }, { isActive: true }] })
                 .exec();
@@ -16,7 +18,6 @@ module.exports = {
                 .sort({ createdAt: -1 })
                 .limit(2)
                 .exec();
-            const allCategories = await Category.find();
 
             const topRatedProducts = await Product
                 .find({ avgRating: { $ne: null } })
@@ -30,7 +31,22 @@ module.exports = {
                 .limit(6)
                 .exec();
 
-            const allProducts = await Product.find()
+            const latestProducts = await Product
+                .find()
+                .sort({ createdAt: -1 })
+                .limit(6)
+                .exec();
+
+            //feaured items only category men,women,or kids
+            const findFeaturedCategories = await Category
+                .find({ $or: [{ categoryName: "Men" }, { categoryName: "Women" }, { categoryName: "Kids" }] }, { id: 1 })
+
+            const featuredCategories = findFeaturedCategories.map(category => {
+                return category._id
+            })
+
+            const featuredProducts = await Product
+                .find({ $or: [{ category: featuredCategories[0] }, { category: featuredCategories[1] }, { category: featuredCategories[2] }] })
                 .populate("category")
                 .sort({ createdAt: -1 })
                 .limit(12)
@@ -38,7 +54,8 @@ module.exports = {
 
             res.render("master/index", {
                 allCategories: allCategories,
-                allProducts: allProducts,
+                featuredProducts: featuredProducts,
+                latestProducts: latestProducts,
                 topRatedProducts: topRatedProducts,
                 topReviewedProducts: topReviewedProducts,
                 primaryBanner: primaryBanner,
@@ -174,6 +191,7 @@ module.exports = {
     getProductById: async (req, res) => {
         try {
             const productId = req.params.id
+            const allCategories = await Category.find();
             const relatedProducts = await Product.find().limit(4).exec()
             const isPurchased = await Order
                 .exists({ products: { $elemMatch: { productId: new Object(productId) } } })
@@ -195,6 +213,7 @@ module.exports = {
             if (findProduct) {
                 res.render("master/productDetails", {
                     findProduct: findProduct,
+                    allCategories: allCategories,
                     relatedProducts: relatedProducts,
                     isInMyList: isInMyList,
                     isPurchased
@@ -295,6 +314,7 @@ module.exports = {
 
     myOrders: async (req, res) => {
         try {
+            const allCategories = await Category.find();
             const userId = req.user.id
             const myOrders = await Order
                 .find({ userId })
@@ -310,7 +330,10 @@ module.exports = {
                 ])
                 .sort({ createdAt: -1 })
                 .exec();
-            res.render("master/myOrders", { myOrders: myOrders })
+            res.render("master/myOrders", {
+                myOrders: myOrders,
+                allCategories: allCategories,
+            })
         } catch (err) {
             console.log(err)
             res.redirect("/")
@@ -319,6 +342,7 @@ module.exports = {
 
     orderDetails: async (req, res) => {
         try {
+            const allCategories = await Category.find();
             const orderId = req.params.id
             const userId = req.user.id
             const myOrder = await Order
@@ -340,7 +364,8 @@ module.exports = {
                 .exec();
             if (myOrder && myOrder.userId.id == userId) {
                 res.render("master/orderDetails", {
-                    myOrder: myOrder
+                    myOrder: myOrder,
+                    allCategories: allCategories,
                 })
             } else {
                 res.render("errorPage/error", { layout: false })

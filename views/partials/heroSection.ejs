@@ -9,17 +9,9 @@
             <span>All departments</span>
           </div>
           <ul>
-            <li><a href="/shop/category/men/1">Men</a></li>
-            <li><a href="/shop/category/women/1">Women</a></li>
-            <li><a href="/shop/category/kids/1">Kids</a></li>
-            <li><a href="/shop/category/footwear/1">Footwear</a></li>
-            <li><a href="/shop/category/beauty/1">Beauty</a></li>
-            <li><a href="#">Grooming</a></li>
-            <li><a href="#">Western Wear</a></li>
-            <li><a href="#">New Arrivals</a></li>
-            <li><a href="#">Party Wear</a></li>
-            <li><a href="#">Winter Wear</a></li>
-            <li><a href="#">On Sale</a></li>
+            <% allCategories.forEach((category)=>{ %>
+            <li><a href="/shop/category/<%= category.categoryName %>/1"><%= category.categoryName %></a></li>
+            <% }) %>
           </ul>
         </div>
       </div>

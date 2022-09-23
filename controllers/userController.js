@@ -85,8 +85,10 @@ module.exports = {
     getProfile: async (req, res) => {
         try {
             const userId = req.user.id
+            const allCategories = await Category.find();
             const user = await User.findById(userId)
             res.render("master/profile", {
+                allCategories:allCategories,
                 user: user
             })
         } catch (err) {

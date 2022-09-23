@@ -9,17 +9,9 @@
             <span>All departments</span>
           </div>
           <ul class="hero_all_category">
-            <li><a href="/shop/category/men/1">Men</a></li>
-            <li><a href="/shop/category/women/1">Women</a></li>
-            <li><a href="/shop/category/kids/1">Kids</a></li>
-            <li><a href="/shop/category/footwear/1">Footwear</a></li>
-            <li><a href="/shop/category/beauty/1">Beauty</a></li>
-            <li><a href="#">Grooming</a></li>
-            <li><a href="#">Western Wear</a></li>
-            <li><a href="#">New Arrivals</a></li>
-            <li><a href="#">Party Wear</a></li>
-            <li><a href="#">Winter Wear</a></li>
-            <li><a href="#">On Sale</a></li>
+            <% allCategories.forEach((category)=>{ %>
+            <li><a href="/shop/category/<%= category.categoryName %>/1"><%= category.categoryName %></a></li>
+            <% }) %>
           </ul>
         </div>
       </div>
@@ -108,16 +100,16 @@
         <div class="featured__controls">
           <ul>
             <li class="active" data-filter="*">All</li>
-            <% allCategories.forEach((category)=> {%>
-            <li data-filter=.<%=category.categoryName %>><%= category.categoryName %></li>
-            <% }) %>
+            <li data-filter=.Men>Men</li>
+            <li data-filter=.Women>Women</li>
+            <li data-filter=.Kids>Kids</li>
           </ul>
         </div>
       </div>
     </div>
     <div class="row featured__filter">
 
-      <% allProducts.forEach((product)=> { %>
+      <% featuredProducts.forEach((product)=> { %>
       <div class="col-lg-3 col-md-4 col-sm-6 mix <%= product.category.categoryName %>">
         <div class="featured__item">
           <div class="featured__item__pic set-bg" data-setbg="/files/<%=product.productImagePath[0]%>">
@@ -172,7 +164,7 @@
           <h4>Latest Products</h4>
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
-              <% allProducts.slice(0,3).forEach((product)=> { %>
+              <% latestProducts.slice(0,3).forEach((product)=> { %>
               <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="/files/<%=product.productImagePath[0]%>" alt="">
@@ -192,7 +184,7 @@
               <% }) %>
             </div>
             <div class="latest-prdouct__slider__item">
-              <% allProducts.slice(3,6).forEach((product)=> { %>
+              <% latestProducts.slice(3,6).forEach((product)=> { %>
               <a href="/product/<%= product.id %>" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="/files/<%=product.productImagePath[0]%>" alt="">

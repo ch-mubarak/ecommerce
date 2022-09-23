@@ -1,5 +1,5 @@
 <!-- Hero Section Begin -->
-<%- include("../partials/heroSection") %>
+<%- include("../partials/heroSection",{allCategories:allCategories}) %>
 <!-- Hero Section End -->
 
 <!-- Breadcrumb Section Begin -->
@@ -51,7 +51,7 @@
               </div>
 
               <button id="registerButton" class="btn btn-dark btn-lg" type="submit" disabled>Register</button>
-              <p class="mt-3">I already have an account? <a href="/login" class="link-dark text-dark">Login here</a></p>
+              <p class="mt-3">I already have an account? <a href="/login" class="text-dark"><u>Login here</u></a></p>
               <a href="#!" class="small text-muted">Terms of use.</a>
               <a href="#!" class="small text-muted float-right">Privacy policy</a>
             </form>

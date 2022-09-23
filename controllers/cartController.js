@@ -69,6 +69,7 @@ module.exports = {
     },
 
     getCart: async (req, res) => {
+        const allCategories = await Category.find();
         const userId = req.user.id
         try {
             const errorMessage = req.flash("message")
@@ -79,6 +80,7 @@ module.exports = {
             const couponCode = req.session.coupon?.code
             const couponDiscount = Number(req.session.coupon?.discount)
             res.render("master/cart", {
+                allCategories:allCategories,
                 findCart: findCart,
                 errorMessage: errorMessage,
                 couponCode: couponCode,
@@ -137,6 +139,7 @@ module.exports = {
     getCheckout: async (req, res) => {
         try {
             const userId = req.user.id
+            const allCategories = await Category.find();
             //getting coupon from session
             const couponDiscount = req.session.coupon?.discount
             const couponCode = req.session.coupon?.code
@@ -147,6 +150,7 @@ module.exports = {
             })
             if (findCart?.products.length > 0) {
                 res.render("master/checkout", {
+                    allCategories:allCategories,
                     findCart: findCart,
                     user: user,
                     couponCode: couponCode,

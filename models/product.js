@@ -40,6 +40,10 @@ const productSchema = new mongoose.Schema({
         required: false,
         ref: "subCategory"
     },
+    isFeatured: {
+        type: Boolean,
+        default: false
+    },
     productImagePath: [String],
     price: {
         type: Number,

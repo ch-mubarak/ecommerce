@@ -7,6 +7,7 @@ module.exports = {
             const price = parseFloat(req.body.price)
             const discount = req.body.discount ? parseFloat(req.body.discount) : null
             const offerPrice = req.body.discount ? price - ((price / 100) * discount) : null;
+            const isFeatured = req.body.isFeatured == 'on' ? true : false
             const productImages = req.files != null ? req.files.map((img) => img.filename) : null
             const product = new Product({
                 name: req.body.name,
@@ -16,6 +17,7 @@ module.exports = {
                 price: price,
                 discount: discount,
                 offerPrice: offerPrice,
+                isFeatured: isFeatured,
                 description: req.body.description,
                 productImagePath: productImages
             })
@@ -37,6 +39,7 @@ module.exports = {
             const price = parseFloat(req.body.price)
             const discount = req.body.discount ? parseFloat(req.body.discount) : null
             const offerPrice = req.body.discount ? price - ((price / 100) * discount) : null;
+            const isFeatured = req.body.isFeatured == "on" ? true : false
             const oldProductImages = product.productImagePath
             const productImages = req.files.length > 0 ? req.files.map((img) => img.filename) : oldProductImages
             await Product.findByIdAndUpdate(req.params.id, {
@@ -47,6 +50,7 @@ module.exports = {
                 price: price,
                 discount: discount,
                 offerPrice: offerPrice,
+                isFeatured: isFeatured,
                 description: req.body.description,
                 productImagePath: productImages
             })

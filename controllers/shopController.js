@@ -37,16 +37,8 @@ module.exports = {
                 .limit(6)
                 .exec();
 
-            //feaured items only category men,women,or kids
-            const findFeaturedCategories = await Category
-                .find({ $or: [{ categoryName: "Men" }, { categoryName: "Women" }, { categoryName: "Kids" }] }, { id: 1 })
-
-            const featuredCategories = findFeaturedCategories.map(category => {
-                return category._id
-            })
-
             const featuredProducts = await Product
-                .find({ $or: [{ category: featuredCategories[0] }, { category: featuredCategories[1] }, { category: featuredCategories[2] }] })
+                .find({isFeatured:true})
                 .populate("category")
                 .sort({ createdAt: -1 })
                 .limit(12)

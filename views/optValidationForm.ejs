@@ -47,7 +47,7 @@
 </style>
 
 <!-- Hero Section Begin -->
-<%- include("./partials/heroSection") %>
+<%- include("./partials/heroSection",{allCategories:allCategories}) %>
 <!-- Hero Section End -->
 
 <!-- Breadcrumb Section Begin -->
@@ -70,7 +70,7 @@
 
 <div class="container p-5 d-flex justify-content-center align-items-center">
   <div class="position-relative">
-    <%- include("./partials/errorMessage") %> 
+    <%- include("./partials/errorMessage") %>
     <div class="card p-2 text-center mb-3">
       <h6>Please enter the one time password <br> to verify your account</h6>
       <div> <span>A code has been sent to</span> <small><%= email %></small> </div>
@@ -116,8 +116,8 @@
   });
 
   setTimeout(() => {
-        $(".alert").fadeTo(600, 0).slideUp(500, function() {
-          // document.getElementById("errorMessage").innerHTML = ""
-        })
-      },4000)
+    $(".alert").fadeTo(600, 0).slideUp(500, function() {
+      // document.getElementById("errorMessage").innerHTML = ""
+    })
+  }, 4000)
 </script>

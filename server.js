@@ -136,6 +136,7 @@ passport.use(new FacebookStrategy({
         let newUser = new User()
         newUser.name = profile.displayName
         newUser.email = profile.emails[0].value
+        newUser.isVerified = true
         newUser.facebook.id = profile.id
         newUser.facebook.token = accessToken
         newUser.facebook.email = profile.emails[0].value

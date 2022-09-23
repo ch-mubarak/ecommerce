@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer")
+const Category = require("../models/category")
 const User = require("../models/users")
 
 function generateOtp() {
@@ -39,10 +40,12 @@ const otpVerification = async (req, res) => {
             await User.findByIdAndUpdate(req.user.id, { isVerified: true })
             res.redirect("/")
         } else {
+            const allCategories = await Category.find()
             const hiddenEmail = hideEmail(req.user.email)
             res.render("optValidationForm", {
                 email: hiddenEmail,
                 errorMessage: "invalid otp",
+                allCategories: allCategories
             })
         }
     } catch (err) {
@@ -53,15 +56,17 @@ const otpVerification = async (req, res) => {
 
 }
 
-const getOtpForm = (req, res) => {
-    try{
+const getOtpForm = async (req, res) => {
+    try {
+        const allCategories = await Category.find()
         const successMessage = req.flash("message")
         const hiddenEmail = hideEmail(req.user.email)
         res.render("optValidationForm", {
             successMessage: successMessage,
             email: hiddenEmail,
+            allCategories: allCategories
         })
-    }catch(err){
+    } catch (err) {
         console.log(err)
         res.redirect("/")
     }

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport")
 const Category = require("../models/category")
 const userControl = require("../controllers/userController")
 const shopControl = require("../controllers/shopController")
@@ -17,28 +18,48 @@ router.get("/product/:id", authentication.checkAccountVerifiedInIndex, shopContr
 router.get("/contact", authentication.checkAccountVerifiedInIndex, (req, res) => res.render("master/contact"))
 router.get("/search/:page", authentication.checkAccountVerifiedInIndex, shopControl.getProductByKeyword)
 
-router.get("/login", authentication.checkLoggedOut,async (req, res) => {
+router.get("/login", authentication.checkLoggedOut, async (req, res) => {
     const allCategories = await Category.find();
     const errorMessage = req.flash("error")
     res.render("master/login", {
         errorMessage: errorMessage,
-        allCategories:allCategories,
+        allCategories: allCategories,
     })
 })
-router.get("/register", authentication.checkLoggedOut,async (req, res) => {
+router.get("/register", authentication.checkLoggedOut, async (req, res) => {
     const errorMessage = req.flash("message")
     const allCategories = await Category.find();
     res.render("master/register", {
         errorMessage: errorMessage,
-        allCategories:allCategories,
+        allCategories: allCategories,
     })
 })
+
+router.get('/auth/google',
+    passport.authenticate('google'));
+
+router.get("/auth/google/myStyle",
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function (req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
+    });
+
+router.get('/auth/facebook',
+    passport.authenticate('facebook', { scope: ['email'] }))
+
+router.get('/auth/facebook/myStyle',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function (req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
+    });
 
 router.get("/error", (req, res) => {
     res.render("errorPage/error", { layout: false })
 })
 
-router.post("/autoFill",shopControl.autoFill)
+router.post("/autoFill", shopControl.autoFill)
 router.post("/validateOtp", otpVerification)
 
 router.post("/resendOtp", async (req, res) => {

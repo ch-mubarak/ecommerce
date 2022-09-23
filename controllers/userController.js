@@ -71,11 +71,12 @@ module.exports = {
     },
 
     setPassword: async (req, res) => {
-        const { newPassword, confirmedPassword } = req.body
+        const { password, confirmedPassword } = req.body
         const user = req.user
         try {
-            if (newPassword === confirmedPassword) {
-                await user.setPassword(req.body.password)
+            if (password === confirmedPassword) {
+                await user.setPassword(password)
+                await User.findByIdAndUpdate(req.user.id, { havePassword: true })
                 await user.save()
                 res.status(201).json({ message: "password changed" })
             } else {
@@ -83,6 +84,7 @@ module.exports = {
             }
         } catch (err) {
             res.status(401).json({ message: "Error setting Password" })
+            console.log(err)
         }
     },
 
@@ -106,7 +108,6 @@ module.exports = {
             const user = await User.findById(userId)
             res.render("master/profile", {
                 allCategories: allCategories,
-                havePassword: user.havePassword,
                 user: user
             })
         } catch (err) {

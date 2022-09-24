@@ -8,7 +8,7 @@ const flash = require("connect-flash")
 const methodOverride = require("method-override")
 const User = require("./models/users")
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const FacebookStrategy = require("passport-facebook")
+const FacebookStrategy = require("passport-facebook").Strategy
 const cors = require("cors")
 
 const app = express();
@@ -76,7 +76,7 @@ passport.use(new GoogleStrategy({
           user.google.id = profile.id
           user.google.token = accessToken;
           user.google.email = profile.emails[0].value;
-          user.google.name = profile.name.displayName;
+          user.google.name = profile.displayName;
           user.save();
         }
         return done(null, user);
@@ -89,7 +89,7 @@ passport.use(new GoogleStrategy({
         newUser.google.id = profile.id
         newUser.google.token = accessToken
         newUser.google.email = profile.emails[0].value
-        newUser.google.name = profile.name.displayName
+        newUser.google.name = profile.displayName
 
         newUser.save(function (err) {
           if (err) {
@@ -126,7 +126,7 @@ passport.use(new FacebookStrategy({
           user.facebook.id = profile.id
           user.facebook.token = accessToken;
           user.facebook.email = profile.emails[0].value;
-          user.facebook.name = profile.name.displayName;
+          user.facebook.name = profile.displayName;
           user.save();
         }
         return done(null, user);
@@ -139,7 +139,7 @@ passport.use(new FacebookStrategy({
         newUser.facebook.id = profile.id
         newUser.facebook.token = accessToken
         newUser.facebook.email = profile.emails[0].value
-        newUser.facebook.name = profile.name.displayName
+        newUser.facebook.name = profile.displayName
 
         newUser.save(function (err) {
           if (err) {

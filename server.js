@@ -1,7 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const expressLayout = require("express-ejs-layouts")
-const mongoose = require("mongoose")
+const database = require("./config/db")
 const passport = require("passport")
 const session = require("express-session")
 const flash = require("connect-flash")
@@ -17,11 +17,7 @@ const indexRouter = require("./routes/index")
 const userRouter = require("./routes/user")
 const adminRouter = require("./routes/admin")
 
-
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
-const db = mongoose.connection
-db.on("error", error => console.log(error))
-db.once("open", () => console.log("mongoose is connected"))
+database()
 
 app.set("view engine", "ejs")
 app.set("layout", "layouts/masterLayout")

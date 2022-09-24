@@ -1,4 +1,5 @@
 const Wishlist = require("../models/wishlist")
+const Category = require("../models/category")
 
 module.exports = {
     wishlist: async (req, res) => {

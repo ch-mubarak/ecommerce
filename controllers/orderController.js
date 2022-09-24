@@ -2,6 +2,7 @@ const Order = require("../models/order")
 const Product = require("../models/product")
 const Cart = require("../models/cart")
 const User = require("../models/users")
+const Category = require("../models/category")
 
 module.exports = {
 

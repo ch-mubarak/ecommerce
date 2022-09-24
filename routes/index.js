@@ -15,8 +15,13 @@ router.get("/", authentication.checkAccountVerifiedInIndex, shopControl.getHome)
 router.get("/shop/category/:category/:page", authentication.checkAccountVerifiedInIndex, shopControl.getShopByCategory)
 router.get("/shop/:page", authentication.checkAccountVerifiedInIndex, shopControl.getAllProducts)
 router.get("/product/:id", authentication.checkAccountVerifiedInIndex, shopControl.getProductById)
-router.get("/contact", authentication.checkAccountVerifiedInIndex, (req, res) => res.render("master/contact"))
 router.get("/search/:page", authentication.checkAccountVerifiedInIndex, shopControl.getProductByKeyword)
+router.get("/contact", authentication.checkAccountVerifiedInIndex, async (req, res) => {
+    const allCategories = await Category.find()
+    res.render("master/contact", {
+        allCategories: allCategories
+    })
+})
 
 router.get("/login", authentication.checkLoggedOut, async (req, res) => {
     const allCategories = await Category.find();

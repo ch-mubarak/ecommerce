@@ -47,7 +47,12 @@ router.get("/auth/google/myStyle",
     passport.authenticate('google', { failureRedirect: '/login' }),
     function (req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/');
+        if (req.user.isAdmin === true) {
+            res.redirect("/admin")
+        }
+        else {
+            res.redirect("/")
+        }
     });
 
 router.get('/auth/facebook',
@@ -57,7 +62,12 @@ router.get('/auth/facebook/myStyle',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function (req, res) {
         // Successful authentication, redirect home.
-        res.redirect('/');
+        if (req.user.isAdmin === true) {
+            res.redirect("/admin")
+        }
+        else {
+            res.redirect("/")
+        }
     });
 
 router.get("/error", (req, res) => {

@@ -32,7 +32,7 @@ module.exports = {
                 }
             ])
 
-            const orderStatusCount = [orderStatusPending, orderStatusDelivered, totalSale[0].totalAmount]
+            const orderStatusCount = [orderStatusPending, orderStatusDelivered, totalSale[0]?.totalAmount.toFixed(2)]
             res.render("admin/index", {
                 errorMessage: errorMessage,
                 layout: "layouts/adminLayout",

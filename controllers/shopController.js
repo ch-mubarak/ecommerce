@@ -244,7 +244,7 @@ module.exports = {
                     "$or": [
                         { name: { $regex: keyword, $options: 'i' } },
                         { brand: { $regex: keyword, $options: 'i' } },
-                        { category: category[0].id }
+                        { category: category[0]?.id }
                     ]
                 })
                 .populate("category")

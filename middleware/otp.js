@@ -1,98 +1,127 @@
-const nodemailer = require("nodemailer")
-const Category = require("../models/category")
-const User = require("../models/users")
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const Category = require("../models/category");
+const User = require("../models/users");
 
 function generateOtp() {
-    let otp = Math.floor(100000 + Math.random() * 900000)
-    console.log("Generated otp:" + otp)
-    return otp
+  let otp = Math.floor(100000 + Math.random() * 900000);
+  console.log("Generated otp:" + otp);
+  return otp;
+}
+
+function generatePasswordResetId() {
+  return crypto.randomBytes(64).toString("hex");
 }
 
 function hideEmail(target) {
-    let email = target
-    let hiddenEmail = "";
-    for (i = 0; i < email.length; i++) {
-        if (i > 2 && i < email.indexOf("@")) {
-            hiddenEmail += "*";
-        } else {
-            hiddenEmail += email[i];
-        }
+  let email = target;
+  let hiddenEmail = "";
+  for (i = 0; i < email.length; i++) {
+    if (i > 2 && i < email.indexOf("@")) {
+      hiddenEmail += "*";
+    } else {
+      hiddenEmail += email[i];
     }
-    return hiddenEmail
+  }
+  return hiddenEmail;
 }
 
 let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 456,
-    secure: true,
-    service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 456,
+  secure: true,
+  service: "Gmail",
 
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-    }
-})
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
 
 const otpVerification = async (req, res) => {
-    let enteredOtp = Number(req.body.a + req.body.b + req.body.c + req.body.d + req.body.e + req.body.f)
-    try {
-        if (req.user.otp === enteredOtp) {
-            await User.findByIdAndUpdate(req.user.id, { isVerified: true })
-            res.redirect("/")
-        } else {
-            const allCategories = await Category.find()
-            const hiddenEmail = hideEmail(req.user.email)
-            res.render("optValidationForm", {
-                email: hiddenEmail,
-                errorMessage: "invalid otp",
-                allCategories: allCategories
-            })
-        }
-    } catch (err) {
-        console.log(err)
-        req.flash("message", "error verifying account")
-        res.redirect("/register")
+  let enteredOtp = Number(
+    req.body.a + req.body.b + req.body.c + req.body.d + req.body.e + req.body.f
+  );
+  try {
+    if (req.user.otp === enteredOtp) {
+      await User.findByIdAndUpdate(req.user.id, { isVerified: true });
+      res.redirect("/");
+    } else {
+      const allCategories = await Category.find();
+      const hiddenEmail = hideEmail(req.user.email);
+      res.render("optValidationForm", {
+        email: hiddenEmail,
+        errorMessage: "invalid otp",
+        allCategories: allCategories,
+      });
     }
-
-}
+  } catch (err) {
+    console.log(err);
+    req.flash("message", "error verifying account");
+    res.redirect("/register");
+  }
+};
 
 const getOtpForm = async (req, res) => {
-    try {
-        const allCategories = await Category.find()
-        const successMessage = req.flash("message")
-        const hiddenEmail = hideEmail(req.user.email)
-        res.render("optValidationForm", {
-            successMessage: successMessage,
-            email: hiddenEmail,
-            allCategories: allCategories
-        })
-    } catch (err) {
-        console.log(err)
-        res.redirect("/")
-    }
-}
+  try {
+    const allCategories = await Category.find();
+    const successMessage = req.flash("message");
+    const hiddenEmail = hideEmail(req.user.email);
+    res.render("optValidationForm", {
+      successMessage: successMessage,
+      email: hiddenEmail,
+      allCategories: allCategories,
+    });
+  } catch (err) {
+    console.log(err);
+    res.redirect("/");
+  }
+};
 
 const sendOtp = async (req, res) => {
-    let otp = generateOtp()
-    try {
-        await User.findByIdAndUpdate(req.user.id, { otp: otp })
-        let info = await transporter.sendMail({
-            to: req.user.email,
-            subject: "Otp for registration is:", // Subject line
-            html: "<h3>OTP for account verification is </h3>" + "<h1 style='font-weight:bold;'>" + otp + "</h1>"
-        });
+  let otp = generateOtp();
+  try {
+    await User.findByIdAndUpdate(req.user.id, { otp: otp });
+    let info = await transporter.sendMail({
+      to: req.user.email,
+      subject: "Otp for registration is:", // Subject line
+      html:
+        "<h3>OTP for account verification is </h3>" +
+        "<h1 style='font-weight:bold;'>" +
+        otp +
+        "</h1>",
+    });
 
-        console.log("Message sent: %s", info.messageId);
-    } catch (err) {
-        console.log(err)
-        req.flash("message", "error registering account")
-        res.redirect("/register")
-    }
+    console.log("Message sent: %s", info.messageId);
+  } catch (err) {
+    console.log(err);
+    req.flash("message", "error registering account");
+    res.redirect("/register");
+  }
+};
 
-}
+const sendPasswordResetLink = async (email) => {
+  try {
+    const passwordResetId = generatePasswordResetId();
+    const user = await User.findOne({ email: email }, { email: 1 });
+    user.passwordResetId = passwordResetId;
+    await user.save();
+    let info = await transporter.sendMail({
+      to: email,
+      subject: "Reset Password:", // Subject line
+      html:
+        "<h3>Please click on the below link to reset your password </h3>" +
+        `<a style='font-weight:bold;' href=https://mystyle.codestreak.in/reset/${email}/password/${passwordResetId}>Reset password</a>`,
+    });
+    console.log("Message sent: %s", info.messageId);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 module.exports = {
-    sendOtp,
-    otpVerification,
-    getOtpForm
-}
+  sendOtp,
+  otpVerification,
+  getOtpForm,
+  sendPasswordResetLink,
+};

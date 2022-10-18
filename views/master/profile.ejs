@@ -277,12 +277,12 @@
         })
       }
     } catch (err) {
-      document.getElementById("errorMessage").innerHTML = `<div class="alert alert-danger text-center" role="alert">${err.response.data.message}</div>`
+      document.getElementById("errorMessage").innerHTML = `<div id='myErrorMessage' class="alert alert-danger text-center" role="alert">${err.response.data.message}</div>`
       setTimeout(() => {
-        $("#errorMessage").fadeTo(600, 0).slideUp(500, function() {
+        $("#myErrorMessage").fadeTo(600, 0).slideUp(500, function() {
           document.getElementById("errorMessage").innerHTML = ""
         })
-      }, 1500)
+      }, 2500)
     }
   })
 

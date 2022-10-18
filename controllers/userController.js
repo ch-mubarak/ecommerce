@@ -88,13 +88,17 @@ module.exports = {
 
   resetPassword: async (req, res) => {
     try {
-      const { email, password, confirmedPassword } = req.body;
+      const { email, password, confirmedPassword, passwordResetId } = req.body;
       if (password === confirmedPassword) {
         const user = await User.findOne({ email });
-        await user.setPassword(password);
-        user.passwordResetId = undefined;
-        await user.save();
-        res.status(201).json({ message: "password reset successful" });
+        if (user.passwordResetId && user.passwordResetId === passwordResetId) {
+          await user.setPassword(password);
+          user.passwordResetId = undefined;
+          await user.save();
+          res.status(201).json({ message: "password reset successful" });
+        } else {
+          res.status(500).json({ message: "Error resetting password" });
+        }
       } else {
         res.status(401).json({ message: "Password doesn't match" });
       }

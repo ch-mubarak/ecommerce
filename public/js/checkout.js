@@ -47,7 +47,7 @@ async function checkout(data) {
 function razorpay(orderId, amount) {
     let options = {
         "key": "rzp_test_qdnGosbHKRU60Y", // Enter the Key ID generated from the Dashboard
-        "name": "Fashion",
+        "name": "myStyle",
         "amount": amount,
         "order_id": orderId, // For one time payment
         "retry": false,

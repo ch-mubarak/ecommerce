@@ -2,6 +2,10 @@
 
 An E-commerce website where people can buy fashion and lifestyle
 
+## Screenshots
+
+![App Screenshot](https://i.postimg.cc/K8FG80gy/ezgif-com-gif-maker.gif)
+
 ## Demo
 
 http://mystyle.codestreak.in/
@@ -9,8 +13,10 @@ http://mystyle.codestreak.in/
 ## User side Features
 
 - Login/Signup with Google and Facebook
+- OTP verification for normal Register
 - Wishlist
 - Cart
+- Forget password / Change password
 - Profile management
 - Razorpay payment integration
 - Pagination
@@ -19,6 +25,7 @@ http://mystyle.codestreak.in/
 - Product Filter and Sorting
 - Order Tracking and cancellation
 - Review and Rating for purchased products
+- etc..
 
 ## Admin side Features
 
@@ -30,18 +37,8 @@ http://mystyle.codestreak.in/
 - Coupon management
 - Sales report
 - Graphs
+- etc...
 
-## Screenshots
-
-![App Screenshot](https://i.postimg.cc/s2hGhfCM/Screenshot-68.png)
-
-![App Screenshot](https://i.postimg.cc/G2n8J0bq/Screenshot-69.png)
-
-![App Screenshot](https://i.postimg.cc/FH1LhgPg/Screenshot-72.png)
-
-![App Screenshot](https://i.postimg.cc/02kSBqD4/Screenshot-66.png)
-
-![App Screenshot](https://i.postimg.cc/4NWcCF1x/Screenshot-67.png)
 
 ## Run Locally
 
@@ -82,6 +79,8 @@ for admin side goto
 **Server:** Node, Express
 
 **Database:** Mongodb, Mongoose
+
+**Authentication** Passport JS, Google OAuth, Facebook OAuth
 
 ## Environment Variables
 

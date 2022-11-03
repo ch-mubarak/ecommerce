@@ -143,6 +143,7 @@
 </section>
 <%}%>
 
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
  
 document.forms["couponForm"].addEventListener("submit", async (event) => {
@@ -153,6 +154,7 @@ try {
 response = await axios.post(`/user/redeem/${couponCode}`)
 if (response.status == 200) {
 $("#checkoutBox").load(location.href+" #checkoutBox>*","");
+celebrate()
 await Swal.fire({
 icon: "success",
 title: `Congrats you have saved ${response.data.couponDiscount}`,
@@ -160,7 +162,6 @@ showConfirmButton: false,
 timer: 1500,
 width: "25em",
 });
-
 }
 
 } catch (err) {
@@ -210,5 +211,42 @@ async function removeCoupon(){
     console.error(err)
   }
 
+}
+
+//celebration
+function celebrate(){
+  var count = 200;
+var defaults = {
+  origin: { y: 0.7 }
+};
+
+function fire(particleRatio, opts) {
+  confetti(Object.assign({}, defaults, opts, {
+    particleCount: Math.floor(count * particleRatio)
+  }));
+}
+
+fire(0.25, {
+  spread: 26,
+  startVelocity: 55,
+});
+fire(0.2, {
+  spread: 60,
+});
+fire(0.35, {
+  spread: 100,
+  decay: 0.91,
+  scalar: 0.8
+});
+fire(0.1, {
+  spread: 120,
+  startVelocity: 25,
+  decay: 0.92,
+  scalar: 1.2
+});
+fire(0.1, {
+  spread: 120,
+  startVelocity: 45,
+});
 }
 </script>

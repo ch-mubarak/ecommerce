@@ -37,10 +37,13 @@ module.exports = {
           },
         },
       ]);
-      const userCount = await userCountPromise;
-      const orderStatusPending = await orderStatusPendingPromise;
-      const orderStatusDelivered = await orderStatusDeliveredPromise;
-      const totalSale = await totalSalePromise;
+      const [userCount, orderStatusPending, orderStatusDelivered, totalSale] =
+        await Promise.all([
+          userCountPromise,
+          orderStatusPendingPromise,
+          orderStatusDeliveredPromise,
+          totalSalePromise,
+        ]);
       const orderStatusCount = [
         orderStatusPending,
         orderStatusDelivered,
@@ -118,8 +121,11 @@ module.exports = {
         },
       ]);
 
-      const totalRegister = await totalRegisterPromise;
-      const totalSale = await totalSalePromise;
+      const [totalRegister, totalSale] = await Promise.all([
+        totalRegisterPromise,
+        totalSalePromise,
+      ]);
+
       res
         .status(201)
         .json({ totalRegister: totalRegister, totalSale: totalSale });

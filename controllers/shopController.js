@@ -44,13 +44,23 @@ module.exports = {
         .limit(12)
         .exec();
 
-      const allCategories = await allCategoriesPromise;
-      const primaryBanner = await primaryBannerPromise;
-      const featuredProducts = await featuredProductsPromise;
-      const latestProducts = await latestProductsPromise;
-      const topRatedProducts = await topRatedProductsPromise;
-      const topReviewedProducts = await topReviewedProductsPromise;
-      const secondaryBanner = await secondaryBannerPromise;
+      const [
+        allCategories,
+        primaryBanner,
+        featuredProducts,
+        latestProducts,
+        topRatedProducts,
+        topReviewedProducts,
+        secondaryBanner,
+      ] = await Promise.all([
+        allCategoriesPromise,
+        primaryBannerPromise,
+        featuredProductsPromise,
+        latestProductsPromise,
+        topRatedProductsPromise,
+        topReviewedProductsPromise,
+        secondaryBannerPromise,
+      ]);
 
       res.render("master/index", {
         allCategories: allCategories,
@@ -124,11 +134,14 @@ module.exports = {
         .sort(sort)
         .countDocuments();
 
-      const allCategories = await allCategoriesPromise;
-      const allProducts = await allProductsPromise;
-      const offerProducts = await offerProductsPromise;
-      const latestProducts = await latestProductsPromise;
-      const count = await countPromise;
+      const [allCategories, allProducts, offerProducts, latestProducts, count] =
+        await Promise.all([
+          allCategoriesPromise,
+          allProductsPromise,
+          offerProductsPromise,
+          latestProductsPromise,
+          countPromise,
+        ]);
       res.render("master/shop", {
         allCategories: allCategories,
         allProducts: allProducts,

@@ -10,39 +10,47 @@ const { sendPasswordResetLink } = require("../middleware/otp");
 module.exports = {
   getHome: async (req, res) => {
     try {
-      const allCategories = await Category.find();
-      const primaryBanner = await Banner.findOne({
+      const allCategoriesPromise = Category.find();
+      const primaryBannerPromise = Banner.findOne({
         $and: [{ viewOrder: "primary" }, { isActive: true }],
       }).exec();
-      const secondaryBanner = await Banner.find({
+      const secondaryBannerPromise = Banner.find({
         $and: [{ viewOrder: "secondary" }, { isActive: true }],
       })
         .sort({ createdAt: -1 })
         .limit(2)
         .exec();
 
-      const topRatedProducts = await Product.find({ avgRating: { $ne: null } })
+      const topRatedProductsPromise = Product.find({ avgRating: { $ne: null } })
         .sort({ avgRating: -1 })
         .limit(6)
         .exec();
 
-      const topReviewedProducts = await Product.find({
+      const topReviewedProductsPromise = Product.find({
         totalReviews: { $ne: null },
       })
         .sort({ totalReviews: -1 })
         .limit(6)
         .exec();
 
-      const latestProducts = await Product.find()
+      const latestProductsPromise = Product.find()
         .sort({ createdAt: -1 })
         .limit(6)
         .exec();
 
-      const featuredProducts = await Product.find({ isFeatured: true })
+      const featuredProductsPromise = Product.find({ isFeatured: true })
         .populate("category")
         .sort({ createdAt: -1 })
         .limit(12)
         .exec();
+
+      const allCategories = await allCategoriesPromise;
+      const primaryBanner = await primaryBannerPromise;
+      const featuredProducts = await featuredProductsPromise;
+      const latestProducts = await latestProductsPromise;
+      const topRatedProducts = await topRatedProductsPromise;
+      const topReviewedProducts = await topReviewedProductsPromise;
+      const secondaryBanner = await secondaryBannerPromise;
 
       res.render("master/index", {
         allCategories: allCategories,
@@ -93,15 +101,15 @@ module.exports = {
         sort = { createdAt: -1 };
       }
 
-      const allCategories = await Category.find();
-      const latestProducts = await Product.find()
+      const allCategoriesPromise = Category.find();
+      const latestProductsPromise = Product.find()
         .sort({ createdAt: -1 })
         .limit(6);
 
-      const offerProducts = await Product.find({
+      const offerProductsPromise = Product.find({
         offerPrice: { $ne: null },
       }).limit(6);
-      const allProducts = await Product.find()
+      const allProductsPromise = Product.find()
         .populate("category")
         .where("price")
         .equals(priceRange)
@@ -110,12 +118,17 @@ module.exports = {
         .limit(limit)
         .exec();
 
-      const count = await Product.find()
+      const countPromise = Product.find()
         .where("price")
         .equals(priceRange)
         .sort(sort)
         .countDocuments();
 
+      const allCategories = await allCategoriesPromise;
+      const allProducts = await allProductsPromise;
+      const offerProducts = await offerProductsPromise;
+      const latestProducts = await latestProductsPromise;
+      const count = await countPromise;
       res.render("master/shop", {
         allCategories: allCategories,
         allProducts: allProducts,
